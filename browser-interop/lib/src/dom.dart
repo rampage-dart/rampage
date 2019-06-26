@@ -22,7 +22,7 @@ import 'node.dart';
 /// interface is the base interface for HTML elements. Most functionality is
 /// specified further down the class hierarchy.
 @JS('Element')
-class Element extends Node with ParentNode {
+class Element extends Node with ParentNode, ChildNode {
   /// The name of the tag for the given [Element].
   external String get tagName;
 
