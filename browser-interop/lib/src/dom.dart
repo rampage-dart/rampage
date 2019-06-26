@@ -41,6 +41,9 @@ class Node extends EventTarget {
   /// A live [NodeList] of child [Node]s of the given element where the first
   /// child [Node] is assigned index 0.
   external NodeList get childNodes;
+
+  /// Clone a [Node], and optionally, all of its contents.
+  external Node cloneNode(bool deep);
 }
 
 /// A collections of [Node]s, usually returned by properties such as
@@ -89,11 +92,55 @@ mixin ParentNode {
 class Element extends Node with ParentNode {
   /// The name of the tag for the given [Element].
   external String get tagName;
+
+  /// The identifier of the [Element].
+  external String get id;
+
+  /// The open [ShadowRoot] that is hosted by the [Element], or `null` if no
+  /// open [ShadowRoot] is present.
+  external ShadowRoot get shadowRoot;
+
+  /// Attatches a shadow DOM tree to the specified element and returns a
+  /// reference to its [ShadowRoot].
+  external ShadowRoot attachShadow(ShadowRootInit shadowRootInit);
+}
+
+/// Represents options that represent characteristics of a [ShadowRoot].
+@JS()
+@anonymous
+class ShadowRootInit {
+  /// Creates the [ShadowRootInit] options.
+  external factory ShadowRootInit({String mode = 'open'});
+
+  /// Specifies the encapsulation mode for the shadow DOM tree, either `open`
+  /// or `closed`.
+  ///
+  /// When using `open` [Element]s of the [ShadowRoot] are accessible from
+  /// script outside the root.
+  ///
+  ///     element.shadowRoot; // Returns a ShadowRoot object
+  ///
+  /// When using `closed` access to the [Node]s is denied.
+  ///
+  ///     element.shadowRoot; // Returns null
+  external String get mode;
+  external set mode(String value);
 }
 
 /// The [HtmlElement] interface represents any HTML element.
 @JS('HTMLElement')
 class HtmlElement extends Element {}
+
+/// The [DivElement] interface represents a `<div>` element.
+@JS('HTMLDivElement')
+class DivElement extends HtmlElement {}
+
+/// The [TemplateElement] interface represents a `<template>` element.
+@JS('HTMLTemplateElement')
+class TemplateElement extends HtmlElement {
+  /// The `<template>` element's contents.
+  external DocumentFragment get content;
+}
 
 /// The [UnknownElement] interface represents an invalid HTML element and
 /// derives from the [HtmlElement] interface, but without implementing any
@@ -104,6 +151,14 @@ class UnknownElement extends HtmlElement {}
 //-----------------------------------------------------------
 // Document
 //-----------------------------------------------------------
+
+/// The [DomParser] interface provides the ability to parse XML or HTML source
+/// code from a string into a DOM [Document].
+@JS('DOMParser')
+class DomParser {
+  /// Returns a [Document] from the [string] with the given [mimeType].
+  external Document parseFromString(String string, String mimeType);
+}
 
 /// The [DocumentFragment] interface represents a minimal document object that
 /// has no parent.
@@ -124,7 +179,16 @@ class DocumentFragment = Node with ParentNode;
 /// [Element.shadowRoot] property, provided it was created using
 /// [Element.attachShadow] with the mode option set to `open`.
 @JS('ShadowRoot')
-class ShadowRoot extends DocumentFragment {}
+class ShadowRoot extends DocumentFragment {
+  /// A reference to the DOM [Element] the [ShadowRoot] is attached to.
+  external Element get host;
+
+  /// The mode of the [ShadowRoot] — either `open` or `closed`.
+  ///
+  /// This defines whether or not the shadow root's internal features are
+  /// accessible from scripts.
+  external String get mode;
+}
 
 /// The [Document] interface represents any web page loaded in the browser and
 /// serves as an entry point into the web page's content, which is the DOM tree.
