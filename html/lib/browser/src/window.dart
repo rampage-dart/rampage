@@ -4,8 +4,10 @@
 // the LICENSE file.
 
 import 'package:rampage_browser_interop/browser_interop.dart' as interop;
+import 'package:rampage_html/browser/html.dart';
 import 'package:rampage_html/html.dart';
 
+import 'document.dart';
 import 'js_wrapper.dart';
 
 /// Browser implementation of [Window].
@@ -13,6 +15,9 @@ class WindowImpl extends JsWrapper<interop.Window> implements Window {
   /// Create an instance of [WindowImpl] from the [jsObject].
   WindowImpl.fromJsObject(interop.Window jsObject)
       : super.fromJsObject(jsObject);
+
+  @override
+  DocumentImpl get document => DocumentImpl.safeFromJsObject(jsObject.document);
 }
 
 WindowImpl _window;

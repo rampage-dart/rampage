@@ -3,5 +3,6 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-export 'src/document.dart';
-export 'src/window.dart';
+/// The [Document] interface represents any web page loaded in the browser and
+/// serves as an entry point into the web page's content, which is the DOM tree.
+class Document {}
