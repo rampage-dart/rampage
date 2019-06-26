@@ -8,8 +8,12 @@ library rampage_browser_interop.src.node;
 
 import 'package:js/js.dart';
 
-import 'dom.dart';
+import 'element.dart';
 import 'events.dart';
+
+//-----------------------------------------------------------
+// Node
+//-----------------------------------------------------------
 
 /// [Node] is an interface from which a number of DOM API object types inherit.
 ///
@@ -62,6 +66,10 @@ class NodeList {
   external Node item(int index);
 }
 
+//-----------------------------------------------------------
+// ParentNode
+//-----------------------------------------------------------
+
 /// The [ParentNode] mixin contains methods and properties that are common to
 /// all types of [Node] objects that can have children.
 @JS()
@@ -113,6 +121,10 @@ mixin ParentNode {
   /// element as root that matches the specified group of [selectors].
   external NodeList querySelectorAll(String selectors);
 }
+
+//-----------------------------------------------------------
+// ChildNode
+//-----------------------------------------------------------
 
 /// The [ChildNode] mixin contains methods that are particular to [Node] objects
 /// that can have a parent.

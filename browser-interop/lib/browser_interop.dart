@@ -5,6 +5,8 @@
 
 library rampage_browser_interop.browser_interop;
 
-export 'src/dom.dart';
+export 'src/document.dart';
+export 'src/element.dart';
 export 'src/events.dart';
 export 'src/node.dart';
+export 'src/window.dart';
