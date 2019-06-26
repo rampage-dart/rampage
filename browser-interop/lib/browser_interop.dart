@@ -7,3 +7,4 @@ library rampage_browser_interop.browser_interop;
 
 export 'src/dom.dart';
 export 'src/events.dart';
+export 'src/node.dart';
