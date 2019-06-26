@@ -36,7 +36,7 @@ class Event {
   /// Whether the [Event] bubbles up through the DOM or not.
   external bool get bubbles;
 
-   /// Whether the [Event] is cancelable.
+  /// Whether the [Event] is cancelable.
   external bool get cancelable;
 
   /// Whether or not the [Event] can bubble across the boundary between the
@@ -47,7 +47,7 @@ class Event {
   external void preventDefault();
 
   /// For this particular [Event], no other listener will be called.
-  /// 
+  ///
   /// Neither those attached on the same [Element], nor those attached on
   /// [Element]s which will be traversed later (in capture phase, for instance)
   external void stopImmediatePropagation();
