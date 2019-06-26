@@ -7,6 +7,7 @@
 library rampage_browser_interop.src.window;
 
 import 'package:js/js.dart';
+import 'package:rampage_browser_interop/src/js_object.dart';
 
 import 'document.dart';
 
@@ -22,7 +23,7 @@ import 'document.dart';
 /// the concept of a user interface window. However, the Window interface is a
 /// suitable place to include these items that need to be globally available.
 @JS('Window')
-class Window {
+class Window extends JsObject {
   /// A reference to the [Document] contained in the [Window].
   external Document get document;
 }

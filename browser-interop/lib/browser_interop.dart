@@ -8,5 +8,6 @@ library rampage_browser_interop.browser_interop;
 export 'src/document.dart';
 export 'src/element.dart';
 export 'src/events.dart';
+export 'src/js_object.dart';
 export 'src/node.dart';
 export 'src/window.dart';

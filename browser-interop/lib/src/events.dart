@@ -8,6 +8,8 @@ library rampage_browser_interop.src.events;
 
 import 'package:js/js.dart';
 
+import 'js_object.dart';
+
 //------------------------------------------------------------------------------
 // Events
 //------------------------------------------------------------------------------
@@ -121,7 +123,7 @@ class CustomEventInit extends EventInit {
 /// [EventTarget] is a DOM interface implemented by objects that can receive
 /// events and may have listeners for them.
 @JS('EventTarget')
-class EventTarget {
+class EventTarget extends JsObject {
   /// Registers an event handler of a specific event type on the [EventTarget].
   external void addEventListener(String type, EventListener callback,
       [AddEventListenerOptions options]);
