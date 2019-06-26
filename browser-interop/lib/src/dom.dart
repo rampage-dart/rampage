@@ -8,6 +8,8 @@ library rampage_browser_interop.src.dom;
 
 import 'package:js/js.dart';
 
+import 'events.dart';
+
 //-----------------------------------------------------------
 // Node
 //-----------------------------------------------------------
@@ -17,7 +19,7 @@ import 'package:js/js.dart';
 /// It allows those types to be treated similarly; for example, inheriting the
 /// same set of methods, or being tested in the same way.
 @JS('Node')
-class Node {
+class Node extends EventTarget {
   /// An integer that identifies what the node is.
   ///
   /// It distinguishes different kind of nodes from each other, such as
