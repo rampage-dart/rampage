@@ -15,11 +15,10 @@ class DocumentImpl extends JsWrapper<interop.Document> implements Document {
       : super.fromJsObject(jsObject);
 
   /// Create an instance of [DocumentImpl] from the [jsObject].
-  factory DocumentImpl.safeFromJsObject(interop.Document jsObject) {
-    final dartObject = jsObject.dartObject as DocumentImpl;
-    if (dartObject != null) {
-      return dartObject;
-    }
-    return DocumentImpl.fromJsObject(jsObject);
-  }
+  ///
+  /// This constructor should be used when its unclear if the [jsObject] has
+  /// already been wrapped.
+  factory DocumentImpl.safeFromJsObject(interop.Document jsObject) =>
+      jsObject.dartObject as DocumentImpl ??
+      DocumentImpl.fromJsObject(jsObject);
 }
