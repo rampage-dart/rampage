@@ -4,4 +4,5 @@
 // the LICENSE file.
 
 export 'src/document.dart';
+export 'src/node.dart';
 export 'src/window.dart';
