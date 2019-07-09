@@ -42,6 +42,14 @@ abstract class Element implements Node, ParentNode, ChildNode, Slotable {
   /// Returns the name of the shadow DOM slot the element is inserted in.
   String get slot;
   set slot(String value);
+
+  /// The open [ShadowRoot] that is hosted by the [Element], or `null` if no
+  /// open [ShadowRoot] is present.
+  ShadowRoot get shadowRoot;
+
+  /// Attatches a shadow DOM tree to the specified element and returns a
+  /// reference to its [ShadowRoot].
+  ShadowRoot attachShadow();
 }
 
 //-----------------------------------------------------------

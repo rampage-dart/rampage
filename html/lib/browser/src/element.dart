@@ -36,6 +36,20 @@ class ElementImpl<T extends interop.Element> extends NodeImpl<T>
   set slot(String value) {
     jsObject.slot = value;
   }
+
+  @override
+  ShadowRoot get shadowRoot {
+    final value = jsObject.shadowRoot;
+
+    return value != null ? ShadowRootImpl.safeFromJsObject(value) : null;
+  }
+
+  @override
+  ShadowRoot attachShadow() => ShadowRootImpl.fromJsObject(
+        jsObject.attachShadow(interop.ShadowRootInit(
+          mode: 'open',
+        )),
+      );
 }
 
 //-----------------------------------------------------------

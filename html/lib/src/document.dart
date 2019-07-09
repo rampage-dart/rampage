@@ -3,6 +3,7 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
+import 'element.dart';
 import 'node.dart';
 
 //-----------------------------------------------------------
@@ -19,6 +20,20 @@ import 'node.dart';
 /// document, cause reflow, or incur any performance impact that can occur when
 /// changes are made.
 abstract class DocumentFragment implements Node {}
+
+//-----------------------------------------------------------
+// ShadowRoot
+//-----------------------------------------------------------
+
+/// The [ShadowRoot] interface of the Shadow DOM API is the root node of a DOM
+/// subtree that is rendered separately from a document's main DOM tree.
+///
+/// You can retrieve a reference to an [Element]'s shadow root using its
+/// [Element.shadowRoot] property.
+abstract class ShadowRoot implements DocumentFragment {
+  /// A reference to the DOM [Element] the [ShadowRoot] is attached to.
+  Element get host;
+}
 
 //-----------------------------------------------------------
 // Document

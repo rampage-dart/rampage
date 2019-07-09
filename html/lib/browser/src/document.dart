@@ -4,6 +4,7 @@
 // the LICENSE file.
 
 import 'package:rampage_browser_interop/browser_interop.dart' as interop;
+import 'package:rampage_html/browser/html.dart';
 import 'package:rampage_html/html.dart';
 
 import 'node.dart';
@@ -13,16 +14,15 @@ import 'node.dart';
 //-----------------------------------------------------------
 
 /// Browser implementation of [DocumentFragment].
-class DocumentFragmentImpl extends NodeImpl<interop.DocumentFragment>
-    implements DocumentFragment {
+class DocumentFragmentImpl<T extends interop.DocumentFragment>
+    extends NodeImpl<T> implements DocumentFragment {
   /// Create an instance of [DocumentFragmentImpl].
   factory DocumentFragmentImpl() => DocumentFragmentImpl.fromJsObject(
-        interop.window.document.createDocumentFragment(),
+        interop.window.document.createDocumentFragment() as T,
       );
 
   /// Create an instance of [DocumentFragmentImpl] from the [jsObject].
-  DocumentFragmentImpl.fromJsObject(interop.DocumentFragment jsObject)
-      : super.fromJsObject(jsObject);
+  DocumentFragmentImpl.fromJsObject(T jsObject) : super.fromJsObject(jsObject);
 
   /// Create an instance of [DocumentFragmentImpl] from the [jsObject].
   ///
@@ -30,8 +30,31 @@ class DocumentFragmentImpl extends NodeImpl<interop.DocumentFragment>
   /// already been wrapped.
   factory DocumentFragmentImpl.safeFromJsObject(
           interop.DocumentFragment jsObject) =>
-      jsObject.dartObject as DocumentFragmentImpl ??
-      DocumentFragmentImpl.fromJsObject(jsObject);
+      jsObject.dartObject as DocumentFragmentImpl<T> ??
+      DocumentFragmentImpl.fromJsObject(jsObject as T);
+}
+
+//-----------------------------------------------------------
+// ShadowRoot
+//-----------------------------------------------------------
+
+/// Browser implementation of [ShadowRoot].
+class ShadowRootImpl extends DocumentFragmentImpl<interop.ShadowRoot>
+    implements ShadowRoot {
+  /// Create an instance of [ShadowRootImpl] from the [jsObject].
+  ShadowRootImpl.fromJsObject(interop.ShadowRoot jsObject)
+      : super.fromJsObject(jsObject);
+
+  /// Create an instance of [DocumentFragmentImpl] from the [jsObject].
+  ///
+  /// This constructor should be used when its unclear if the [jsObject] has
+  /// already been wrapped.
+  factory ShadowRootImpl.safeFromJsObject(interop.ShadowRoot jsObject) =>
+      jsObject.dartObject as ShadowRootImpl ??
+      ShadowRootImpl.fromJsObject(jsObject);
+
+  @override
+  Element get host => safeElementFromJsObject(jsObject.host);
 }
 
 //-----------------------------------------------------------
