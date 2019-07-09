@@ -73,7 +73,7 @@ class NodeList {
 /// The [ParentNode] mixin contains methods and properties that are common to
 /// all types of [Node] objects that can have children.
 @JS()
-mixin ParentNode {
+mixin ParentNode on Node {
   /// Returns the number of children of this [ParentNode] which are [Element]s.
   external int get childElementCount;
 
@@ -129,7 +129,7 @@ mixin ParentNode {
 /// The [ChildNode] mixin contains methods that are particular to [Node] objects
 /// that can have a parent.
 @JS()
-mixin ChildNode {
+mixin ChildNode on Node {
   /// Removes this [ChildNode] from the children list of its parent.
   external void remove();
 
