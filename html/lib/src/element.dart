@@ -19,7 +19,7 @@ import 'node.dart';
 /// specific classes inherit from [Element]. For example, the [HtmlElement]
 /// interface is the base interface for HTML elements. Most functionality is
 /// specified further down the class hierarchy.
-abstract class Element implements Node, ParentNode {
+abstract class Element implements Node, ParentNode, ChildNode, Slotable {
   /// Creates a [DivElement].
   factory Element.div() = DivElement;
 

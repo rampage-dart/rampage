@@ -15,7 +15,7 @@ import 'node.dart';
 
 /// Browser implementation of [Element].
 class ElementImpl<T extends interop.Element> extends NodeImpl<T>
-    with ParentNodeImpl<T>, SlotableImpl<T>
+    with ParentNodeImpl<T>, ChildNodeImpl<T>, SlotableImpl<T>
     implements Element {
   /// Creates an instance of [ElementImpl] from the [jsObject].
   ElementImpl.fromJsObject(T jsObject) : super.fromJsObject(jsObject);
