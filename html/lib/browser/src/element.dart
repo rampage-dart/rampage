@@ -14,9 +14,14 @@ import 'node.dart';
 
 /// Browser implementation of [Element].
 class ElementImpl<T extends interop.Element> extends NodeImpl<T>
+    with ParentNodeImpl<T>
     implements Element {
   /// Creates an instance of [ElementImpl] from the [jsObject].
   ElementImpl.fromJsObject(T jsObject) : super.fromJsObject(jsObject);
+
+  /// Creates an instance of [ElementImpl] from the [tagName].
+  factory ElementImpl.tag(String tagName) =>
+      safeElementFromJsObject(interop.window.document.createElement(tagName));
 
   @override
   String get tagName => jsObject.tagName;
@@ -60,3 +65,27 @@ class DivElementImpl extends HtmlElementImpl<interop.DivElement>
       jsObject.dartObject as DivElementImpl ??
       DivElementImpl.fromJsObject(jsObject);
 }
+
+//-----------------------------------------------------------
+// Utility
+//-----------------------------------------------------------
+
+/// Creates an instance of [T] from the [jsObject].
+///
+/// Uses the [interop.Element.tagName] to determine the [Element] to construct.
+T elementFromJsObject<T extends Element>(interop.Element jsObject) {
+  switch (jsObject.tagName) {
+    case 'DIV':
+      return DivElementImpl.fromJsObject(jsObject as interop.DivElement) as T;
+  }
+
+  assert(false, 'Unknown element');
+  return null;
+}
+
+/// Creates an instance of [T] from the [jsObject].
+///
+/// This function should be used when its unclear if the [jsObject] has already
+/// has already been wrapped.
+T safeElementFromJsObject<T extends Element>(interop.Element jsObject) =>
+    jsObject.dartObject as T ?? elementFromJsObject<T>(jsObject);

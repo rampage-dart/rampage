@@ -6,10 +6,12 @@
 import 'package:rampage_browser_interop/browser_interop.dart' as interop;
 import 'package:rampage_html/html.dart';
 
-import 'js_wrapper.dart';
+import 'node.dart';
 
 /// Browser implementation of [Document].
-class DocumentImpl extends JsWrapper<interop.Document> implements Document {
+class DocumentImpl extends NodeImpl<interop.Document>
+    with ParentNodeImpl<interop.Document>
+    implements Document {
   /// Create an instance of [DocumentImpl] from the [jsObject].
   DocumentImpl.fromJsObject(interop.Document jsObject)
       : super.fromJsObject(jsObject);
