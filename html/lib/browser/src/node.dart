@@ -30,6 +30,16 @@ class NodeImpl<T extends interop.Node> extends JsWrapper<T> implements Node {
 mixin ParentNodeImpl<T extends interop.ParentNode> on NodeImpl<T>
     implements ParentNode {
   @override
+  void append(Node node) {
+    jsObject.append((node as NodeImpl).jsObject);
+  }
+
+  @override
+  void prepend(Node node) {
+    jsObject.prepend((node as NodeImpl).jsObject);
+  }
+
+  @override
   T querySelector<T extends Element>(String selectors) =>
       safeElementFromJsObject<T>(jsObject.querySelector(selectors));
 

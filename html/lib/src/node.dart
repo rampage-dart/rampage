@@ -27,6 +27,12 @@ abstract class Node {
 /// The [ParentNode] mixin contains methods and properties that are common to
 /// all types of [Node] objects that can have children.
 abstract class ParentNode implements Node {
+  /// Inserts a [Node] after the last child of the [ParentNode].
+  void append(Node node);
+
+  /// Inserts a [Node] before the first child of the [ParentNode].
+  void prepend(Node node);
+
   /// Returns the first [Element] with the current element as root that matches
   /// the specified group of [selectors].
   T querySelector<T extends Element>(String selectors);

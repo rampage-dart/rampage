@@ -15,7 +15,7 @@ import 'node.dart';
 
 /// Browser implementation of [DocumentFragment].
 class DocumentFragmentImpl<T extends interop.DocumentFragment>
-    extends NodeImpl<T> implements DocumentFragment {
+    extends NodeImpl<T> with ParentNodeImpl<T> implements DocumentFragment {
   /// Create an instance of [DocumentFragmentImpl].
   factory DocumentFragmentImpl() => DocumentFragmentImpl.fromJsObject(
         interop.window.document.createDocumentFragment() as T,

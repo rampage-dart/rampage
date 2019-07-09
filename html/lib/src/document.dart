@@ -19,7 +19,7 @@ import 'node.dart';
 /// document tree structure, changes made to the fragment don't affect the
 /// document, cause reflow, or incur any performance impact that can occur when
 /// changes are made.
-abstract class DocumentFragment implements Node {}
+abstract class DocumentFragment implements Node, ParentNode {}
 
 //-----------------------------------------------------------
 // ShadowRoot
