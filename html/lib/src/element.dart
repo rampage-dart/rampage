@@ -23,14 +23,22 @@ abstract class Element implements Node, ParentNode {
   /// Creates a [DivElement].
   factory Element.div() = DivElement;
 
+  /// Creates a [SlotElement].
+  factory Element.slot() = SlotElement;
+
   /// Creates an [Element] from the [tagName].
-  factory Element.tag(String tagName) = impl.ElementImpl.tag;
+  factory Element.tag(String tagName) => impl.createElement(tagName);
 
   /// The name of the tag for the given [Element].
   String get tagName;
 
   /// The identifier of the [Element].
   String get id;
+  set id(String value);
+
+  /// Returns the name of the shadow DOM slot the element is inserted in.
+  String get slot;
+  set slot(String value);
 }
 
 //-----------------------------------------------------------
@@ -39,6 +47,21 @@ abstract class Element implements Node, ParentNode {
 
 /// The [HtmlElement] interface represents any HTML element.
 abstract class HtmlElement implements Element {}
+
+//-----------------------------------------------------------
+// SlotElement
+//-----------------------------------------------------------
+
+/// The [SlotElement] interface of the Shadow DOM API enables access to the name
+/// and assigned nodes of an HTML <slot> element.
+abstract class SlotElement implements HtmlElement {
+  /// Creates a new [SlotElement].
+  factory SlotElement() = impl.SlotElementImpl;
+
+  /// Can be used to get and set the slot's name.
+  String get name;
+  set name(String value);
+}
 
 //-----------------------------------------------------------
 // Additional HtmlElements

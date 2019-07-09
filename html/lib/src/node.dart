@@ -35,3 +35,15 @@ abstract class ParentNode implements Node {
   /// specified group of [selectors].
   Iterable<T> querySelectorAll<T extends Element>(String selectors);
 }
+
+//-----------------------------------------------------------
+// Slotable
+//-----------------------------------------------------------
+
+/// The [Slotable] interface defines features that allow nodes to become the
+/// contents of a `<slot>` element - the following features are included in both
+/// [Element] and [Text].
+abstract class Slotable implements Node {
+  /// Returns the `<slot>` the [Node] is inserted in.
+  SlotElement get assignedSlot;
+}

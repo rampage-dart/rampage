@@ -43,3 +43,20 @@ mixin ParentNodeImpl<T extends interop.ParentNode> on NodeImpl<T>
     }
   }
 }
+
+//-----------------------------------------------------------
+// Slotable
+//-----------------------------------------------------------
+
+/// Browser implementation of [Slotable].
+mixin SlotableImpl<T extends interop.Slotable> on NodeImpl<T>
+    implements Slotable {
+  @override
+  SlotElement get assignedSlot {
+    final assignedTo = jsObject.assignedSlot;
+
+    return assignedSlot != null
+        ? SlotElementImpl.safeFromJsObject(assignedTo)
+        : null;
+  }
+}

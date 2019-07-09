@@ -14,20 +14,27 @@ import 'node.dart';
 
 /// Browser implementation of [Element].
 class ElementImpl<T extends interop.Element> extends NodeImpl<T>
-    with ParentNodeImpl<T>
+    with ParentNodeImpl<T>, SlotableImpl<T>
     implements Element {
   /// Creates an instance of [ElementImpl] from the [jsObject].
   ElementImpl.fromJsObject(T jsObject) : super.fromJsObject(jsObject);
-
-  /// Creates an instance of [ElementImpl] from the [tagName].
-  factory ElementImpl.tag(String tagName) =>
-      safeElementFromJsObject(interop.window.document.createElement(tagName));
 
   @override
   String get tagName => jsObject.tagName;
 
   @override
   String get id => jsObject.id;
+  @override
+  set id(String value) {
+    jsObject.id = value;
+  }
+
+  @override
+  String get slot => jsObject.slot;
+  @override
+  set slot(String value) {
+    jsObject.slot = value;
+  }
 }
 
 //-----------------------------------------------------------
@@ -39,6 +46,49 @@ class HtmlElementImpl<T extends interop.HtmlElement> extends ElementImpl<T>
     implements HtmlElement {
   /// Creates an instance of [HtmlElementImpl] from the [jsObject].
   HtmlElementImpl.fromJsObject(T jsObject) : super.fromJsObject(jsObject);
+}
+
+//-----------------------------------------------------------
+// SlotElement
+//-----------------------------------------------------------
+
+/// Browser implementation of [SlotElement].
+class SlotElementImpl extends HtmlElementImpl<interop.SlotElement>
+    implements SlotElement {
+  /// Create an instance of [SlotElementImpl].
+  factory SlotElementImpl() => SlotElementImpl.fromJsObject(
+        interop.window.document.createElement('slot') as interop.SlotElement,
+      );
+
+  /// Create an instance of [SlotElementImpl] from the [jsObject]
+  SlotElementImpl.fromJsObject(interop.SlotElement jsObject)
+      : super.fromJsObject(jsObject);
+
+  /// Create an instance of [SlotElementImpl] from the [jsObject].
+  ///
+  /// This constructor should be used when its unclear if the [jsObject] has
+  /// already been wrapped.
+  factory SlotElementImpl.safeFromJsObject(interop.SlotElement jsObject) =>
+      jsObject.dartObject as SlotElementImpl ??
+      SlotElementImpl.fromJsObject(jsObject);
+
+  @override
+  String get name => jsObject.name;
+  @override
+  set name(String value) {
+    jsObject.name = value;
+  }
+
+  @override
+  Iterable<Element> assignedElements({bool flatten = false}) sync* {
+    final assigned = jsObject.assignedElements(
+      interop.AssignedNodeOptions(flatten: flatten),
+    );
+
+    for (final element in assigned) {
+      yield safeElementFromJsObject(element);
+    }
+  }
 }
 
 //-----------------------------------------------------------
@@ -77,6 +127,8 @@ T elementFromJsObject<T extends Element>(interop.Element jsObject) {
   switch (jsObject.tagName) {
     case 'DIV':
       return DivElementImpl.fromJsObject(jsObject as interop.DivElement) as T;
+    case 'SLOT':
+      return SlotElementImpl.fromJsObject(jsObject as interop.SlotElement) as T;
   }
 
   assert(false, 'Unknown element');
@@ -89,3 +141,5 @@ T elementFromJsObject<T extends Element>(interop.Element jsObject) {
 /// has already been wrapped.
 T safeElementFromJsObject<T extends Element>(interop.Element jsObject) =>
     jsObject.dartObject as T ?? elementFromJsObject<T>(jsObject);
+
+Element createElement(String tagName) => safeElementFromJsObject(interop.window.document.createElement(tagName));
