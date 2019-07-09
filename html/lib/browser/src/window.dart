@@ -6,6 +6,7 @@
 import 'package:rampage_browser_interop/browser_interop.dart' as interop;
 import 'package:rampage_html/html.dart';
 
+import 'custom_element.dart';
 import 'document.dart';
 import 'js_wrapper.dart';
 
@@ -21,6 +22,9 @@ class WindowImpl extends JsWrapper<interop.Window> implements Window {
   /// already been wrapped.
   factory WindowImpl.safeFromJsObject(interop.Window jsObject) =>
       jsObject.dartObject as WindowImpl ?? WindowImpl.fromJsObject(jsObject);
+
+  @override
+  final CustomElementRegistry customElements = CustomElementRegistryImpl();
 
   @override
   DocumentImpl get document => DocumentImpl.safeFromJsObject(jsObject.document);

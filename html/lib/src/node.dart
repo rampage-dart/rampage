@@ -17,7 +17,7 @@ abstract class Node {
   /// A boolean indicating whether or not the [Node] is connected (directly or
   /// indirectly) to the context object, e.g. the [Document] object in the case
   /// of the normal DOM, or the [ShadowRoot] in the case of a shadow DOM.
-  external bool get isConnected;
+  bool get isConnected;
 }
 
 //-----------------------------------------------------------

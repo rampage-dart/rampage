@@ -4,9 +4,9 @@
 // the LICENSE file.
 
 import 'package:rampage_browser_interop/browser_interop.dart' as interop;
-import 'package:rampage_html/browser/html.dart';
 import 'package:rampage_html/html.dart';
 
+import 'element.dart';
 import 'node.dart';
 
 //-----------------------------------------------------------
