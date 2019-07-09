@@ -6,6 +6,7 @@
 import 'package:rampage_browser_interop/browser_interop.dart' as interop;
 import 'package:rampage_html/html.dart';
 
+import 'document.dart';
 import 'node.dart';
 
 //-----------------------------------------------------------
@@ -92,6 +93,38 @@ class SlotElementImpl extends HtmlElementImpl<interop.SlotElement>
 }
 
 //-----------------------------------------------------------
+// TemplateElement
+//-----------------------------------------------------------
+
+/// Browser implementation of [TemplateElement].
+class TemplateElementImpl extends HtmlElementImpl<interop.TemplateElement>
+    implements TemplateElement {
+  /// Create an instance of [SlotElementImpl].
+  factory TemplateElementImpl() => TemplateElementImpl.fromJsObject(
+        interop.window.document.createElement('template')
+            as interop.TemplateElement,
+      );
+
+  /// Create an instance of [SlotElementImpl] from the [jsObject]
+  TemplateElementImpl.fromJsObject(interop.TemplateElement jsObject)
+      : super.fromJsObject(jsObject);
+
+  /// Create an instance of [TemplateElementImpl] from the [jsObject].
+  ///
+  /// This constructor should be used when its unclear if the [jsObject] has
+  /// already been wrapped.
+  factory TemplateElementImpl.safeFromJsObject(
+          interop.TemplateElement jsObject) =>
+      jsObject.dartObject as TemplateElementImpl ??
+      TemplateElementImpl.fromJsObject(jsObject);
+
+  @override
+  DocumentFragment get content => DocumentFragmentImpl.safeFromJsObject(
+        jsObject.content,
+      );
+}
+
+//-----------------------------------------------------------
 // Additional HtmlElements
 //-----------------------------------------------------------
 
@@ -129,6 +162,10 @@ T elementFromJsObject<T extends Element>(interop.Element jsObject) {
       return DivElementImpl.fromJsObject(jsObject as interop.DivElement) as T;
     case 'SLOT':
       return SlotElementImpl.fromJsObject(jsObject as interop.SlotElement) as T;
+    case 'TEMPLATE':
+      return TemplateElementImpl.fromJsObject(
+        jsObject as interop.TemplateElement,
+      ) as T;
   }
 
   assert(false, 'Unknown element');
@@ -142,4 +179,6 @@ T elementFromJsObject<T extends Element>(interop.Element jsObject) {
 T safeElementFromJsObject<T extends Element>(interop.Element jsObject) =>
     jsObject.dartObject as T ?? elementFromJsObject<T>(jsObject);
 
-Element createElement(String tagName) => safeElementFromJsObject(interop.window.document.createElement(tagName));
+/// Creates and [Element] from the given [tagName].
+Element createElement(String tagName) =>
+    safeElementFromJsObject(interop.window.document.createElement(tagName));

@@ -26,6 +26,9 @@ abstract class Element implements Node, ParentNode {
   /// Creates a [SlotElement].
   factory Element.slot() = SlotElement;
 
+  /// Creates a [TemplateElement].
+  factory Element.template() = TemplateElement;
+
   /// Creates an [Element] from the [tagName].
   factory Element.tag(String tagName) => impl.createElement(tagName);
 
@@ -61,6 +64,19 @@ abstract class SlotElement implements HtmlElement {
   /// Can be used to get and set the slot's name.
   String get name;
   set name(String value);
+}
+
+//-----------------------------------------------------------
+// TemplateElement
+//-----------------------------------------------------------
+
+/// The [TemplateElement] interface represents a `<template>` element.
+abstract class TemplateElement extends HtmlElement {
+  /// Creates a new [TemplateElement].
+  factory TemplateElement() = impl.TemplateElementImpl;
+
+  /// The `<template>` element's contents.
+  DocumentFragment get content;
 }
 
 //-----------------------------------------------------------
