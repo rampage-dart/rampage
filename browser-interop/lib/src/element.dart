@@ -108,6 +108,10 @@ class TemplateElement extends HtmlElement {
 // Additional HtmlElements
 //-----------------------------------------------------------
 
+/// The [BodyElement] interface represents a `<body>` element.
+@JS('HTMLBodyElement')
+class BodyElement extends HtmlElement {}
+
 /// The [DivElement] interface represents a `<div>` element.
 @JS('HTMLDivElement')
 class DivElement extends HtmlElement {}

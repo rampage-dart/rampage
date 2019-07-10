@@ -101,6 +101,10 @@ class Document extends Node with ParentNode {
   /// Possible values are `rtl`, right to left, and `ltr`, left to right.
   external String get dir;
 
+  /// Represents the `<body>` of the current [Document], or `null` if no such
+  /// [Element] exists.
+  external BodyElement get body;
+
   /// Creates the HTML element specified by [tagName], or an [UnknownElement] if
   /// [tagName] isn't recognized.
   external Element createElement(String tagName);
