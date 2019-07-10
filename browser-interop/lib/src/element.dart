@@ -50,7 +50,14 @@ class Element extends Node with ParentNode, ChildNode, Slotable {
 
 /// The [HtmlElement] interface represents any HTML element.
 @JS('HTMLElement')
-class HtmlElement extends Element {}
+class HtmlElement extends Element {
+  /// Represents the "rendered" text content of a node and its descendants. As a
+  /// getter, it approximates the text the user would get if they highlighted
+  /// the contents of the element with the cursor and then copied it to the
+  /// clipboard.
+  external String get innerText;
+  external set innerText(String value);
+}
 
 //-----------------------------------------------------------
 // SlotElement
