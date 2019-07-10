@@ -61,6 +61,13 @@ class HtmlElementImpl<T extends interop.HtmlElement> extends ElementImpl<T>
     implements HtmlElement {
   /// Creates an instance of [HtmlElementImpl] from the [jsObject].
   HtmlElementImpl.fromJsObject(T jsObject) : super.fromJsObject(jsObject);
+
+  @override
+  String get innerText => jsObject.innerText;
+  @override
+  set innerText(String value) {
+    jsObject.innerText = value;
+  }
 }
 
 //-----------------------------------------------------------
