@@ -76,4 +76,7 @@ class DocumentImpl extends NodeImpl<interop.Document>
   factory DocumentImpl.safeFromJsObject(interop.Document jsObject) =>
       jsObject.dartObject as DocumentImpl ??
       DocumentImpl.fromJsObject(jsObject);
+
+  @override
+  BodyElementImpl get body => BodyElementImpl.safeFromJsObject(jsObject.body);
 }

@@ -142,6 +142,27 @@ class TemplateElementImpl extends HtmlElementImpl<interop.TemplateElement>
 // Additional HtmlElements
 //-----------------------------------------------------------
 
+/// Browser implementation of [BodyElement].
+class BodyElementImpl extends HtmlElementImpl<interop.BodyElement>
+    implements BodyElement {
+  /// Create an instance of [BodyElementImpl].
+  factory BodyElementImpl() => BodyElementImpl.fromJsObject(
+        interop.window.document.createElement('body') as interop.BodyElement,
+      );
+
+  /// Create an instance of [BodyElementImpl] from the [jsObject]
+  BodyElementImpl.fromJsObject(interop.BodyElement jsObject)
+      : super.fromJsObject(jsObject);
+
+  /// Create an instance of [BodyElementImpl] from the [jsObject].
+  ///
+  /// This constructor should be used when its unclear if the [jsObject] has
+  /// already been wrapped.
+  factory BodyElementImpl.safeFromJsObject(interop.BodyElement jsObject) =>
+      jsObject.dartObject as BodyElementImpl ??
+      BodyElementImpl.fromJsObject(jsObject);
+}
+
 /// Browser implementation of [DivElement].
 class DivElementImpl extends HtmlElementImpl<interop.DivElement>
     implements DivElement {
@@ -180,6 +201,8 @@ T elementFromJsObject<T extends Element>(interop.Element jsObject) {
       return TemplateElementImpl.fromJsObject(
         jsObject as interop.TemplateElement,
       ) as T;
+    case 'BODY':
+      return BodyElementImpl.fromJsObject(jsObject as interop.BodyElement) as T;
   }
 
   assert(false, 'Unknown element');

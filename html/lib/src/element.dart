@@ -91,6 +91,12 @@ abstract class TemplateElement extends HtmlElement {
 // Additional HtmlElements
 //-----------------------------------------------------------
 
+/// The [BodyElement] interface represents a `<body>` element.
+abstract class BodyElement extends HtmlElement {
+  /// Creates a new [BodyElement].
+  factory BodyElement() = impl.BodyElementImpl;
+}
+
 /// The [DivElement] interface represents a `<div>` element.
 abstract class DivElement implements HtmlElement {
   /// Creates a new [DivElement].

@@ -41,4 +41,8 @@ abstract class ShadowRoot implements DocumentFragment {
 
 /// The [Document] interface represents any web page loaded in the browser and
 /// serves as an entry point into the web page's content, which is the DOM tree.
-abstract class Document implements Node, ParentNode {}
+abstract class Document implements Node, ParentNode {
+  /// Represents the `<body>` of the current [Document], or `null` if no such
+  /// [Element] exists.
+  BodyElement get body;
+}
