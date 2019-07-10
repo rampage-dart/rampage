@@ -40,8 +40,11 @@ mixin ParentNodeImpl<T extends interop.ParentNode> on NodeImpl<T>
   }
 
   @override
-  T querySelector<T extends Element>(String selectors) =>
-      safeElementFromJsObject<T>(jsObject.querySelector(selectors));
+  T querySelector<T extends Element>(String selectors) {
+    final result = jsObject.querySelector(selectors);
+
+    return result != null ? safeElementFromJsObject<T>(result) : null;
+  }
 
   @override
   Iterable<T> querySelectorAll<T extends Element>(String selectors) sync* {
