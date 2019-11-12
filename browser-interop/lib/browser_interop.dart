@@ -10,4 +10,5 @@ export 'src/element.dart';
 export 'src/events.dart';
 export 'src/js_object.dart';
 export 'src/node.dart';
+export 'src/style_sheet.dart';
 export 'src/window.dart';
