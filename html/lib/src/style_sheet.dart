@@ -12,4 +12,21 @@
 ///
 /// CSS style sheets will further implement the more specialized [CssStyleSheet]
 /// interface.
-abstract class StyleSheet {}
+abstract class StyleSheet {
+  /// Whether the current stylesheet has been applied or not.
+  bool get disabled;
+
+  /// The advisory title of the current style sheet.
+  String get title;
+}
+
+//-----------------------------------------------------------
+// CssStyleSheet
+//-----------------------------------------------------------
+
+/// The [CssStyleSheet] interface represents a single CSS stylesheet, and lets
+/// you inspect and modify the list of rules contained in the stylesheet.
+abstract class CssStyleSheet implements StyleSheet {
+  /// Replace the contents of the style sheet with the [text].
+  void replaceSync(String text);
+}
