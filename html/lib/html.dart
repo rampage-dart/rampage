@@ -7,4 +7,5 @@ export 'src/custom_element.dart';
 export 'src/document.dart';
 export 'src/element.dart';
 export 'src/node.dart';
+export 'src/style_sheet.dart';
 export 'src/window.dart';
