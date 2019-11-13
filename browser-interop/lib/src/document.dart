@@ -8,6 +8,7 @@ library rampage_browser_interop.src.document;
 
 import 'package:js/js.dart';
 
+import 'attribute.dart';
 import 'element.dart';
 import 'node.dart';
 
@@ -108,6 +109,9 @@ class Document extends Node with ParentNode {
   /// Creates the HTML element specified by [tagName], or an [UnknownElement] if
   /// [tagName] isn't recognized.
   external Element createElement(String tagName);
+
+  /// Creates a new [Attribute] object and returns it.
+  external Attribute createAttribute(String name);
 
   /// Creates a new empty [DocumentFragment].
   external DocumentFragment createDocumentFragment();
