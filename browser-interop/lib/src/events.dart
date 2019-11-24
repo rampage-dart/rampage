@@ -23,7 +23,7 @@ import 'js_object.dart';
 /// event, then sending it to a specified target using
 /// [EventTarget.dispatchEvent].
 @JS('Event')
-class Event {
+class Event extends JsObject {
   /// A reference to the target to which the event was originally dispatched.
   external EventTarget get target;
 
@@ -106,7 +106,7 @@ class CustomEventInit extends EventInit {
   /// Creates the [CustomEventInit] options.
   external factory CustomEventInit({
     bool bubbles = false,
-    bool cancellable = false,
+    bool cancelable = false,
     bool composed = false,
     dynamic detail,
   });
@@ -132,7 +132,7 @@ class EventTarget extends JsObject {
   external void removeEventListener(String type, EventListener callback,
       [EventListenerOptions options]);
 
-  /// Dispatches an event to this [EventTarget].
+  /// Dispatches an [Event] to this [EventTarget].
   external bool dispatchEvent(Event event);
 }
 
