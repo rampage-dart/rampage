@@ -7,14 +7,15 @@ import 'package:rampage_browser_interop/browser_interop.dart' as interop;
 import 'package:rampage_html/html.dart';
 
 import 'element.dart';
-import 'js_wrapper.dart';
+import 'events.dart';
 
 //-----------------------------------------------------------
 // Node
 //-----------------------------------------------------------
 
 /// Browser implementation of [Node].
-class NodeImpl<T extends interop.Node> extends JsWrapper<T> implements Node {
+class NodeImpl<T extends interop.Node> extends EventTargetImpl<T>
+    implements Node {
   /// Create an instance of [NodeImpl] from the [jsObject].
   NodeImpl.fromJsObject(T jsObject) : super.fromJsObject(jsObject);
 
