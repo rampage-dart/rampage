@@ -24,6 +24,9 @@ import 'js_object.dart';
 /// [EventTarget.dispatchEvent].
 @JS('Event')
 class Event extends JsObject {
+  /// The name of the event (case-insensitive).
+  external String get type;
+
   /// A reference to the target to which the event was originally dispatched.
   external EventTarget get target;
 
