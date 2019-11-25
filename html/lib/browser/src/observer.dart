@@ -14,6 +14,149 @@ import 'geometry.dart';
 import 'js_wrapper.dart';
 
 //------------------------------------------------------------------------------
+// IntersectionObserver
+//------------------------------------------------------------------------------
+
+/// Browser implementation of [IntersectionObserver].
+class IntersectionObserverImpl extends JsWrapper<interop.IntersectionObserver>
+    implements IntersectionObserver {
+  /// Creates an instance of [IntersectionObserverImpl].
+  factory IntersectionObserverImpl([IntersectionObserverOptions options]) =>
+      IntersectionObserverImpl.fromJsObject(
+        interop.IntersectionObserver(
+            _intersectionCallback,
+            (options as IntersectionObserverOptionsImpl)?.jsObject ??
+                interop.IntersectionObserverOptions()),
+      );
+
+  /// Creates an instance of [IntersectionObserverImpl] from the [jsObject].
+  IntersectionObserverImpl.fromJsObject(interop.IntersectionObserver jsObject)
+      : super.fromJsObject(jsObject);
+
+  final StreamController<IntersectionObserverEntry> _streamController =
+      StreamController<IntersectionObserverEntry>();
+
+  @override
+  Stream<IntersectionObserverEntry> get onIntersection =>
+      _streamController.stream;
+
+  @override
+  Element get root => safeElementFromJsObject(jsObject.root);
+
+  @override
+  String get rootMargin => jsObject.rootMargin;
+
+  @override
+  List<double> get thresholds => jsObject.thresholds;
+
+  @override
+  void observe(Element element) {
+    jsObject.observe((element as ElementImpl).jsObject);
+  }
+
+  @override
+  void unobserve(Element element) {
+    jsObject.unobserve((element as ElementImpl).jsObject);
+  }
+
+  @override
+  void disconnect() {
+    jsObject.disconnect();
+  }
+
+  static void _intersectionCallback(
+    List<interop.IntersectionObserverEntry> entries,
+    interop.IntersectionObserver observer,
+  ) {
+    final dartObserver = observer.dartObject as IntersectionObserverImpl;
+
+    for (final entry in entries) {
+      dartObserver._streamController
+          .add(IntersectionObserverEntryImpl.fromJsObject(entry));
+    }
+  }
+}
+
+/// Describes the intersection between the target [Element] and its root
+/// container at a specific moment of transition.
+class IntersectionObserverEntryImpl implements IntersectionObserverEntry {
+  /// Creates an instance of [IntersectionObserverEntryImpl] from the
+  /// [jsObject].
+  IntersectionObserverEntryImpl.fromJsObject(this.jsObject);
+
+  /// The JavaScript object being wrapped.
+  final interop.IntersectionObserverEntry jsObject;
+
+  @override
+  ImmutableRectangle get boundingClientRect =>
+      ImmutableRectangleImpl.safeFromJsObject(jsObject.boundingClientRect);
+
+  @override
+  double get intersectionRatio => jsObject.intersectionRatio;
+
+  @override
+  ImmutableRectangle get intersectionRect =>
+      ImmutableRectangleImpl.safeFromJsObject(jsObject.intersectionRect);
+
+  @override
+  bool get isIntersecting => jsObject.isIntersecting;
+
+  @override
+  ImmutableRectangle get rootBounds =>
+      ImmutableRectangleImpl.safeFromJsObject(jsObject.rootBounds);
+
+  @override
+  Element get target => safeElementFromJsObject<Element>(jsObject.target);
+
+  @override
+  double get time => jsObject.time;
+}
+
+/// Browser implementation of [IntersectionObserverOptions].
+class IntersectionObserverOptionsImpl implements IntersectionObserverOptions {
+  /// Creates an instance of [IntersectionObserverOptionsImpl].
+  factory IntersectionObserverOptionsImpl({
+    Element root,
+    String rootMargin = '0px',
+    List<double> threshold = const [0.0],
+  }) =>
+      IntersectionObserverOptionsImpl.fromJsObject(
+        interop.IntersectionObserverOptions(
+          root: (root as ElementImpl).jsObject,
+          rootMargin: rootMargin,
+          threshold: threshold,
+        ),
+      );
+
+  /// Creates an instance of [IntersectionObserverOptionsImpl] from the
+  /// [jsObject].
+  IntersectionObserverOptionsImpl.fromJsObject(this.jsObject);
+
+  /// The JavaScript object being wrapped.
+  final interop.IntersectionObserverOptions jsObject;
+
+  @override
+  Element get root => safeElementFromJsObject<Element>(jsObject.root);
+  @override
+  set root(Element value) {
+    jsObject.root = (value as ElementImpl).jsObject;
+  }
+
+  @override
+  String get rootMargin => jsObject.rootMargin;
+  set rootMargin(String value) {
+    jsObject.rootMargin = value;
+  }
+
+  @override
+  List<double> get threshold => jsObject.threshold;
+  @override
+  set threshold(List<double> value) {
+    jsObject.threshold = value;
+  }
+}
+
+//------------------------------------------------------------------------------
 // ResizeObserver
 //------------------------------------------------------------------------------
 
