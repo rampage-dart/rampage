@@ -24,7 +24,10 @@ class IntersectionObserver extends JsObject {
   /// Creates a new [IntersectionObserver] which will execute the specified
   /// [callback] function when it detects that a target [Element]'s visibility
   /// has crossed one or more thresholds.
-  external factory IntersectionObserver(IntersectionObserverCallback callback);
+  external factory IntersectionObserver(
+    IntersectionObserverCallback callback, [
+    IntersectionObserverOptions options,
+  ]);
 
   /// A specific ancestor of the target [Element] being observed.
   ///
@@ -94,9 +97,9 @@ class IntersectionObserverEntry {
 /// Object allowing you to set options for the [IntersectionObserver].
 @JS()
 @anonymous
-class IntesectionObserverOptions {
-  /// Creates the [IntesectionObserverOptions].
-  external factory IntesectionObserverOptions({
+class IntersectionObserverOptions {
+  /// Creates the [IntersectionObserverOptions].
+  external factory IntersectionObserverOptions({
     Element root,
     String rootMargin = '0px',
     List<double> threshold = const [0.0],
@@ -114,6 +117,7 @@ class IntesectionObserverOptions {
   /// box when calculating intersections, effectively shrinking or growing the
   /// root for calculation purposes.
   external String get rootMargin;
+  external set rootMargin(String value);
 
   /// A list of numbers between 0.0 and 1.0, specifying a ratio of intersection
   /// area to total bounding box area for the observed target.
