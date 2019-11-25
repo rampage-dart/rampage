@@ -9,5 +9,6 @@ export 'src/element.dart';
 export 'src/events.dart';
 export 'src/geometry.dart';
 export 'src/node.dart';
+export 'src/observer.dart';
 export 'src/style_sheet.dart';
 export 'src/window.dart';
