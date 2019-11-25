@@ -122,7 +122,7 @@ class IntersectionObserverOptionsImpl implements IntersectionObserverOptions {
   }) =>
       IntersectionObserverOptionsImpl.fromJsObject(
         interop.IntersectionObserverOptions(
-          root: (root as ElementImpl).jsObject,
+          root: (root as ElementImpl)?.jsObject,
           rootMargin: rootMargin,
           threshold: threshold,
         ),
