@@ -21,6 +21,10 @@ class NodeImpl<T extends interop.Node> extends EventTargetImpl<T>
 
   @override
   bool get isConnected => jsObject.isConnected;
+
+  @override
+  U cloneNode<U extends Node>() =>
+      nodeFromJsObject<U>(jsObject.cloneNode(true));
 }
 
 //-----------------------------------------------------------
@@ -101,4 +105,18 @@ mixin SlotableImpl<T extends interop.Slotable> on NodeImpl<T>
         ? SlotElementImpl.safeFromJsObject(assignedTo)
         : null;
   }
+}
+
+//-----------------------------------------------------------
+// Utility
+//-----------------------------------------------------------
+
+/// Creates an instance of [T] from the [jsObject].
+T nodeFromJsObject<T extends Node>(interop.Node jsObject) {
+  if (jsObject is interop.Element) {
+    return elementFromJsObject(jsObject) as T;
+  }
+
+  assert(false, 'Unknown node');
+  return null;
 }

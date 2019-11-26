@@ -19,6 +19,9 @@ abstract class Node implements EventTarget {
   /// indirectly) to the context object, e.g. the [Document] object in the case
   /// of the normal DOM, or the [ShadowRoot] in the case of a shadow DOM.
   bool get isConnected;
+
+  /// Returns a duplicate of the node on which this method was called.
+  U cloneNode<U extends Node>();
 }
 
 //-----------------------------------------------------------
