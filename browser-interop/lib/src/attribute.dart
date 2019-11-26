@@ -12,6 +12,31 @@ import 'element.dart';
 import 'js_object.dart';
 
 //-----------------------------------------------------------
+// NamedNodeMap
+//-----------------------------------------------------------
+
+/// A collection of [Attribute] objects.
+@JS('NamedNodeMap')
+class NamedNodeMap {
+  /// The amount of [Attribute]s in the map
+  external int get length;
+
+  /// Returns the [Attribute] at the given [index], or `null` if the index is
+  /// higher or equal to the number of nodes.
+  external Attribute item(int index);
+
+  /// Returns an [Attribute], corresponding to the given [name].
+  external Attribute getNamedItem(String name);
+
+  /// Replaces, or adds, the [Attribute] identified in the map by the given
+  /// [Attribute.name].
+  external Attribute setNamedItem(Attribute attribute);
+
+  /// Removes the [Attribute] identified by the given [name].
+  external Attribute removeNamedItem(String name);
+}
+
+//-----------------------------------------------------------
 // Attribute
 //-----------------------------------------------------------
 

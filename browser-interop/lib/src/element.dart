@@ -8,6 +8,7 @@ library rampage_browser_interop.src.element;
 
 import 'package:js/js.dart';
 
+import 'attribute.dart';
 import 'document.dart';
 import 'node.dart';
 
@@ -34,6 +35,9 @@ class Element extends Node with ParentNode, ChildNode, Slotable {
   /// Returns the name of the shadow DOM slot the element is inserted in.
   external String get slot;
   external set slot(String value);
+
+  /// The assigned [Attribute]s.
+  external NamedNodeMap get attributes;
 
   /// The open [ShadowRoot] that is hosted by the [Element], or `null` if no
   /// open [ShadowRoot] is present.
