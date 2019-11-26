@@ -1,13 +1,16 @@
 analyzer:
   strong-mode:
     implicit-casts: false
+    implicit-dynamic: false
 
   errors:
     always_specify_types: ignore
     avoid_annotating_with_dynamic: ignore
     avoid_as: ignore
+    comment_references: ignore
     flutter_style_todos: ignore
     prefer_double_quotes: ignore
+    prefer_relative_imports: ignore
 
 linter:
   rules:
@@ -25,6 +28,7 @@ linter:
     - avoid_classes_with_only_static_members
     - avoid_double_and_int_checks
     - avoid_empty_else
+    - avoid_equals_and_hash_code_on_mutable_classes
     - avoid_field_initializers_in_const_classes
     - avoid_function_literals_in_foreach_calls
     - avoid_implementing_value_types
@@ -32,6 +36,7 @@ linter:
     - avoid_js_rounded_ints
     - avoid_null_checks_in_equality_operators
     - avoid_positional_boolean_parameters
+    - avoid_print
     - avoid_private_typedef_functions
     - avoid_relative_lib_imports
     - avoid_renaming_method_parameters
@@ -46,9 +51,12 @@ linter:
     - avoid_slow_async_io
     - avoid_types_as_parameter_names
     - avoid_types_on_closure_parameters
+    - avoid_unnecessary_containers
     - avoid_unused_constructor_parameters
     - avoid_void_async
+    - avoid_web_libraries_in_flutter
     - await_only_futures
+    - camel_case_extensions
     - camel_case_types
     - cancel_subscriptions
     - cascade_invocations
@@ -115,9 +123,11 @@ linter:
     - prefer_interpolation_to_compose_strings
     - prefer_is_empty
     - prefer_is_not_empty
+    - prefer_is_not_operator
     - prefer_iterable_whereType
     - prefer_mixin
     - prefer_null_aware_operators
+    - prefer_relative_imports
     - prefer_single_quotes
     - prefer_spread_collections
     - prefer_typing_uninitialized_variables
@@ -138,6 +148,7 @@ linter:
     - unnecessary_await_in_return
     - unnecessary_brace_in_string_interps
     - unnecessary_const
+    - unnecessary_final
     - unnecessary_getters_setters
     - unnecessary_lambdas
     - unnecessary_new
