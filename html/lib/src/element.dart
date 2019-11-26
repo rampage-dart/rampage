@@ -39,6 +39,9 @@ abstract class Element implements Node, ParentNode, ChildNode, Slotable {
   String get id;
   set id(String value);
 
+  /// All attributes for the [Element].
+  Map<String, String> get attributes;
+
   /// Returns the name of the shadow DOM slot the element is inserted in.
   String get slot;
   set slot(String value);

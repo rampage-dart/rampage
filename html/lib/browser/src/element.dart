@@ -6,6 +6,7 @@
 import 'package:rampage_browser_interop/browser_interop.dart' as interop;
 import 'package:rampage_html/html.dart';
 
+import 'attribute.dart';
 import 'document.dart';
 import 'node.dart';
 
@@ -18,7 +19,9 @@ class ElementImpl<T extends interop.Element> extends NodeImpl<T>
     with ParentNodeImpl<T>, ChildNodeImpl<T>, SlotableImpl<T>
     implements Element {
   /// Creates an instance of [ElementImpl] from the [jsObject].
-  ElementImpl.fromJsObject(T jsObject) : super.fromJsObject(jsObject);
+  ElementImpl.fromJsObject(T jsObject)
+      : attributes = AttributeMap.fromJsObject(jsObject),
+        super.fromJsObject(jsObject);
 
   @override
   String get tagName => jsObject.tagName;
@@ -29,6 +32,9 @@ class ElementImpl<T extends interop.Element> extends NodeImpl<T>
   set id(String value) {
     jsObject.id = value;
   }
+
+  @override
+  final Map<String, String> attributes;
 
   @override
   String get slot => jsObject.slot;
