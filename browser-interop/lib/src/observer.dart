@@ -65,6 +65,8 @@ typedef IntersectionObserverCallback = Function(
 
 /// Describes the intersection between the target [Element] and its root
 /// container at a specific moment of transition.
+@JS()
+@anonymous
 class IntersectionObserverEntry {
   /// The bounds rectangle of the [target] element.
   external ImmutableRectangle get boundingClientRect;
