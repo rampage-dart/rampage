@@ -5,6 +5,8 @@
 
 import 'dart:async';
 
+import 'package:js/js.dart' as js;
+
 import 'package:rampage_browser_interop/browser_interop.dart' as interop;
 import 'package:rampage_html/browser/html.dart';
 import 'package:rampage_html/html.dart';
@@ -24,7 +26,7 @@ class IntersectionObserverImpl extends JsWrapper<interop.IntersectionObserver>
   factory IntersectionObserverImpl([IntersectionObserverOptions options]) =>
       IntersectionObserverImpl.fromJsObject(
         interop.IntersectionObserver(
-            _intersectionCallback,
+            js.allowInterop(_intersectionCallback),
             (options as IntersectionObserverOptionsImpl)?.jsObject ??
                 interop.IntersectionObserverOptions()),
       );
@@ -164,8 +166,8 @@ class IntersectionObserverOptionsImpl implements IntersectionObserverOptions {
 class ResizeObserverImpl extends JsWrapper<interop.ResizeObserver>
     implements ResizeObserver {
   /// Create an instance of [ResizeObserverImpl].
-  factory ResizeObserverImpl() =>
-      ResizeObserverImpl.fromJsObject(interop.ResizeObserver(_resizeCallback));
+  factory ResizeObserverImpl() => ResizeObserverImpl.fromJsObject(
+      interop.ResizeObserver(js.allowInterop(_resizeCallback)));
 
   /// Create an instance of [ResizeObserverImpl] from the [jsObject].
   ResizeObserverImpl.fromJsObject(interop.ResizeObserver jsObject)
