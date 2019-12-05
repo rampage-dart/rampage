@@ -4,7 +4,7 @@
 // the LICENSE file.
 
 import 'element.dart';
-import 'events.dart';
+import 'event_target.dart';
 
 //-----------------------------------------------------------
 // Node

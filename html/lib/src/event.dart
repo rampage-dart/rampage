@@ -3,13 +3,7 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-import 'dart:async';
-
-import 'package:rampage_html/browser/html.dart' as impl;
-
-//------------------------------------------------------------------------------
-// Events
-//------------------------------------------------------------------------------
+import 'event_target.dart';
 
 /// The [Event] interface represents an event which takes place in the DOM.
 ///
@@ -53,37 +47,4 @@ abstract class Event {
 
   /// Stops the propagation of [Event]s further along in the DOM.
   void stopPropagation();
-}
-
-/// The [CustomEvent] interface represents events initialized by an application
-/// for any purpose.
-abstract class CustomEvent implements Event {
-  /// Creates a [CustomEvent] with the given [type].
-  factory CustomEvent(
-    String type, {
-    bool bubbles,
-    bool cancelable,
-    bool composed,
-    dynamic detail,
-  }) = impl.CustomEventImpl;
-
-  /// Any data passed when initializing the event.
-  dynamic get detail;
-}
-
-//------------------------------------------------------------------------------
-// EventTarget
-//------------------------------------------------------------------------------
-
-/// [EventTarget] is a DOM interface implemented by objects that can receive
-/// events and may have listeners for them.
-abstract class EventTarget {
-  /// [Event] streams for the target.
-  ///
-  /// Subscribe to a [Stream] by accessing it through the corresponding
-  /// [Event.type].
-  Map<String, Stream<Event>> get on;
-
-  /// Dispatches an [Event] to this [EventTarget].
-  bool dispatchEvent(Event event);
 }

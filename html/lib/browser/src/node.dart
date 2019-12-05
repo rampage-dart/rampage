@@ -7,7 +7,7 @@ import 'package:rampage_browser_interop/browser_interop.dart' as interop;
 import 'package:rampage_html/html.dart';
 
 import 'element.dart';
-import 'events.dart';
+import 'event_target.dart';
 
 //-----------------------------------------------------------
 // Node
