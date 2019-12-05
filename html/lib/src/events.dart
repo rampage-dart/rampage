@@ -55,56 +55,20 @@ abstract class Event {
   void stopPropagation();
 }
 
-/// Represents options for creating an [Event].
-abstract class EventInit {
-  /// Creates the [EventInit] options.
-  factory EventInit({
-    bool bubbles,
-    bool cancelable,
-    bool composed,
-  }) = impl.EventInitImpl;
-
-  /// Whether the [Event] bubbles up through the DOM or not.
-  bool get bubbles;
-  set bubbles(bool value);
-
-  /// Whether the [Event] is cancelable.
-  bool get cancelable;
-  set cancelable(bool value);
-
-  /// Whether or not the [Event] can bubble across the boundary between the
-  /// shadow DOM and the regular DOM.
-  bool get composed;
-  set composed(bool value);
-}
-
 /// The [CustomEvent] interface represents events initialized by an application
 /// for any purpose.
 abstract class CustomEvent implements Event {
   /// Creates a [CustomEvent] with the given [type].
-  ///
-  /// The [eventInitDict] can be used to customize the behavior of the event
-  /// as well as attaching data through [CustomEventInit.detail].
-  factory CustomEvent(String type, [CustomEventInit eventInitDict]) =
-      impl.CustomEventImpl;
-
-  /// Any data passed when initializing the event.
-  dynamic get detail;
-}
-
-/// Represents options for creating a [CustomEvent].
-abstract class CustomEventInit implements EventInit {
-  /// Creates the [CustomEventInit] options.
-  factory CustomEventInit({
+  factory CustomEvent(
+    String type, {
     bool bubbles,
     bool cancelable,
     bool composed,
     dynamic detail,
-  }) = impl.CustomEventInitImpl;
+  }) = impl.CustomEventImpl;
 
-  /// Data to pass to the event.
+  /// Any data passed when initializing the event.
   dynamic get detail;
-  set detail(dynamic value);
 }
 
 //------------------------------------------------------------------------------

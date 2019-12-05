@@ -56,53 +56,6 @@ class EventImpl<T extends interop.Event> extends JsWrapper<T> implements Event {
   }
 }
 
-/// Browser implementation of [EventInit].
-class EventInitImpl with _EventInitImpl implements EventInit {
-  /// Create an instance of [EventInitImpl].
-  factory EventInitImpl({
-    bool bubbles = false,
-    bool cancelable = false,
-    bool composed = false,
-  }) =>
-      EventInitImpl.fromJsObject(interop.EventInit(
-        bubbles: bubbles,
-        cancelable: cancelable,
-        composed: composed,
-      ));
-
-  /// Create an instance of [EventInitImpl] from the [jsObject].
-  EventInitImpl.fromJsObject(this.jsObject);
-
-  @override
-  final interop.EventInit jsObject;
-}
-
-mixin _EventInitImpl implements EventInit {
-  /// The JavaScript object being wrapped.
-  interop.EventInit get jsObject;
-
-  @override
-  bool get bubbles => jsObject.bubbles;
-  @override
-  set bubbles(bool value) {
-    jsObject.bubbles = value;
-  }
-
-  @override
-  bool get cancelable => jsObject.cancelable;
-  @override
-  set cancelable(bool value) {
-    jsObject.cancelable = value;
-  }
-
-  @override
-  bool get composed => jsObject.composed;
-  @override
-  set composed(bool value) {
-    jsObject.composed = value;
-  }
-}
-
 //-----------------------------------------------------------
 // CustomEvent
 //-----------------------------------------------------------
@@ -111,11 +64,21 @@ mixin _EventInitImpl implements EventInit {
 class CustomEventImpl extends EventImpl<interop.CustomEvent>
     implements CustomEvent {
   /// Creates an instance of [CustomEventImpl].
-  factory CustomEventImpl(String type, [CustomEventInit eventInitDict]) =>
+  factory CustomEventImpl(
+    String type, {
+    bool bubbles = false,
+    bool cancelable = false,
+    bool composed = false,
+    dynamic detail,
+  }) =>
       CustomEventImpl.fromJsObject(interop.CustomEvent(
         type,
-        (eventInitDict as CustomEventInitImpl)?.jsObject ??
-            interop.CustomEventInit(),
+        interop.CustomEventInit(
+          bubbles: bubbles,
+          cancelable: cancelable,
+          composed: composed,
+          detail: detail,
+        ),
       ));
 
   /// Creates an instance of [CustomEventImpl] from the [jsObject].
@@ -124,36 +87,6 @@ class CustomEventImpl extends EventImpl<interop.CustomEvent>
 
   @override
   dynamic get detail => jsObject.detail;
-}
-
-/// Browser implementation of [CustomEventInit].
-class CustomEventInitImpl with _EventInitImpl implements CustomEventInit {
-  /// Creates an instance of [CustomEventInitImpl].
-  factory CustomEventInitImpl({
-    bool bubbles = false,
-    bool cancelable = false,
-    bool composed = false,
-    dynamic detail,
-  }) =>
-      CustomEventInitImpl.fromJsObject(interop.CustomEventInit(
-        bubbles: bubbles,
-        cancelable: cancelable,
-        composed: composed,
-        detail: detail,
-      ));
-
-  /// Creates an instance of [CustomEventInitImpl] from the [jsObject].
-  CustomEventInitImpl.fromJsObject(this.jsObject);
-
-  @override
-  final interop.CustomEventInit jsObject;
-
-  @override
-  dynamic get detail => jsObject.detail;
-  @override
-  set detail(dynamic value) {
-    jsObject.detail = value;
-  }
 }
 
 //-----------------------------------------------------------
