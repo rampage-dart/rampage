@@ -3,6 +3,7 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
+export 'src/css_style_sheet.dart';
 export 'src/custom_element.dart';
 export 'src/custom_event.dart';
 export 'src/document.dart';

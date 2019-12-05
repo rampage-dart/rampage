@@ -8,10 +8,6 @@ import 'package:rampage_html/html.dart';
 
 import 'js_wrapper.dart';
 
-//-----------------------------------------------------------
-// StyleSheet
-//-----------------------------------------------------------
-
 /// Browser implementation of [StyleSheet].
 class StyleSheetImpl<T extends interop.StyleSheet> extends JsWrapper<T>
     implements StyleSheet {
@@ -23,45 +19,4 @@ class StyleSheetImpl<T extends interop.StyleSheet> extends JsWrapper<T>
 
   @override
   String get title => jsObject.title;
-}
-
-//-----------------------------------------------------------
-// CssStyleSheet
-//-----------------------------------------------------------
-
-/// Browser implementation of [CssStyleSheet].
-class CssStyleSheetImpl extends StyleSheetImpl<interop.CssStyleSheet>
-    implements CssStyleSheet {
-  /// Create an instance of [CssStyleSheetImpl].
-  factory CssStyleSheetImpl({
-    String media = '',
-    String title = '',
-    bool alternate = false,
-    bool disabled = false,
-  }) =>
-      CssStyleSheetImpl.fromJsObject(interop.CssStyleSheet(
-        interop.CssStyleSheetInit(
-          media: media,
-          title: title,
-          alternate: alternate,
-          disabled: disabled,
-        ),
-      ));
-
-  /// Create an instance of [CssStyleSheetImpl] from the [jsObject].
-  CssStyleSheetImpl.fromJsObject(interop.CssStyleSheet jsObject)
-      : super.fromJsObject(jsObject);
-
-  /// Create an instance of [CssStyleSheetImpl] from the [jsObject].
-  ///
-  /// This constructor should be used when its unclear if the [jsObject] has
-  /// already been wrapped.
-  factory CssStyleSheetImpl.safeFromJsObject(interop.CssStyleSheet jsObject) =>
-      jsObject.dartObject as CssStyleSheetImpl ??
-      CssStyleSheetImpl.fromJsObject(jsObject);
-
-  @override
-  void replaceSync(String text) {
-    jsObject.replaceSync(text);
-  }
 }
