@@ -6,6 +6,7 @@
 library rampage_browser_interop.browser_interop;
 
 export 'src/attribute.dart';
+export 'src/child_node.dart';
 export 'src/css_style_sheet.dart';
 export 'src/custom_event.dart';
 export 'src/document.dart';
@@ -15,6 +16,9 @@ export 'src/event_target.dart';
 export 'src/geometry.dart';
 export 'src/js_object.dart';
 export 'src/node.dart';
+export 'src/node_list.dart';
 export 'src/observer.dart';
+export 'src/parent_node.dart';
+export 'src/slotable.dart';
 export 'src/style_sheet.dart';
 export 'src/window.dart';

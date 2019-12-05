@@ -9,8 +9,11 @@ library rampage_browser_interop.src.element;
 import 'package:js/js.dart';
 
 import 'attribute.dart';
+import 'child_node.dart';
 import 'document.dart';
 import 'node.dart';
+import 'parent_node.dart';
+import 'slotable.dart';
 
 //-----------------------------------------------------------
 // Element

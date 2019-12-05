@@ -1,0 +1,21 @@
+// Copyright (c) 2019 the Rampage Project Authors.
+// Please see the AUTHORS file for details. All rights reserved.
+// Use of this source code is governed by a zlib license that can be found in
+// the LICENSE file.
+
+@JS()
+library rampage_browser_interop.src.slotable;
+
+import 'package:js/js.dart';
+
+import 'element.dart';
+import 'node.dart';
+
+/// The [Slotable] mixin defines features that allow nodes to become the
+/// contents of a `<slot>` element - the following features are included in both
+/// [Element] and [Text].
+@JS()
+mixin Slotable on Node {
+  /// Returns the <slot> the [Node] is inserted in.
+  external SlotElement get assignedSlot;
+}

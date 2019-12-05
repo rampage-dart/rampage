@@ -11,6 +11,7 @@ import 'package:js/js.dart';
 import 'attribute.dart';
 import 'element.dart';
 import 'node.dart';
+import 'parent_node.dart';
 
 //-----------------------------------------------------------
 // DomParser
