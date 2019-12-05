@@ -33,10 +33,19 @@ class StyleSheetImpl<T extends interop.StyleSheet> extends JsWrapper<T>
 class CssStyleSheetImpl extends StyleSheetImpl<interop.CssStyleSheet>
     implements CssStyleSheet {
   /// Create an instance of [CssStyleSheetImpl].
-  factory CssStyleSheetImpl([CssStyleSheetInit options]) =>
+  factory CssStyleSheetImpl({
+    String media = '',
+    String title = '',
+    bool alternate = false,
+    bool disabled = false,
+  }) =>
       CssStyleSheetImpl.fromJsObject(interop.CssStyleSheet(
-        (options as CssStyleSheetInitImpl)?.jsObject ??
-            interop.CssStyleSheetInit(),
+        interop.CssStyleSheetInit(
+          media: media,
+          title: title,
+          alternate: alternate,
+          disabled: disabled,
+        ),
       ));
 
   /// Create an instance of [CssStyleSheetImpl] from the [jsObject].
@@ -54,56 +63,5 @@ class CssStyleSheetImpl extends StyleSheetImpl<interop.CssStyleSheet>
   @override
   void replaceSync(String text) {
     jsObject.replaceSync(text);
-  }
-}
-
-/// Represents options that represent characteristics of a [CssStyleSheet].
-class CssStyleSheetInitImpl implements CssStyleSheetInit {
-  /// Creates the [CssStyleSheetInit] options.
-  factory CssStyleSheetInitImpl({
-    String media = '',
-    String title = '',
-    bool alternate = false,
-    bool disabled = false,
-  }) =>
-      CssStyleSheetInitImpl.fromJsObject(interop.CssStyleSheetInit(
-        media: media,
-        title: title,
-        alternate: alternate,
-        disabled: disabled,
-      ));
-
-  /// Creates a [CssStyleSheetInitImpl] from the [jsObject].
-  CssStyleSheetInitImpl.fromJsObject(this.jsObject);
-
-  /// The JavaScript object being wrapped.
-  final interop.CssStyleSheetInit jsObject;
-
-  @override
-  String get media => jsObject.media;
-  @override
-  set media(String value) {
-    jsObject.media = value;
-  }
-
-  @override
-  String get title => jsObject.title;
-  @override
-  set title(String value) {
-    jsObject.title = value;
-  }
-
-  @override
-  bool get alternate => jsObject.alternate;
-  @override
-  set alternate(bool value) {
-    jsObject.alternate = value;
-  }
-
-  @override
-  bool get disabled => jsObject.disabled;
-  @override
-  set disabled(bool value) {
-    jsObject.disabled = value;
   }
 }
