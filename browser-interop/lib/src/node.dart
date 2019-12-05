@@ -9,7 +9,7 @@ library rampage_browser_interop.src.node;
 import 'package:js/js.dart';
 
 import 'element.dart';
-import 'events.dart';
+import 'event_target.dart';
 
 //-----------------------------------------------------------
 // Node
