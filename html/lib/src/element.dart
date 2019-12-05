@@ -5,8 +5,11 @@
 
 import 'package:rampage_html/browser/html.dart' as impl;
 
+import 'child_node.dart';
 import 'document.dart';
 import 'node.dart';
+import 'parent_node.dart';
+import 'slotable.dart';
 
 //-----------------------------------------------------------
 // Element

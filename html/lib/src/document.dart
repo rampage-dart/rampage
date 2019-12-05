@@ -5,6 +5,7 @@
 
 import 'element.dart';
 import 'node.dart';
+import 'parent_node.dart';
 
 //-----------------------------------------------------------
 // DocumentFragment

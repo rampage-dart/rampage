@@ -7,8 +7,11 @@ import 'package:rampage_browser_interop/browser_interop.dart' as interop;
 import 'package:rampage_html/html.dart';
 
 import 'attribute.dart';
+import 'child_node.dart';
 import 'document.dart';
 import 'node.dart';
+import 'parent_node.dart';
+import 'slotable.dart';
 
 //-----------------------------------------------------------
 // Element
