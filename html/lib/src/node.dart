@@ -1,4 +1,4 @@
-// Copyright (c) 2019 the Rampage Project Authors.
+// Copyright (c) 2021 the Rampage Project Authors.
 // Please see the AUTHORS file for details. All rights reserved.
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
@@ -16,5 +16,5 @@ abstract class Node implements EventTarget {
   bool get isConnected;
 
   /// Returns a duplicate of the node on which this method was called.
-  U cloneNode<U extends Node>();
+  T cloneNode<T extends Node>();
 }
