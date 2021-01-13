@@ -1,0 +1,9 @@
+// IDL from DOM Living Standard - December 2020
+// https://github.com/whatwg/dom/blob/master/review-drafts/2020-12.bs
+
+interface mixin NonDocumentTypeChildNode {
+  readonly attribute Element? previousElementSibling;
+  readonly attribute Element? nextElementSibling;
+};
+Element includes NonDocumentTypeChildNode;
+CharacterData includes NonDocumentTypeChildNode;

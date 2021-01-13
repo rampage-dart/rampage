@@ -8,6 +8,7 @@ import 'package:rampage_html/browser/html.dart' as impl;
 import 'child_node.dart';
 import 'document.dart';
 import 'node.dart';
+import 'non_document_type_child_node.dart';
 import 'parent_node.dart';
 import 'slotable.dart';
 
@@ -22,7 +23,8 @@ import 'slotable.dart';
 /// specific classes inherit from [Element]. For example, the [HtmlElement]
 /// interface is the base interface for HTML elements. Most functionality is
 /// specified further down the class hierarchy.
-abstract class Element implements Node, ParentNode, ChildNode, Slotable {
+abstract class Element
+    implements Node, ParentNode, ChildNode, NonDocumentTypeChildNode, Slotable {
   /// Creates a [DivElement].
   factory Element.div() = DivElement;
 
