@@ -8,6 +8,7 @@ import 'dart:js';
 import 'package:rampage_html/html.dart';
 
 import 'element_factory.dart';
+import 'element_tag.dart';
 import 'html_element.dart';
 import 'wrapper.dart';
 
@@ -15,7 +16,7 @@ import 'wrapper.dart';
 class BodyElementImpl extends HtmlElementImpl implements BodyElement {
   /// Create an instance of [BodyElementImpl].
   factory BodyElementImpl() =>
-      BodyElementImpl.fromJsObject(createElementJsObject('body'));
+      BodyElementImpl.fromJsObject(createElementJsObject(ElementTag.body));
 
   /// Create an instance of [BodyElementImpl] from the [jsObject]
   BodyElementImpl.fromJsObject(JsObject jsObject)

@@ -8,16 +8,18 @@ import 'dart:js';
 import 'package:rampage_html/html.dart';
 
 import 'element_factory.dart';
+import 'element_tag.dart';
 import 'html_element.dart';
 import 'wrapper.dart';
 
 /// Browser implementation of [TemplateElement].
 class TemplateElementImpl extends HtmlElementImpl implements TemplateElement {
   /// Create an instance of [TemplateElementImpl].
-  factory TemplateElementImpl() =>
-      TemplateElementImpl.fromJsObject(createElementJsObject('template'));
+  factory TemplateElementImpl() => TemplateElementImpl.fromJsObject(
+        createElementJsObject(ElementTag.template),
+      );
 
-  /// Create an instance of [TemplateElementImpl] from the [jsObject]
+  /// Create an instance of [TemplateElementImpl] from the [jsObject].
   TemplateElementImpl.fromJsObject(JsObject jsObject)
       : super.fromJsObject(jsObject);
 

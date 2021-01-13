@@ -8,6 +8,7 @@ import 'dart:js';
 import 'package:rampage_html/html.dart';
 
 import 'element_factory.dart';
+import 'element_tag.dart';
 import 'html_element.dart';
 import 'wrapper.dart';
 
@@ -15,7 +16,7 @@ import 'wrapper.dart';
 class SlotElementImpl extends HtmlElementImpl implements SlotElement {
   /// Create an instance of [SlotElementImpl].
   factory SlotElementImpl() =>
-      SlotElementImpl.fromJsObject(createElementJsObject('slot'));
+      SlotElementImpl.fromJsObject(createElementJsObject(ElementTag.slot));
 
   /// Create an instance of [SlotElementImpl] from the [jsObject].
   SlotElementImpl.fromJsObject(JsObject jsObject)
