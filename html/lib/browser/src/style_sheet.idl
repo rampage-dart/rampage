@@ -1,0 +1,13 @@
+// IDL from CSS Object Model (CSSOM) Editor’s Draft, 8 November 2020
+// https://github.com/w3c/csswg-drafts/tree/3e784aa677bde2b097409fa7b19f608c2b3c0d16
+
+[Exposed=Window]
+interface StyleSheet {
+  readonly attribute CSSOMString type;
+  readonly attribute USVString? href;
+  readonly attribute (Element or ProcessingInstruction)? ownerNode;
+  readonly attribute CSSStyleSheet? parentStyleSheet;
+  readonly attribute DOMString? title;
+  [SameObject, PutForwards=mediaText] readonly attribute MediaList media;
+  attribute boolean disabled;
+};
