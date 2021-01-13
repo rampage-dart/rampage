@@ -5,6 +5,7 @@
 
 export 'src/child_node.dart';
 export 'src/custom_event.dart';
+export 'src/document.dart';
 export 'src/document_or_shadow_root.dart';
 export 'src/event.dart';
 export 'src/event_target.dart';
