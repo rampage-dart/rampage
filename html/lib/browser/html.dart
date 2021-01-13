@@ -14,6 +14,7 @@ export 'src/document_or_shadow_root.dart';
 export 'src/element.dart';
 export 'src/event.dart';
 export 'src/event_target.dart';
+export 'src/intersection_observer.dart';
 export 'src/node.dart';
 export 'src/non_document_type_child_node.dart';
 export 'src/non_element_parent_node.dart';
