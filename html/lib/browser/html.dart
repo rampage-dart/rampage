@@ -7,4 +7,5 @@ export 'src/custom_event.dart';
 export 'src/event.dart';
 export 'src/event_target.dart';
 export 'src/node.dart';
+export 'src/non_element_parent_node.dart';
 export 'src/parent_node.dart';
