@@ -8,6 +8,7 @@ import 'dart:js';
 import 'package:rampage_html/html.dart';
 
 import 'element_factory.dart';
+import 'element_tag.dart';
 import 'html_element.dart';
 import 'wrapper.dart';
 
@@ -15,7 +16,7 @@ import 'wrapper.dart';
 class DivElementImpl extends HtmlElementImpl implements DivElement {
   /// Create an instance of [DivElementImpl].
   factory DivElementImpl() =>
-      DivElementImpl.fromJsObject(createElementJsObject('div'));
+      DivElementImpl.fromJsObject(createElementJsObject(ElementTag.div));
 
   /// Create an instance of [DivElementImpl] from the [jsObject]
   DivElementImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
