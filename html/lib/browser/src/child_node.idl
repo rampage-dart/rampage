@@ -1,0 +1,12 @@
+// IDL from DOM Living Standard - December 2020
+// https://github.com/whatwg/dom/blob/master/review-drafts/2020-12.bs
+
+interface mixin ChildNode {
+  [CEReactions, Unscopable] undefined before((Node or DOMString)... nodes);
+  [CEReactions, Unscopable] undefined after((Node or DOMString)... nodes);
+  [CEReactions, Unscopable] undefined replaceWith((Node or DOMString)... nodes);
+  [CEReactions, Unscopable] undefined remove();
+};
+DocumentType includes ChildNode;
+Element includes ChildNode;
+CharacterData includes ChildNode;
