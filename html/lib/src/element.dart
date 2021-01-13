@@ -13,6 +13,7 @@ import 'non_document_type_child_node.dart';
 import 'parent_node.dart';
 import 'shadow_root.dart';
 import 'slotable.dart';
+import 'template_element.dart';
 
 //-----------------------------------------------------------
 // Element
@@ -78,19 +79,6 @@ abstract class SlotElement implements HtmlElement {
   /// Can be used to get and set the slot's name.
   String get name;
   set name(String value);
-}
-
-//-----------------------------------------------------------
-// TemplateElement
-//-----------------------------------------------------------
-
-/// The [TemplateElement] interface represents a `<template>` element.
-abstract class TemplateElement extends HtmlElement {
-  /// Creates a new [TemplateElement].
-  factory TemplateElement() = impl.TemplateElementImpl;
-
-  /// The `<template>` element's contents.
-  DocumentFragment get content;
 }
 
 //-----------------------------------------------------------

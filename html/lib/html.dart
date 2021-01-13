@@ -24,4 +24,5 @@ export 'src/parent_node.dart';
 export 'src/shadow_root.dart';
 export 'src/slotable.dart';
 export 'src/style_sheet.dart';
+export 'src/template_element.dart';
 export 'src/window.dart';
