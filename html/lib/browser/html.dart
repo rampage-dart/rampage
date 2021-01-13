@@ -3,4 +3,5 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
+export 'src/event.dart';
 export 'src/event_target.dart';
