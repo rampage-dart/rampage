@@ -3,8 +3,8 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-import 'element.dart';
 import 'node.dart';
+import 'slot_element.dart';
 
 /// The [Slotable] interface defines features that allow nodes to become the
 /// contents of a `<slot>` element - the following features are included in both

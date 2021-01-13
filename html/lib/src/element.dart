@@ -12,6 +12,7 @@ import 'node.dart';
 import 'non_document_type_child_node.dart';
 import 'parent_node.dart';
 import 'shadow_root.dart';
+import 'slot_element.dart';
 import 'slotable.dart';
 import 'template_element.dart';
 
@@ -64,21 +65,6 @@ abstract class Element
   /// Attatches a shadow DOM tree to the specified element and returns a
   /// reference to its [ShadowRoot].
   ShadowRoot attachShadow();
-}
-
-//-----------------------------------------------------------
-// SlotElement
-//-----------------------------------------------------------
-
-/// The [SlotElement] interface of the Shadow DOM API enables access to the name
-/// and assigned nodes of an HTML <slot> element.
-abstract class SlotElement implements HtmlElement {
-  /// Creates a new [SlotElement].
-  factory SlotElement() = impl.SlotElementImpl;
-
-  /// Can be used to get and set the slot's name.
-  String get name;
-  set name(String value);
 }
 
 //-----------------------------------------------------------
