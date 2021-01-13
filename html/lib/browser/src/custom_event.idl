@@ -1,0 +1,15 @@
+// IDL from DOM Living Standard - December 2020
+// https://github.com/whatwg/dom/blob/master/review-drafts/2020-12.bs
+
+[Exposed=(Window,Worker)]
+interface CustomEvent : Event {
+  constructor(DOMString type, optional CustomEventInit eventInitDict = {});
+
+  readonly attribute any detail;
+
+  undefined initCustomEvent(DOMString type, optional boolean bubbles = false, optional boolean cancelable = false, optional any detail = null); // legacy
+};
+
+dictionary CustomEventInit : EventInit {
+  any detail = null;
+};
