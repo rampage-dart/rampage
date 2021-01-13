@@ -5,6 +5,7 @@
 
 import 'package:rampage_html/browser/html.dart' as impl;
 
+import 'body_element.dart';
 import 'child_node.dart';
 import 'document.dart';
 import 'node.dart';
@@ -26,6 +27,9 @@ import 'slotable.dart';
 /// specified further down the class hierarchy.
 abstract class Element
     implements Node, ParentNode, ChildNode, NonDocumentTypeChildNode, Slotable {
+  /// Creates a [BodyElement].
+  factory Element.body() = BodyElement;
+
   /// Creates a [DivElement].
   factory Element.div() = DivElement;
 
@@ -92,12 +96,6 @@ abstract class TemplateElement extends HtmlElement {
 //-----------------------------------------------------------
 // Additional HtmlElements
 //-----------------------------------------------------------
-
-/// The [BodyElement] interface represents a `<body>` element.
-abstract class BodyElement extends HtmlElement {
-  /// Creates a new [BodyElement].
-  factory BodyElement() = impl.BodyElementImpl;
-}
 
 /// The [DivElement] interface represents a `<div>` element.
 abstract class DivElement implements HtmlElement {
