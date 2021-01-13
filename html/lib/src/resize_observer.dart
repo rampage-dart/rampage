@@ -1,4 +1,4 @@
-// Copyright (c) 2019 the Rampage Project Authors.
+// Copyright (c) 2021 the Rampage Project Authors.
 // Please see the AUTHORS file for details. All rights reserved.
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
@@ -6,15 +6,9 @@
 import 'dart:async';
 
 import 'package:rampage_html/browser/html.dart' as impl;
-import 'package:rampage_html/html.dart';
 
 import 'element.dart';
-import 'geometry.dart';
-
-
-//------------------------------------------------------------------------------
-// ResizeObserver
-//------------------------------------------------------------------------------
+import 'rectangle.dart';
 
 /// The [ResizeObserver] interface reports changes to the dimensions of an
 /// [Element]'s content or border box.
@@ -22,6 +16,7 @@ abstract class ResizeObserver {
   /// Creates an instance of [ResizeObserver].
   factory ResizeObserver() = impl.ResizeObserverImpl;
 
+  /// Stream of resize events observered.
   Stream<ResizeObserverEntry> get onResize;
 
   /// Initiates the observing of a specified [Element].
