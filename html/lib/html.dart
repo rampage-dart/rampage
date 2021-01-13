@@ -13,6 +13,7 @@ export 'src/event.dart';
 export 'src/event_target.dart';
 export 'src/geometry.dart';
 export 'src/node.dart';
+export 'src/non_element_parent_node.dart';
 export 'src/observer.dart';
 export 'src/parent_node.dart';
 export 'src/slotable.dart';

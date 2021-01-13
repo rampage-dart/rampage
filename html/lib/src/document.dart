@@ -5,6 +5,7 @@
 
 import 'element.dart';
 import 'node.dart';
+import 'non_element_parent_node.dart';
 import 'parent_node.dart';
 
 //-----------------------------------------------------------
@@ -20,7 +21,8 @@ import 'parent_node.dart';
 /// document tree structure, changes made to the fragment don't affect the
 /// document, cause reflow, or incur any performance impact that can occur when
 /// changes are made.
-abstract class DocumentFragment implements Node, ParentNode {}
+abstract class DocumentFragment
+    implements Node, ParentNode, NonElementParentNode {}
 
 //-----------------------------------------------------------
 // ShadowRoot
@@ -42,7 +44,7 @@ abstract class ShadowRoot implements DocumentFragment {
 
 /// The [Document] interface represents any web page loaded in the browser and
 /// serves as an entry point into the web page's content, which is the DOM tree.
-abstract class Document implements Node, ParentNode {
+abstract class Document implements Node, ParentNode, NonElementParentNode {
   /// Represents the `<body>` of the current [Document], or `null` if no such
   /// [Element] exists.
   BodyElement get body;
