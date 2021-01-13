@@ -7,6 +7,7 @@ import 'package:rampage_html/browser/html.dart' as impl;
 
 import 'body_element.dart';
 import 'child_node.dart';
+import 'div_element.dart';
 import 'document.dart';
 import 'node.dart';
 import 'non_document_type_child_node.dart';
@@ -15,10 +16,6 @@ import 'shadow_root.dart';
 import 'slot_element.dart';
 import 'slotable.dart';
 import 'template_element.dart';
-
-//-----------------------------------------------------------
-// Element
-//-----------------------------------------------------------
 
 /// [Element] is the most general base class from which all objects in a
 /// [Document] inherit.
@@ -65,14 +62,4 @@ abstract class Element
   /// Attatches a shadow DOM tree to the specified element and returns a
   /// reference to its [ShadowRoot].
   ShadowRoot attachShadow();
-}
-
-//-----------------------------------------------------------
-// Additional HtmlElements
-//-----------------------------------------------------------
-
-/// The [DivElement] interface represents a `<div>` element.
-abstract class DivElement implements HtmlElement {
-  /// Creates a new [DivElement].
-  factory DivElement() = impl.DivElementImpl;
 }
