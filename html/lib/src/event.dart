@@ -1,4 +1,4 @@
-// Copyright (c) 2019 the Rampage Project Authors.
+// Copyright (c) 2021 the Rampage Project Authors.
 // Please see the AUTHORS file for details. All rights reserved.
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
@@ -18,13 +18,16 @@ abstract class Event {
   String get type;
 
   /// A reference to the target to which the event was originally dispatched.
-  EventTarget get target;
+  EventTarget? get target;
 
   /// A reference to the currently registered target for the event.
   ///
   /// This is the object to which the event is currently slated to be sent; it's
   /// possible this has been changed along the way through retargeting.
-  EventTarget get currentTarget;
+  EventTarget? get currentTarget;
+
+  /// Which phase of the event flow is currently being evaluated.
+  EventPhase get eventPhase;
 
   /// Whether the [Event] bubbles up through the DOM or not.
   bool get bubbles;
@@ -32,9 +35,15 @@ abstract class Event {
   /// Whether the [Event] is cancelable.
   bool get cancelable;
 
+  /// Whether the call to [preventDefault] canceled the event.
+  bool get defaultPrevented;
+
   /// Whether or not the [Event] can bubble across the boundary between the
   /// shadow DOM and the regular DOM.
   bool get composed;
+
+  /// The time at which the event was created (in milliseconds).
+  double get timeStamp;
 
   /// Cancels the [Event] (if it is [cancelable]).
   void preventDefault();
@@ -47,4 +56,34 @@ abstract class Event {
 
   /// Stops the propagation of [Event]s further along in the DOM.
   void stopPropagation();
+}
+
+/// Phases for the event flow.
+enum EventPhase {
+  /// No [Event] is being processed at this time.
+  none,
+
+  /// The [Event] is being propagated through the target's ancestor objects.
+  ///
+  /// This process starts with the [Window], then [Document], then the
+  /// [HtmlElement], and so on through the elements until the target's parent
+  /// is reached. Event listeners registered for capture mode when
+  /// EventTarget.addEventListener() was called are triggered during this phase.
+  capturing,
+
+  /// The [Event] has arrived at its target.
+  ///
+  /// Event listeners registered for this phase are called at this time. If
+  /// [Event.bubbles] is `false`, processing the event is finished after this
+  /// phase is complete.
+  atTarget,
+
+  /// The [Event] is propagating back up through the target's ancestors in
+  /// reverse order, starting with the parent, and eventually reaching the
+  /// containing [Window].
+  ///
+  /// This is known as bubbling, and occurs only if [Event.bubbles] is `true`.
+  /// Event listeners registered for this phase are triggered during this
+  /// process.
+  bubbling,
 }
