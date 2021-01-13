@@ -19,6 +19,7 @@ export 'src/non_document_type_child_node.dart';
 export 'src/non_element_parent_node.dart';
 export 'src/observer.dart';
 export 'src/parent_node.dart';
+export 'src/shadow_root.dart';
 export 'src/slotable.dart';
 export 'src/style_sheet.dart';
 export 'src/window.dart';
