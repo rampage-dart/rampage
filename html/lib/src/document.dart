@@ -5,6 +5,7 @@
 
 import 'document_or_shadow_root.dart';
 import 'element.dart';
+import 'html_element.dart';
 import 'node.dart';
 import 'non_element_parent_node.dart';
 import 'parent_node.dart';

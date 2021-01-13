@@ -5,7 +5,7 @@
 
 import 'package:meta/meta.dart';
 
-import 'element.dart';
+import 'html_element.dart';
 
 //-----------------------------------------------------------
 // CustomElement
