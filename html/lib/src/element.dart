@@ -62,20 +62,6 @@ abstract class Element
 }
 
 //-----------------------------------------------------------
-// HtmlElement
-//-----------------------------------------------------------
-
-/// The [HtmlElement] interface represents any HTML element.
-abstract class HtmlElement implements Element {
-  /// Represents the "rendered" text content of a node and its descendants. As a
-  /// getter, it approximates the text the user would get if they highlighted
-  /// the contents of the element with the cursor and then copied it to the
-  /// clipboard.
-  String get innerText;
-  set innerText(String value);
-}
-
-//-----------------------------------------------------------
 // SlotElement
 //-----------------------------------------------------------
 
