@@ -10,6 +10,7 @@ import 'package:rampage_html/html.dart';
 import 'body_element.dart';
 import 'div_element.dart';
 import 'element_tag.dart';
+import 'script_element.dart';
 import 'slot_element.dart';
 import 'template_element.dart';
 import 'wrapper.dart';
@@ -42,6 +43,8 @@ T elementFromJsObject<T extends Element>(JsObject jsObject) {
       return TemplateElementImpl.fromJsObject(jsObject) as T;
     case ElementTag.body:
       return BodyElementImpl.fromJsObject(jsObject) as T;
+    case ElementTag.script:
+      return ScriptElementImpl.fromJsObject(jsObject) as T;
   }
 
   throw UnsupportedError('$tag not supported');

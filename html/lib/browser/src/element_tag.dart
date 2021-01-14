@@ -16,6 +16,9 @@ extension ElementTag on JsObject {
   /// `<div>`
   static const String div = 'DIV';
 
+  /// `<script`
+  static const String script = 'SCRIPT';
+
   /// `<slot>`
   static const String slot = 'SLOT';
 

@@ -1,0 +1,19 @@
+// IDL from HTML Living Standard - January 2021
+// https://github.com/whatwg/html/tree/fba814bb53435658869d77e829f57ba2035a6926
+
+[Exposed=Window]
+interface HTMLScriptElement : HTMLElement {
+  [HTMLConstructor] constructor();
+
+  [CEReactions] attribute USVString src;
+  [CEReactions] attribute DOMString type;
+  [CEReactions] attribute boolean noModule;
+  [CEReactions] attribute boolean async;
+  [CEReactions] attribute boolean defer;
+  [CEReactions] attribute DOMString? crossOrigin;
+  [CEReactions] attribute DOMString text;
+  [CEReactions] attribute DOMString integrity;
+  [CEReactions] attribute DOMString referrerPolicy;
+
+  // also has obsolete members
+};
