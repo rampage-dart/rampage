@@ -17,7 +17,8 @@ class ImmutableRectangleImpl extends JsWrapper implements ImmutableRectangle {
     double y = 0.0,
     double width = 0.0,
     double height = 0.0,
-  }) => throw UnimplementedError('ImmutableRectangleImpl not implemented');
+  }) =>
+      throw UnimplementedError('ImmutableRectangleImpl not implemented');
 
   /// Creates an instance of [ImmutableRectangleImpl] from the [jsObject].
   ImmutableRectangleImpl.fromJsObject(JsObject jsObject)
