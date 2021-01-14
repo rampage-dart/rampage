@@ -4,7 +4,6 @@
 // the LICENSE file.
 
 import 'package:rampage_html/browser/html.dart' as impl;
-import 'package:rampage_html/src/custom_element.dart';
 
 import 'custom_element.dart';
 import 'document.dart';
