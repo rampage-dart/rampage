@@ -22,20 +22,3 @@ abstract class CustomElement implements HtmlElement {
   @protected
   void attributeChanged(String name, String? oldValue, String? newValue);
 }
-
-//-----------------------------------------------------------
-// CustomElementRegistry
-//-----------------------------------------------------------
-
-/// The [CustomElementRegistry] interface provides methods for registering
-/// [CustomElement]s and querying registered elements.
-///
-/// To get an instance of it, use the [Window.customElements] property.
-abstract class CustomElementRegistry {
-  /// Defines a new [CustomElement].
-  void define(String name, Function constructor, [List<String> attributes]);
-
-  /// Returns `true` if a [CustomElement] with the [name] has been registered,
-  /// `false` otherwise.
-  bool isDefined(String name);
-}
