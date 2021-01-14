@@ -5,7 +5,7 @@
 
 import 'package:rampage_html/browser/html.dart' as impl;
 
-import 'custom_element.dart';
+import 'custom_element_registry.dart';
 import 'document.dart';
 
 /// The [Window] interface represents a window containing a DOM document; the
