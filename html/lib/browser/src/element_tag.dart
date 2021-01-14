@@ -12,10 +12,13 @@ extension ElementTag on JsObject {
 
   /// `<body>`
   static const String body = 'BODY';
+
   /// `<div>`
   static const String div = 'DIV';
+
   /// `<slot>`
   static const String slot = 'SLOT';
+
   /// `<template>`
   static const String template = 'TEMPLATE';
 
