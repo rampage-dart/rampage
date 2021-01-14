@@ -8,6 +8,7 @@ import 'dart:js';
 import 'package:rampage_html/html.dart';
 
 import 'child_node.dart';
+import 'element_tag.dart';
 import 'node.dart';
 import 'non_document_type_child_node.dart';
 import 'parent_node.dart';
@@ -25,7 +26,7 @@ class ElementImpl extends NodeImpl
   ElementImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
 
   @override
-  String get tagName => throw UnimplementedError('tagName not implemented');
+  String get tagName => jsObject.tagName;
 
   @override
   String get id => throw UnimplementedError('id not implemented');
