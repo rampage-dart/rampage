@@ -5,6 +5,12 @@
 
 import 'dart:js';
 
+import 'package:rampage_html/html.dart';
+
+/// Creates an [Element] from the given [tagName].
+Element createElement(String tag) =>
+    throw UnimplementedError('createElement not implemented');
+
 /// Calls `document.createElement` to create a [JsObject] that represents a
 /// `HTMLElement`.
 JsObject createElementJsObject(String tag) =>
