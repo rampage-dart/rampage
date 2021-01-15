@@ -15,6 +15,7 @@ export 'src/element.dart';
 export 'src/element_factory.dart' show createElement;
 export 'src/event.dart';
 export 'src/event_target.dart';
+export 'src/image_element.dart';
 export 'src/intersection_observer.dart';
 export 'src/keyboard_event.dart';
 export 'src/node.dart';
