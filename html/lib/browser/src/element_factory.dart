@@ -10,6 +10,7 @@ import 'package:rampage_html/html.dart';
 import 'body_element.dart';
 import 'div_element.dart';
 import 'element_tag.dart';
+import 'image_element.dart';
 import 'script_element.dart';
 import 'slot_element.dart';
 import 'template_element.dart';
@@ -37,6 +38,8 @@ T elementFromJsObject<T extends Element>(JsObject jsObject) {
   switch (tag) {
     case ElementTag.div:
       return DivElementImpl.fromJsObject(jsObject) as T;
+    case ElementTag.image:
+      return ImageElementImpl.fromJsObject(jsObject) as T;
     case ElementTag.slot:
       return SlotElementImpl.fromJsObject(jsObject) as T;
     case ElementTag.template:

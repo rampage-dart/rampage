@@ -16,7 +16,10 @@ extension ElementTag on JsObject {
   /// `<div>`
   static const String div = 'DIV';
 
-  /// `<script`
+  /// `<image>`
+  static const String image = 'IMG';
+
+  /// `<script>`
   static const String script = 'SCRIPT';
 
   /// `<slot>`
