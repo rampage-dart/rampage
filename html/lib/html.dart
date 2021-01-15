@@ -17,6 +17,7 @@ export 'src/element.dart';
 export 'src/event.dart';
 export 'src/event_target.dart';
 export 'src/html_element.dart';
+export 'src/html_or_svg_element.dart';
 export 'src/intersection_observer.dart';
 export 'src/keyboard_event.dart';
 export 'src/node.dart';
