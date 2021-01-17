@@ -43,7 +43,7 @@ class ElementImpl extends NodeImpl
   set slot(String value) => throw UnimplementedError('slot not implemented');
 
   @override
-  ShadowRoot get shadowRoot =>
+  ShadowRoot? get shadowRoot =>
       throw UnimplementedError('shadowRoot not implemented');
 
   @override
