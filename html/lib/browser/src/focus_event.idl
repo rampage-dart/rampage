@@ -1,0 +1,12 @@
+// IDL from UI Events Editor’s Draft, 16 August 2020
+// https://w3c.github.io/uievents
+
+[Exposed=Window]
+interface FocusEvent : UIEvent {
+  constructor(DOMString type, optional FocusEventInit eventInitDict);
+  readonly attribute EventTarget? relatedTarget;
+};
+
+dictionary FocusEventInit : UIEventInit {
+  EventTarget? relatedTarget = null;
+};
