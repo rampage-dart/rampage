@@ -33,4 +33,5 @@ export 'src/slotable.dart';
 export 'src/style_sheet.dart';
 export 'src/template_element.dart';
 export 'src/ui_event.dart';
+export 'src/wheel_event.dart';
 export 'src/window.dart';
