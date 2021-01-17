@@ -8,10 +8,11 @@ import 'package:rampage_html/browser/html.dart' as impl;
 import 'custom_element_registry.dart';
 import 'document.dart';
 import 'event_target.dart';
+import 'global_event_handlers.dart';
 
 /// The [Window] interface represents a window containing a DOM document; the
 /// [Window.document] property points to the DOM document loaded in that window.
-abstract class Window implements EventTarget {
+abstract class Window implements EventTarget, GlobalEventHandlers {
   /// A reference to the [Document] contained in the [Window].
   Document get document;
 

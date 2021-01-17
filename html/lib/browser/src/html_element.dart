@@ -8,11 +8,12 @@ import 'dart:js';
 import 'package:rampage_html/html.dart';
 
 import 'element.dart';
+import 'global_event_handlers.dart';
 import 'html_or_svg_element.dart';
 
 /// Browser implementation of [HtmlElement].
 class HtmlElementImpl extends ElementImpl
-    with HtmlOrSvgElementImpl
+    with HtmlOrSvgElementImpl, GlobalEventHandlersImpl
     implements HtmlElement {
   /// Creates an instance of [HtmlElementImpl] from the [jsObject].
   HtmlElementImpl.fromJsObject(JsObject jsObject)
