@@ -8,10 +8,13 @@ import 'dart:js';
 import 'package:rampage_html/html.dart';
 
 import 'event_target.dart';
+import 'global_event_handlers.dart';
 import 'wrapper.dart';
 
 /// Browser implementation of [Window].
-class WindowImpl extends EventTargetImpl implements Window {
+class WindowImpl extends EventTargetImpl
+    with GlobalEventHandlersImpl
+    implements Window {
   /// Create an instance of [WindowImpl] from the [jsObject].
   WindowImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
 
@@ -31,4 +34,5 @@ class WindowImpl extends EventTargetImpl implements Window {
 }
 
 /// The [Window] object.
-Window get window => throw UnimplementedError('window not implemented');
+Window get window => WindowImpl.safeFromJsObject(
+    JsObject.fromBrowserObject(context['window'] as Object));

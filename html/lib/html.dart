@@ -17,6 +17,7 @@ export 'src/element.dart';
 export 'src/event.dart';
 export 'src/event_target.dart';
 export 'src/focus_event.dart';
+export 'src/global_event_handlers.dart';
 export 'src/html_element.dart';
 export 'src/html_or_svg_element.dart';
 export 'src/image_element.dart';
