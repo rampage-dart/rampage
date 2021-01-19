@@ -1,0 +1,17 @@
+// IDL from HTML Living Standard - January 2021
+// https://github.com/whatwg/html/tree/fba814bb53435658869d77e829f57ba2035a6926
+
+[Exposed=Window]
+interface DOMParser {
+  constructor();
+
+  [NewObject] Document parseFromString(DOMString string, DOMParserSupportedType type);
+};
+
+enum DOMParserSupportedType {
+  "text/html",
+  "text/xml",
+  "application/xml",
+  "application/xhtml+xml",
+  "image/svg+xml"
+};
