@@ -11,6 +11,7 @@ export 'src/custom_event.dart';
 export 'src/div_element.dart';
 export 'src/document.dart';
 export 'src/document_or_shadow_root.dart';
+export 'src/dom_parser.dart';
 export 'src/element.dart';
 export 'src/element_factory.dart' show createElement;
 export 'src/event.dart';
