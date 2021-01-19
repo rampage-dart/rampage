@@ -16,6 +16,9 @@ extension ElementTag on JsObject {
   /// `<div>`
   static const String div = 'DIV';
 
+  /// `<head>`
+  static const String head = 'HEAD';
+
   /// `<image>`
   static const String image = 'IMG';
 
