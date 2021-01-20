@@ -1,0 +1,16 @@
+// Taken from Scalable Vector Graphics (SVG) 2 W3C Editor’s Draft 26 May 2020
+// https://svgwg.org/svg2-draft/
+
+[Exposed=Window]
+interface SVGElement : Element {
+
+  [SameObject] readonly attribute SVGAnimatedString className;
+
+  readonly attribute SVGSVGElement? ownerSVGElement;
+  readonly attribute SVGElement? viewportElement;
+};
+
+SVGElement includes GlobalEventHandlers;
+SVGElement includes DocumentAndElementEventHandlers;
+SVGElement includes SVGElementInstance;
+SVGElement includes HTMLOrSVGElement;
