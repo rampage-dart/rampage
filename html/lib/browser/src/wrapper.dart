@@ -42,3 +42,49 @@ extension DartWrapper on JsObject {
     this[_dartObject] = value;
   }
 }
+
+/// Retrieves the [JsObject] on the [dartObject].
+///
+/// Casts the [dartObject] to a [JsWrapper] and grabs its value.
+JsObject toJsObject(Object dartObject) =>
+    (dartObject as JsWrapper).jsObject;
+
+/// Retrieves the [JsObject] on the [dartObject] or `null`.
+JsObject? toJsObjectNullable(Object? dartObject) =>
+    dartObject != null ? toJsObject(dartObject) : null;
+
+/// Constructs a [JsWrapper] from a [JsObject].
+typedef JsWrapperConstructor = JsWrapper Function(JsObject jsObject);
+
+/// Safely retrieves or creates an instance of [JsWrapper] from the [Object] if
+/// [object] is not `null`.
+///
+/// Checks to see if the [object] already has a [DartWrapper.dartObject] on it.
+/// If so then that is returned. Otherwise returns a new [JsWrapper] by calling
+/// the [construct] function.
+///
+///
+/// This should be used whenever it isn't clear if the [Object?] has been
+/// initialized already.
+T? safeJsWrapperFromObjectNullable<T extends JsWrapper>(
+  Object? object,
+  JsWrapperConstructor construct,
+) =>
+    object != null ? safeJsWrapperFromObject<T>(object, construct) : null;
+
+/// Safely retrieves or creates an instance of [JsWrapper] from the [Object].
+///
+/// Checks to see if the [object] already has a [DartWrapper.dartObject] on it.
+/// If so then that is returned. Otherwise returns a new [JsWrapper] by calling
+/// the [construct] function.
+///
+/// This should be used whenever it isn't clear if the [Object] has been
+/// initialized already.
+T safeJsWrapperFromObject<T extends JsWrapper>(
+  Object object,
+  JsWrapperConstructor construct,
+) {
+  final jsObject = JsObject.fromBrowserObject(object);
+
+  return (jsObject.dartObject ?? construct(jsObject)) as T;
+}
