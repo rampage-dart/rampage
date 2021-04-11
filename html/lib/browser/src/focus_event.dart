@@ -5,13 +5,38 @@
 
 import 'dart:js';
 
+import 'package:rampage_html/browser/src/event_target_from_js_object.dart';
 import 'package:rampage_html/html.dart';
 
+import 'js/focus_event.dart';
+import 'js/focus_event_init.dart';
 import 'ui_event.dart';
 import 'wrapper.dart';
 
 /// Browser implementation of [FocusEvent].
 class FocusEventImpl extends UIEventImpl implements FocusEvent {
+  /// Creates an instance of [UIEventImpl].
+  factory FocusEventImpl(
+    String type, {
+    bool bubbles = false,
+    bool cancelable = false,
+    bool composed = false,
+    Window? view,
+    int detail = 0,
+    EventTarget? relatedTarget,
+  }) =>
+      FocusEventImpl.fromJsObject(FocusEventJsObject.construct(
+        type,
+        FocusEventInitJsObject.construct(
+          bubbles: bubbles,
+          cancelable: cancelable,
+          composed: composed,
+          view: null, // view,
+          detail: detail,
+          relatedTarget: null, // relatedTarget,
+        ),
+      ));
+
   /// Creates an instance of [FocusEventImpl] from the [jsObject].
   FocusEventImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
 
@@ -25,5 +50,5 @@ class FocusEventImpl extends UIEventImpl implements FocusEvent {
 
   @override
   EventTarget? get relatedTarget =>
-      throw UnimplementedError('relatedTarget not implemented');
+      safeEventTargetFromObjectNullable(jsObject.relatedTarget);
 }

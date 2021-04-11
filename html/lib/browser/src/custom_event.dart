@@ -8,7 +8,8 @@ import 'dart:js';
 import 'package:rampage_html/html.dart';
 
 import 'event.dart';
-import 'wrapper.dart';
+import 'js/custom_event.dart';
+import 'js/custom_event_init.dart';
 
 /// Browser implementation of [CustomEvent].
 class CustomEventImpl extends EventImpl implements CustomEvent {
@@ -20,20 +21,20 @@ class CustomEventImpl extends EventImpl implements CustomEvent {
     bool composed = false,
     Object? detail,
   }) =>
-      throw UnimplementedError('CustomEventImpl not implemented');
+      CustomEventImpl.fromJsObject(CustomEventJsObject.construct(
+        type,
+        CustomEventInitJsObject.construct(
+          bubbles: bubbles,
+          cancelable: cancelable,
+          composed: composed,
+          detail: detail,
+        ),
+      ));
 
   /// Creates an instance of [CustomEventImpl] from the [jsObject].
   CustomEventImpl.fromJsObject(JsObject jsObject)
       : super.fromJsObject(jsObject);
 
-  /// Create an instance of [CustomEventImpl] from the [jsObject].
-  ///
-  /// This constructor should be used when its unclear if the [jsObject] has
-  /// already been wrapped.
-  factory CustomEventImpl.safeFromJsObject(JsObject jsObject) =>
-      (jsObject.dartObject ?? CustomEventImpl.fromJsObject(jsObject))
-          as CustomEventImpl;
-
   @override
-  Object? get detail => throw UnimplementedError('detail not implemented');
+  Object? get detail => jsObject.detail;
 }

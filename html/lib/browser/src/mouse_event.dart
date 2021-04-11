@@ -7,50 +7,110 @@ import 'dart:js';
 
 import 'package:rampage_html/html.dart';
 
+import 'event_target.dart';
+import 'event_target_from_js_object.dart';
+import 'js/mouse_event.dart';
+import 'js/mouse_event_init.dart';
 import 'ui_event.dart';
 import 'wrapper.dart';
 
 /// Browser implementation of [MouseEvent].
 class MouseEventImpl extends UIEventImpl implements MouseEvent {
+  /// Creates an instance of [MouseEventImpl].
+  factory MouseEventImpl(
+    String type, {
+    bool bubbles = false,
+    bool cancelable = false,
+    bool composed = false,
+    Window? view,
+    int detail = 0,
+    bool ctrlKey = false,
+    bool shiftKey = false,
+    bool altKey = false,
+    bool metaKey = false,
+    bool modifierAltGraph = false,
+    bool modifierCapsLock = false,
+    bool modifierFn = false,
+    bool modifierFnLock = false,
+    bool modifierHyper = false,
+    bool modifierNumLock = false,
+    bool modifierScrollLock = false,
+    bool modifierSuper = false,
+    bool modifierSymbol = false,
+    bool modifierSymbolLock = false,
+    int screenX = 0,
+    int screenY = 0,
+    int clientX = 0,
+    int clientY = 0,
+    int button = 0,
+    int buttons = 0,
+    EventTarget? relatedTarget,
+  }) =>
+      MouseEventImpl.fromJsObject(MouseEventJsObject.construct(
+        type,
+        MouseEventInitJsObject.construct(
+          bubbles: bubbles,
+          cancelable: cancelable,
+          composed: composed,
+          view: null, //view,
+          detail: detail,
+          ctrlKey: ctrlKey,
+          shiftKey: shiftKey,
+          altKey: altKey,
+          metaKey: metaKey,
+          modifierAltGraph: modifierAltGraph,
+          modifierCapsLock: modifierCapsLock,
+          modifierFn: modifierFn,
+          modifierFnLock: modifierFnLock,
+          modifierHyper: modifierHyper,
+          modifierNumLock: modifierNumLock,
+          modifierScrollLock: modifierScrollLock,
+          modifierSuper: modifierSuper,
+          modifierSymbol: modifierSymbol,
+          modifierSymbolLock: modifierSymbolLock,
+          screenX: screenX,
+          screenY: screenY,
+          clientX: clientX,
+          clientY: clientY,
+          button: button,
+          buttons: buttons,
+          relatedTarget: null,
+        ),
+      ));
+
   /// Creates an instance of [MouseEventImpl] from the [jsObject].
   MouseEventImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
 
-  /// Create an instance of [MouseEventImpl] from the [jsObject].
-  ///
-  /// This constructor should be used when its unclear if the [jsObject] has
-  /// already been wrapped.
-  factory MouseEventImpl.safeFromJsObject(JsObject jsObject) =>
-      (jsObject.dartObject ?? MouseEventImpl.fromJsObject(jsObject))
-          as MouseEventImpl;
+  @override
+  int get screenX => jsObject.screenX;
 
   @override
-  int get screenX => throw UnimplementedError('screenX not implemented');
+  int get screenY => jsObject.screenY;
 
   @override
-  int get screenY => throw UnimplementedError('screenY not implemented');
+  int get clientX => jsObject.clientX;
 
   @override
-  int get clientX => throw UnimplementedError('clientX not implemented');
+  int get clientY => jsObject.clientY;
 
   @override
-  int get clientY => throw UnimplementedError('clientY not implemented');
+  bool get ctrlKey => jsObject.ctrlKey;
 
   @override
-  bool get ctrlKey => throw UnimplementedError('ctrlKey not implemented');
+  bool get shiftKey => jsObject.shiftKey;
 
   @override
-  bool get shiftKey => throw UnimplementedError('shiftKey not implemented');
+  bool get altKey => jsObject.altKey;
 
   @override
-  bool get altKey => throw UnimplementedError('altKey not implemented');
+  bool get metaKey => jsObject.metaKey;
 
   @override
-  bool get metaKey => throw UnimplementedError('metaKey not implemented');
-
-  @override
-  int get button => throw UnimplementedError('button not implemented');
+  int get button => jsObject.button;
 
   @override
   EventTarget? get relatedTarget =>
-      throw UnimplementedError('relatedTarget not implemented');
+      safeEventTargetFromObjectNullable<EventTargetImpl>(
+        jsObject.relatedTarget,
+      );
 }
