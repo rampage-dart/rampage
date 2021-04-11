@@ -7,6 +7,9 @@ import 'dart:js';
 
 import 'package:rampage_html/html.dart';
 
+import 'event_target.dart';
+import 'event_target_from_js_object.dart';
+import 'js/event.dart';
 import 'wrapper.dart';
 
 /// Browser implementation of [Event].
@@ -15,44 +18,51 @@ class EventImpl extends DartJsWrapper implements Event {
   EventImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
 
   @override
-  String get type => throw UnimplementedError('type not implemented');
+  String get type => jsObject.type;
 
   @override
-  EventTarget get target => throw UnimplementedError('target not implemented');
+  EventTarget? get target => safeJsWrapperFromObjectNullable<EventTargetImpl>(
+        jsObject.target,
+        eventTargetFromJsObject,
+      );
 
   @override
-  EventTarget get currentTarget =>
-      throw UnimplementedError('currentTarget not implemented');
+  EventTarget? get currentTarget =>
+      safeJsWrapperFromObjectNullable<EventTargetImpl>(
+        jsObject.currentTarget,
+        eventTargetFromJsObject,
+      );
 
   @override
-  EventPhase get eventPhase =>
-      throw UnimplementedError('eventPhase not implemented');
+  EventPhase get eventPhase => EventPhase.values[jsObject.eventPhase];
 
   @override
-  bool get bubbles => throw UnimplementedError('bubbles not implemented');
+  bool get bubbles => jsObject.bubbles;
 
   @override
-  bool get cancelable => throw UnimplementedError('cancelable not implemented');
+  bool get cancelable => jsObject.cancelable;
 
   @override
-  bool get defaultPrevented =>
-      throw UnimplementedError('defaultPrevented not implemented');
+  bool get defaultPrevented => jsObject.defaultPrevented;
 
   @override
-  bool get composed => throw UnimplementedError('composed not implemented');
+  bool get composed => jsObject.composed;
 
   @override
-  double get timeStamp => throw UnimplementedError('timeStamp not implemented');
+  double get timeStamp => jsObject.timeStamp;
 
   @override
-  void preventDefault() =>
-      throw UnimplementedError('preventDefault not implemented');
+  void preventDefault() {
+    jsObject.preventDefault();
+  }
 
   @override
-  void stopImmediatePropagation() =>
-      throw UnimplementedError('stopImmediatePropagation not implemented');
+  void stopImmediatePropagation() {
+    jsObject.stopImmediatePropagation();
+  }
 
   @override
-  void stopPropagation() =>
-      throw UnimplementedError('stopPropagation not implemented');
+  void stopPropagation() {
+    jsObject.stopPropagation();
+  }
 }
