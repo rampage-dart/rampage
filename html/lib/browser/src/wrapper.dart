@@ -46,8 +46,7 @@ extension DartWrapper on JsObject {
 /// Retrieves the [JsObject] on the [dartObject].
 ///
 /// Casts the [dartObject] to a [JsWrapper] and grabs its value.
-JsObject toJsObject(Object dartObject) =>
-    (dartObject as JsWrapper).jsObject;
+JsObject toJsObject(Object dartObject) => (dartObject as JsWrapper).jsObject;
 
 /// Retrieves the [JsObject] on the [dartObject] or `null`.
 JsObject? toJsObjectNullable(Object? dartObject) =>
@@ -56,23 +55,7 @@ JsObject? toJsObjectNullable(Object? dartObject) =>
 /// Constructs a [JsWrapper] from a [JsObject].
 typedef JsWrapperConstructor = JsWrapper Function(JsObject jsObject);
 
-/// Safely retrieves or creates an instance of [JsWrapper] from the [Object] if
-/// [object] is not `null`.
-///
-/// Checks to see if the [object] already has a [DartWrapper.dartObject] on it.
-/// If so then that is returned. Otherwise returns a new [JsWrapper] by calling
-/// the [construct] function.
-///
-///
-/// This should be used whenever it isn't clear if the [Object?] has been
-/// initialized already.
-T? safeJsWrapperFromObjectNullable<T extends JsWrapper>(
-  Object? object,
-  JsWrapperConstructor construct,
-) =>
-    object != null ? safeJsWrapperFromObject<T>(object, construct) : null;
-
-/// Safely retrieves or creates an instance of [JsWrapper] from the [Object].
+/// Safely retrieves or creates an instance of [JsWrapper] from the [object].
 ///
 /// Checks to see if the [object] already has a [DartWrapper.dartObject] on it.
 /// If so then that is returned. Otherwise returns a new [JsWrapper] by calling
@@ -88,3 +71,18 @@ T safeJsWrapperFromObject<T extends JsWrapper>(
 
   return (jsObject.dartObject ?? construct(jsObject)) as T;
 }
+
+/// Safely retrieves or creates an instance of [JsWrapper] from the [object] if
+/// it is not `null`.
+///
+/// Checks to see if the [object] already has a [DartWrapper.dartObject] on it.
+/// If so then that is returned. Otherwise returns a new [JsWrapper] by calling
+/// the [construct] function.
+///
+/// This should be used whenever it isn't clear if the [Object?] has been
+/// initialized already.
+T? safeJsWrapperFromObjectNullable<T extends JsWrapper>(
+  Object? object,
+  JsWrapperConstructor construct,
+) =>
+    object != null ? safeJsWrapperFromObject<T>(object, construct) : null;
