@@ -28,6 +28,12 @@ extension ElementTag on JsObject {
   /// `<slot>`
   static const String slot = 'SLOT';
 
+  /// `<style>`
+  static const String style = 'STYLE';
+
+  /// `<svg>`
+  static const String svg = 'SVG';
+
   /// `<template>`
   static const String template = 'TEMPLATE';
 

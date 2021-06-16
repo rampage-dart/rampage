@@ -3,6 +3,7 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
+import 'element.dart';
 import 'event_target.dart';
 
 /// [Node] is an interface from which a number of DOM API object types inherit.
@@ -14,6 +15,13 @@ abstract class Node implements EventTarget {
   /// indirectly) to the context object, e.g. the [Document] object in the case
   /// of the normal DOM, or the [ShadowRoot] in the case of a shadow DOM.
   bool get isConnected;
+
+  Node? get parentNode;
+  Element? get parent;
+  Node? get firstChild;
+  Node? get lastChild;
+  Node? get previousSibling;
+  Node? get nextSibling;
 
   /// Returns a duplicate of the node on which this method was called.
   T cloneNode<T extends Node>();

@@ -7,7 +7,6 @@ import 'dart:js';
 
 import 'package:rampage_html/html.dart';
 
-import 'event_target.dart';
 import 'event_target_from_js_object.dart';
 import 'js/event.dart';
 import 'wrapper.dart';
@@ -21,17 +20,11 @@ class EventImpl extends DartJsWrapper implements Event {
   String get type => jsObject.type;
 
   @override
-  EventTarget? get target => safeJsWrapperFromObjectNullable<EventTargetImpl>(
-        jsObject.target,
-        eventTargetFromJsObject,
-      );
+  EventTarget? get target => safeEventTargetFromObjectNullable(jsObject.target);
 
   @override
   EventTarget? get currentTarget =>
-      safeJsWrapperFromObjectNullable<EventTargetImpl>(
-        jsObject.currentTarget,
-        eventTargetFromJsObject,
-      );
+      safeEventTargetFromObjectNullable(jsObject.currentTarget);
 
   @override
   EventPhase get eventPhase => EventPhase.values[jsObject.eventPhase];

@@ -48,6 +48,9 @@ abstract class Element
   String get id;
   set id(String value);
 
+  String get className;
+  set className(String value);
+
   /// All attributes for the [Element].
   Map<String, String> get attributes;
 
@@ -59,7 +62,7 @@ abstract class Element
   /// open [ShadowRoot] is present.
   ShadowRoot? get shadowRoot;
 
-  /// Attatches a shadow DOM tree to the specified element and returns a
+  /// Attaches a shadow DOM tree to the specified element and returns a
   /// reference to its [ShadowRoot].
   ShadowRoot attachShadow();
 }

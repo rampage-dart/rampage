@@ -7,18 +7,20 @@ import 'dart:js';
 
 import 'package:rampage_html/html.dart';
 
+import 'document.dart';
+import 'js/dom_parser.dart';
 import 'wrapper.dart';
 
 /// Browser implementation of [DivElement].
 class DomParserImpl extends JsWrapper implements DomParser {
   /// Create an instance of [DomParserImpl].
   factory DomParserImpl() =>
-      throw UnimplementedError('DomParser not implemented');
+      DomParserImpl.fromJsObject(DomParserJsObject.construct());
 
   /// Create an instance of [DomParserImpl] from the [jsObject].
   DomParserImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
 
   @override
   Document parseFromString(String string, String type) =>
-      throw UnimplementedError('parseFromString not implemented');
+      DocumentImpl.fromJsObject(jsObject.parseFromString(string, type));
 }

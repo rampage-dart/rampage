@@ -10,6 +10,8 @@ import 'package:rampage_html/html.dart';
 import 'event.dart';
 import 'js/ui_event.dart';
 import 'js/ui_event_init.dart';
+import 'window.dart';
+import 'wrapper.dart';
 
 /// Browser implementation of [UIEvent].
 class UIEventImpl extends EventImpl implements UIEvent {
@@ -22,22 +24,24 @@ class UIEventImpl extends EventImpl implements UIEvent {
     Window? view,
     int detail = 0,
   }) =>
-      UIEventImpl.fromJsObject(UIEventJsObject.construct(
-        type,
-        UIEventInitJsObject.construct(
-          bubbles: bubbles,
-          cancelable: cancelable,
-          composed: composed,
-          view: null, //fromDartObject(view),
-          detail: detail,
+      UIEventImpl.fromJsObject(
+        UIEventJsObject.construct(
+          type,
+          UIEventInitJsObject.construct(
+            bubbles: bubbles,
+            cancelable: cancelable,
+            composed: composed,
+            view: toJsObjectNullable(view),
+            detail: detail,
+          ),
         ),
-      ));
+      );
 
   /// Creates an instance of [UIEventImpl] from the [jsObject].
   UIEventImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
 
   @override
-  Window? get view => throw UnimplementedError('window not implemented');
+  Window? get view => safeWindowFromObjectNullable(jsObject.view);
 
   @override
   int get detail => jsObject.detail;

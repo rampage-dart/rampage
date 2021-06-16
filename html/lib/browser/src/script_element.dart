@@ -10,6 +10,7 @@ import 'package:rampage_html/html.dart';
 import 'element_factory.dart';
 import 'element_tag.dart';
 import 'html_element.dart';
+import 'js/script_element.dart';
 import 'wrapper.dart';
 
 /// Browser implementation of [ScriptElement].
@@ -23,26 +24,36 @@ class ScriptElementImpl extends HtmlElementImpl implements ScriptElement {
   ScriptElementImpl.fromJsObject(JsObject jsObject)
       : super.fromJsObject(jsObject);
 
-  /// Create an instance of [ScriptElementImpl] from the [jsObject].
-  ///
-  /// This constructor should be used when its unclear if the [jsObject] has
-  /// already been wrapped.
-  factory ScriptElementImpl.safeFromJsObject(JsObject jsObject) =>
-      (jsObject.dartObject ?? ScriptElementImpl.fromJsObject(jsObject))
-          as ScriptElementImpl;
+  @override
+  String get src => jsObject.src;
 
   @override
-  String get src => throw UnimplementedError('src not implemented');
+  String get type => jsObject.type;
 
   @override
-  String get type => throw UnimplementedError('type not implemented');
+  bool get noModule => jsObject.noModule;
 
   @override
-  bool get noModule => throw UnimplementedError('noModule not implemented');
+  bool get async => jsObject.async;
 
   @override
-  bool get async => throw UnimplementedError('async not implemented');
-
-  @override
-  bool get defer => throw UnimplementedError('defer not implemented');
+  bool get defer => jsObject.defer;
 }
+
+// \TODO Remove if constructor tear-offs are added to the language
+ScriptElementImpl _constructor(JsObject jsObject) =>
+    ScriptElementImpl.fromJsObject(jsObject);
+
+/// Create an instance of [ScriptElement] from the [object].
+///
+/// This should be used when its unclear if the [object] has already been
+/// wrapped.
+ScriptElement safeScriptElementFromObject(Object object) =>
+    safeJsWrapperFromObject<ScriptElementImpl>(object, _constructor);
+
+/// Create an instance of [ScriptElement] from the [object]; or null otherwise.
+///
+/// This should be used when its unclear if the [object] has already been
+/// wrapped.
+ScriptElement? safeScriptElementFromObjectNullable(Object? object) =>
+    safeJsWrapperFromObjectNullable<ScriptElementImpl>(object, _constructor);

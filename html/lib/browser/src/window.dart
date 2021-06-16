@@ -7,8 +7,11 @@ import 'dart:js';
 
 import 'package:rampage_html/html.dart';
 
+import 'custom_element_registry.dart';
+import 'document.dart';
 import 'event_target.dart';
 import 'global_event_handlers.dart';
+import 'js/window.dart';
 import 'wrapper.dart';
 
 /// Browser implementation of [Window].
@@ -18,21 +21,24 @@ class WindowImpl extends EventTargetImpl
   /// Create an instance of [WindowImpl] from the [jsObject].
   WindowImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
 
-  /// Create an instance of [WindowImpl] from the [jsObject].
-  ///
-  /// This constructor should be used when its unclear if the [jsObject] has
-  /// already been wrapped.
-  factory WindowImpl.safeFromJsObject(JsObject jsObject) =>
-      (jsObject.dartObject ?? WindowImpl.fromJsObject(jsObject)) as WindowImpl;
+  @override
+  late final CustomElementRegistry customElements = CustomElementRegistryImpl();
 
   @override
-  CustomElementRegistry get customElements =>
-      throw UnimplementedError('customElements not implemented');
-
-  @override
-  Document get document => throw UnimplementedError('document not implemented');
+  late final Document document = safeDocumentFromObject(jsObject.document);
 }
 
+// \TODO Remove if constructor tear-offs are added to the language
+WindowImpl _constructor(JsObject jsObject) => WindowImpl.fromJsObject(jsObject);
+
+/// Safely retrieves or creates an instance of [WindowImpl] from the [object].
+WindowImpl safeWindowFromObject(Object object) =>
+    safeJsWrapperFromObject<WindowImpl>(object, _constructor);
+
+/// Safely retrieves or creates an instance of [WindowImpl] from the [object] if
+/// it is not `null`.
+WindowImpl? safeWindowFromObjectNullable(Object? object) =>
+    safeJsWrapperFromObjectNullable<WindowImpl>(object, _constructor);
+
 /// The [Window] object.
-Window get window => WindowImpl.safeFromJsObject(
-    JsObject.fromBrowserObject(context['window'] as Object));
+Window get window => safeWindowFromObject(context['window'] as Object);

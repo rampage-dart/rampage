@@ -3,9 +3,12 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
+import 'package:rampage_html/html.dart';
+
 import 'document_or_shadow_root.dart';
 import 'element.dart';
 import 'global_event_handlers.dart';
+import 'head_element.dart';
 import 'html_element.dart';
 import 'node.dart';
 import 'non_element_parent_node.dart';
@@ -24,4 +27,10 @@ abstract class Document
   /// [Element] exists.
   HtmlElement? get body;
   set body(HtmlElement? value);
+
+  /// The `<head>` element of the current document.
+  HeadElement? get head;
+
+  /// The [Element] that is the root element of the [Document].
+  Element? get documentElement;
 }

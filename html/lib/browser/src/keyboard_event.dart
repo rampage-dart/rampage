@@ -5,7 +5,6 @@
 
 import 'dart:js';
 
-import 'package:rampage_html/browser/html.dart';
 import 'package:rampage_html/html.dart';
 
 import 'js/keyboard_event.dart';
@@ -43,47 +42,41 @@ class KeyboardEventImpl extends UIEventImpl implements KeyboardEvent {
     bool repeat = false,
     bool isComposing = false,
   }) =>
-      KeyboardEventImpl.fromJsObject(KeyboardEventJsObject.construct(
-        type,
-        KeyboardEventInitJsObject.construct(
-          bubbles: bubbles,
-          cancelable: cancelable,
-          composed: composed,
-          view: null, //view,
-          detail: detail,
-          ctrlKey: ctrlKey,
-          shiftKey: shiftKey,
-          altKey: altKey,
-          metaKey: metaKey,
-          modifierAltGraph: modifierAltGraph,
-          modifierCapsLock: modifierCapsLock,
-          modifierFn: modifierFn,
-          modifierFnLock: modifierFnLock,
-          modifierHyper: modifierHyper,
-          modifierNumLock: modifierNumLock,
-          modifierScrollLock: modifierScrollLock,
-          modifierSuper: modifierSuper,
-          modifierSymbol: modifierSymbol,
-          modifierSymbolLock: modifierSymbolLock,
-          key: key,
-          code: code,
-          location: location,
-          repeat: repeat,
-          isComposing: isComposing,
+      KeyboardEventImpl.fromJsObject(
+        KeyboardEventJsObject.construct(
+          type,
+          KeyboardEventInitJsObject.construct(
+            bubbles: bubbles,
+            cancelable: cancelable,
+            composed: composed,
+            view: toJsObjectNullable(view),
+            detail: detail,
+            ctrlKey: ctrlKey,
+            shiftKey: shiftKey,
+            altKey: altKey,
+            metaKey: metaKey,
+            modifierAltGraph: modifierAltGraph,
+            modifierCapsLock: modifierCapsLock,
+            modifierFn: modifierFn,
+            modifierFnLock: modifierFnLock,
+            modifierHyper: modifierHyper,
+            modifierNumLock: modifierNumLock,
+            modifierScrollLock: modifierScrollLock,
+            modifierSuper: modifierSuper,
+            modifierSymbol: modifierSymbol,
+            modifierSymbolLock: modifierSymbolLock,
+            key: key,
+            code: code,
+            location: location,
+            repeat: repeat,
+            isComposing: isComposing,
+          ),
         ),
-      ));
+      );
 
   /// Creates an instance of [KeyboardEventImpl] from the [jsObject].
   KeyboardEventImpl.fromJsObject(JsObject jsObject)
       : super.fromJsObject(jsObject);
-
-  /// Create an instance of [KeyboardEventImpl] from the [jsObject].
-  ///
-  /// This constructor should be used when its unclear if the [jsObject] has
-  /// already been wrapped.
-  factory KeyboardEventImpl.safeFromJsObject(JsObject jsObject) =>
-      (jsObject.dartObject ?? KeyboardEventImpl.fromJsObject(jsObject))
-          as KeyboardEventImpl;
 
   @override
   String get key => jsObject.key;

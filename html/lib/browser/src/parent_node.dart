@@ -3,38 +3,48 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
+import 'dart:js';
+
 import 'package:rampage_html/html.dart';
 
+import 'collection.dart';
+import 'element_from_js_object.dart';
+import 'js/parent_node.dart';
 import 'node.dart';
 
 /// Browser implementation of [ParentNode].
 mixin ParentNodeImpl on NodeImpl implements ParentNode {
   @override
-  List<Element> get children =>
-      throw UnimplementedError('children not implemented');
+  late final List<Element> children = Collection<Element>.fromJsObject(
+    JsObject.fromBrowserObject(jsObject.children),
+  );
 
   @override
   Element? get firstElementChild =>
-      throw UnimplementedError('firstElementChild not implemented');
+      safeElementFromObjectNullable(jsObject.firstElementChild);
 
   @override
   Element? get lastElementChild =>
-      throw UnimplementedError('lastElementChild not implemented');
+      safeElementFromObjectNullable(jsObject.lastElementChild);
 
   @override
-  void append(Node node) => throw UnimplementedError('append not implemented');
+  void append(Node node) {
+    jsObject.append(<JsObject>[(node as NodeImpl).jsObject]);
+  }
 
   @override
-  void prepend(Node node) =>
-      throw UnimplementedError('prepend not implemented');
+  void prepend(Node node) {
+    jsObject.prepend(<JsObject>[(node as NodeImpl).jsObject]);
+  }
 
   @override
-  void replaceChildren(Node node) =>
-      throw UnimplementedError('replaceChildren not implemented');
+  void replaceChildren(Node node) {
+    jsObject.replaceChildren(<JsObject>[(node as NodeImpl).jsObject]);
+  }
 
   @override
   T? querySelector<T extends Element>(String selectors) =>
-      throw UnimplementedError('querySelector not implemented');
+      safeElementFromObjectNullable(jsObject.querySelector(selectors)) as T?;
 
   @override
   Iterable<T> querySelectorAll<T extends Element>(String selectors) =>

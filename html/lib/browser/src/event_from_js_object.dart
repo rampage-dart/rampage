@@ -63,4 +63,4 @@ EventImpl safeEventFromObject(Object object) =>
 /// Safely retrieves or creates an instance of [EventImpl] from the [object] if
 /// it is not `null`.
 EventImpl? safeEventFromObjectNullable(Object? object) =>
-    safeJsWrapperFromObjectNullable(object, eventFromJsObject);
+    safeJsWrapperFromObjectNullable<EventImpl>(object, eventFromJsObject);

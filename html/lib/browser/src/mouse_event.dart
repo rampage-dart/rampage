@@ -7,7 +7,6 @@ import 'dart:js';
 
 import 'package:rampage_html/html.dart';
 
-import 'event_target.dart';
 import 'event_target_from_js_object.dart';
 import 'js/mouse_event.dart';
 import 'js/mouse_event_init.dart';
@@ -46,37 +45,39 @@ class MouseEventImpl extends UIEventImpl implements MouseEvent {
     int buttons = 0,
     EventTarget? relatedTarget,
   }) =>
-      MouseEventImpl.fromJsObject(MouseEventJsObject.construct(
-        type,
-        MouseEventInitJsObject.construct(
-          bubbles: bubbles,
-          cancelable: cancelable,
-          composed: composed,
-          view: null, //view,
-          detail: detail,
-          ctrlKey: ctrlKey,
-          shiftKey: shiftKey,
-          altKey: altKey,
-          metaKey: metaKey,
-          modifierAltGraph: modifierAltGraph,
-          modifierCapsLock: modifierCapsLock,
-          modifierFn: modifierFn,
-          modifierFnLock: modifierFnLock,
-          modifierHyper: modifierHyper,
-          modifierNumLock: modifierNumLock,
-          modifierScrollLock: modifierScrollLock,
-          modifierSuper: modifierSuper,
-          modifierSymbol: modifierSymbol,
-          modifierSymbolLock: modifierSymbolLock,
-          screenX: screenX,
-          screenY: screenY,
-          clientX: clientX,
-          clientY: clientY,
-          button: button,
-          buttons: buttons,
-          relatedTarget: null,
+      MouseEventImpl.fromJsObject(
+        MouseEventJsObject.construct(
+          type,
+          MouseEventInitJsObject.construct(
+            bubbles: bubbles,
+            cancelable: cancelable,
+            composed: composed,
+            view: toJsObjectNullable(view),
+            detail: detail,
+            ctrlKey: ctrlKey,
+            shiftKey: shiftKey,
+            altKey: altKey,
+            metaKey: metaKey,
+            modifierAltGraph: modifierAltGraph,
+            modifierCapsLock: modifierCapsLock,
+            modifierFn: modifierFn,
+            modifierFnLock: modifierFnLock,
+            modifierHyper: modifierHyper,
+            modifierNumLock: modifierNumLock,
+            modifierScrollLock: modifierScrollLock,
+            modifierSuper: modifierSuper,
+            modifierSymbol: modifierSymbol,
+            modifierSymbolLock: modifierSymbolLock,
+            screenX: screenX,
+            screenY: screenY,
+            clientX: clientX,
+            clientY: clientY,
+            button: button,
+            buttons: buttons,
+            relatedTarget: toJsObjectNullable(relatedTarget),
+          ),
         ),
-      ));
+      );
 
   /// Creates an instance of [MouseEventImpl] from the [jsObject].
   MouseEventImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
@@ -110,7 +111,5 @@ class MouseEventImpl extends UIEventImpl implements MouseEvent {
 
   @override
   EventTarget? get relatedTarget =>
-      safeEventTargetFromObjectNullable<EventTargetImpl>(
-        jsObject.relatedTarget,
-      );
+      safeEventTargetFromObjectNullable(jsObject.relatedTarget);
 }

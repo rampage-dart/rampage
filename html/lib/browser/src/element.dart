@@ -8,10 +8,13 @@ import 'dart:js';
 import 'package:rampage_html/html.dart';
 
 import 'child_node.dart';
-import 'element_tag.dart';
+import 'js/element.dart';
+import 'js/shadow_root_init.dart';
+import 'named_node_map.dart';
 import 'node.dart';
 import 'non_document_type_child_node.dart';
 import 'parent_node.dart';
+import 'shadow_root.dart';
 import 'slotable.dart';
 
 /// Browser implementation of [Element].
@@ -29,24 +32,42 @@ class ElementImpl extends NodeImpl
   String get tagName => jsObject.tagName;
 
   @override
-  String get id => throw UnimplementedError('id not implemented');
+  String get id => jsObject.id;
   @override
-  set id(String value) => throw UnimplementedError('id not implemented');
+  set id(String value) {
+    jsObject.id = value;
+  }
 
   @override
-  Map<String, String> get attributes =>
-      throw UnimplementedError('attributes not implemented');
+  String get className => jsObject.className;
+  @override
+  set className(String value) {
+    jsObject.className = value;
+  }
 
   @override
-  String get slot => throw UnimplementedError('slot not implemented');
+  late Map<String, String> attributes = NamedNodeMap.fromJsObject(
+      JsObject.fromBrowserObject(jsObject.attributes));
+
   @override
-  set slot(String value) => throw UnimplementedError('slot not implemented');
+  String get slot => jsObject.slot;
+  @override
+  set slot(String value) {
+    jsObject.slot = value;
+  }
 
   @override
   ShadowRoot? get shadowRoot =>
-      throw UnimplementedError('shadowRoot not implemented');
+      safeShadowRootFromObjectNullable(jsObject.shadowRoot);
 
   @override
   ShadowRoot attachShadow() =>
-      throw UnimplementedError('attachShadow not implemented');
+      ShadowRootImpl.fromJsObject(JsObject.fromBrowserObject(
+        jsObject.attachShadow(
+          ShadowRootInitOptionsJsObject.construct(
+            mode: 'open',
+            delegatesFocus: false,
+          ),
+        ),
+      ));
 }

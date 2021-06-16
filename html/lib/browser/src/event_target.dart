@@ -7,6 +7,9 @@ import 'dart:js';
 
 import 'package:rampage_html/html.dart';
 
+import 'event.dart';
+import 'event_listener_stream.dart';
+import 'js/event_target.dart';
 import 'wrapper.dart';
 
 /// Browser implementation of [EventTarget].
@@ -16,10 +19,10 @@ class EventTargetImpl extends DartJsWrapper implements EventTarget {
       : super.fromJsObject(jsObject);
 
   @override
-  Map<String, Stream<Event>> get on =>
-      throw UnimplementedError('on not implemented');
+  late final Map<String, Stream<Event>> on =
+      EventListeners.fromJsObject(jsObject);
 
   @override
   bool dispatchEvent(Event event) =>
-      throw UnimplementedError('dispatchEvent not implemented');
+      jsObject.dispatchEvent((event as EventImpl).jsObject);
 }

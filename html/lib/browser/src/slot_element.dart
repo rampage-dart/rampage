@@ -10,6 +10,7 @@ import 'package:rampage_html/html.dart';
 import 'element_factory.dart';
 import 'element_tag.dart';
 import 'html_element.dart';
+import 'js/slot_element.dart';
 import 'wrapper.dart';
 
 /// Browser implementation of [SlotElement].
@@ -22,20 +23,28 @@ class SlotElementImpl extends HtmlElementImpl implements SlotElement {
   SlotElementImpl.fromJsObject(JsObject jsObject)
       : super.fromJsObject(jsObject);
 
-  /// Create an instance of [SlotElementImpl] from the [jsObject].
-  ///
-  /// This constructor should be used when its unclear if the [jsObject] has
-  /// already been wrapped.
-  factory SlotElementImpl.safeFromJsObject(JsObject jsObject) =>
-      (jsObject.dartObject ?? SlotElementImpl.fromJsObject(jsObject))
-          as SlotElementImpl;
-
   @override
-  String get name => throw UnimplementedError('name not implemented');
+  String get name => jsObject.name;
   @override
-  set name(String value) => throw UnimplementedError('name not implemented');
+  set name(String value) {
+    jsObject.name = value;
+  }
 
   @override
   Iterable<Element> assignedElements({bool flatten = false}) =>
       throw UnimplementedError('assignedElements not implemented');
 }
+
+// \TODO Remove if constructor tear-offs are added to the language
+SlotElementImpl _constructor(JsObject jsObject) =>
+    SlotElementImpl.fromJsObject(jsObject);
+
+/// Safely retrieves or creates an instance of [SlotElementImpl] from the
+/// [object].
+SlotElementImpl safeSlotElementFromObject(Object object) =>
+    safeJsWrapperFromObject<SlotElementImpl>(object, _constructor);
+
+/// Safely retrieves or creates an instance of [SlotElementImpl] from the
+/// [object] if it is not `null`.
+SlotElementImpl? safeSlotElementFromObjectNullable(Object? object) =>
+    safeJsWrapperFromObjectNullable<SlotElementImpl>(object, _constructor);

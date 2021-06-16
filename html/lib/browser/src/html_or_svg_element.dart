@@ -5,12 +5,14 @@
 
 import 'package:rampage_html/html.dart';
 
+import 'element.dart';
+import 'js/html_or_svg_element.dart';
+
 /// Browser implementation of [HtmlOrSvgElement].
-mixin HtmlOrSvgElementImpl on Element implements HtmlOrSvgElement {
+mixin HtmlOrSvgElementImpl on ElementImpl implements HtmlOrSvgElement {
   @override
-  void focus({bool preventScroll = false}) =>
-      throw UnimplementedError('focus not implemented');
+  void focus({bool preventScroll = false}) => jsObject.focus(preventScroll);
 
   @override
-  void blur() => throw UnimplementedError('blur not implemented');
+  void blur() => jsObject.blur();
 }

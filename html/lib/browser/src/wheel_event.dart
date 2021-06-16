@@ -10,9 +10,11 @@ import 'package:rampage_html/html.dart';
 import 'js/wheel_event.dart';
 import 'js/wheel_event_init.dart';
 import 'mouse_event.dart';
+import 'wrapper.dart';
 
 /// Browser implementation of [WheelEvent].
 class WheelEventImpl extends MouseEventImpl implements WheelEvent {
+  /// Creates an instance of [WheelEventImpl].
   factory WheelEventImpl(
     String type, {
     bool bubbles = false,
@@ -46,41 +48,43 @@ class WheelEventImpl extends MouseEventImpl implements WheelEvent {
     double deltaZ = 0.0,
     int deltaMode = 0,
   }) =>
-      WheelEventImpl.fromJsObject(WheelEventJsObject.construct(
-        type,
-        WheelEventInitJsObject.construct(
-          bubbles: bubbles,
-          cancelable: cancelable,
-          composed: composed,
-          view: null, //view,
-          detail: detail,
-          ctrlKey: ctrlKey,
-          shiftKey: shiftKey,
-          altKey: altKey,
-          metaKey: metaKey,
-          modifierAltGraph: modifierAltGraph,
-          modifierCapsLock: modifierCapsLock,
-          modifierFn: modifierFn,
-          modifierFnLock: modifierFnLock,
-          modifierHyper: modifierHyper,
-          modifierNumLock: modifierNumLock,
-          modifierScrollLock: modifierScrollLock,
-          modifierSuper: modifierSuper,
-          modifierSymbol: modifierSymbol,
-          modifierSymbolLock: modifierSymbolLock,
-          screenX: screenX,
-          screenY: screenY,
-          clientX: clientX,
-          clientY: clientY,
-          button: button,
-          buttons: buttons,
-          relatedTarget: null,
-          deltaX: deltaX,
-          deltaY: deltaY,
-          deltaZ: deltaZ,
-          deltaMode: deltaMode,
+      WheelEventImpl.fromJsObject(
+        WheelEventJsObject.construct(
+          type,
+          WheelEventInitJsObject.construct(
+            bubbles: bubbles,
+            cancelable: cancelable,
+            composed: composed,
+            view: toJsObjectNullable(view),
+            detail: detail,
+            ctrlKey: ctrlKey,
+            shiftKey: shiftKey,
+            altKey: altKey,
+            metaKey: metaKey,
+            modifierAltGraph: modifierAltGraph,
+            modifierCapsLock: modifierCapsLock,
+            modifierFn: modifierFn,
+            modifierFnLock: modifierFnLock,
+            modifierHyper: modifierHyper,
+            modifierNumLock: modifierNumLock,
+            modifierScrollLock: modifierScrollLock,
+            modifierSuper: modifierSuper,
+            modifierSymbol: modifierSymbol,
+            modifierSymbolLock: modifierSymbolLock,
+            screenX: screenX,
+            screenY: screenY,
+            clientX: clientX,
+            clientY: clientY,
+            button: button,
+            buttons: buttons,
+            relatedTarget: toJsObjectNullable(relatedTarget),
+            deltaX: deltaX,
+            deltaY: deltaY,
+            deltaZ: deltaZ,
+            deltaMode: deltaMode,
+          ),
         ),
-      ));
+      );
 
   /// Creates an instance of [WheelEventImpl] from the [jsObject].
   WheelEventImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);

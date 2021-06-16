@@ -7,58 +7,23 @@ import 'dart:js';
 
 import 'package:rampage_html/html.dart';
 
-import 'body_element.dart';
-import 'div_element.dart';
-import 'element_tag.dart';
-import 'head_element.dart';
-import 'image_element.dart';
-import 'script_element.dart';
-import 'slot_element.dart';
-import 'template_element.dart';
-import 'wrapper.dart';
+import 'element_from_js_object.dart';
+import 'js/document.dart';
 
 /// Creates an [Element] from the given [tagName].
-Element createElement(String tag) =>
-    elementFromJsObject(createElementJsObject(tag));
+T createElement<T extends Element>(String tag) =>
+    safeElementFromObject(_documentCreateElement(tag)) as T;
 
-/// Calls `document.createElement` to create a [JsObject] that represents a
-/// `HTMLElement`.
-JsObject createElementJsObject(String tag) {
-  final document = JsObject.fromBrowserObject(context['document'] as Object);
-  final jsElement =
-      document.callMethod('createElement', <String>[tag]) as Object;
+JsObject createElementJsObject(String tag) =>
+    JsObject.fromBrowserObject(_documentCreateElement(tag));
 
-  return JsObject.fromBrowserObject(jsElement);
-}
+JsObject createSvgElementJsObject(String tag) => JsObject.fromBrowserObject(
+    _documentCreateElementNS('http://www.w3.org/2000/svg', tag));
 
-/// Creates an instance of [T] from the [jsObject].
-///
-/// Uses the [interop.Element.tagName] to determine the [Element] to construct.
-T elementFromJsObject<T extends Element>(JsObject jsObject) {
-  final tag = jsObject.tagName;
-  switch (tag) {
-    case ElementTag.div:
-      return DivElementImpl.fromJsObject(jsObject) as T;
-    case ElementTag.image:
-      return ImageElementImpl.fromJsObject(jsObject) as T;
-    case ElementTag.slot:
-      return SlotElementImpl.fromJsObject(jsObject) as T;
-    case ElementTag.template:
-      return TemplateElementImpl.fromJsObject(jsObject) as T;
-    case ElementTag.body:
-      return BodyElementImpl.fromJsObject(jsObject) as T;
-    case ElementTag.head:
-      return HeadElementImpl.fromJsObject(jsObject) as T;
-    case ElementTag.script:
-      return ScriptElementImpl.fromJsObject(jsObject) as T;
-  }
+Object _documentCreateElement(String tag) => _document.createElement(tag);
 
-  throw UnsupportedError('$tag not supported');
-}
+Object _documentCreateElementNS(String namespace, String tag) =>
+    _document.createElementNS(namespace, tag);
 
-/// Creates an instance of [T] from the [jsObject].
-///
-/// This function should be used when its unclear if the [jsObject] has already
-/// has already been wrapped.
-T safeElementFromJsObject<T extends Element>(JsObject jsObject) =>
-    (jsObject.dartObject ?? elementFromJsObject<T>(jsObject)) as T;
+JsObject get _document =>
+    JsObject.fromBrowserObject(context['document'] as Object);

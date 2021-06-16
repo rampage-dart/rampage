@@ -7,10 +7,11 @@ import 'dart:js';
 
 import 'package:rampage_html/html.dart';
 
+import 'document_fragment_from_js_object.dart';
 import 'element_factory.dart';
 import 'element_tag.dart';
 import 'html_element.dart';
-import 'wrapper.dart';
+import 'js/template_element.dart';
 
 /// Browser implementation of [TemplateElement].
 class TemplateElementImpl extends HtmlElementImpl implements TemplateElement {
@@ -23,15 +24,7 @@ class TemplateElementImpl extends HtmlElementImpl implements TemplateElement {
   TemplateElementImpl.fromJsObject(JsObject jsObject)
       : super.fromJsObject(jsObject);
 
-  /// Create an instance of [TemplateElementImpl] from the [jsObject].
-  ///
-  /// This constructor should be used when its unclear if the [jsObject] has
-  /// already been wrapped.
-  factory TemplateElementImpl.safeFromJsObject(JsObject jsObject) =>
-      (jsObject.dartObject ?? TemplateElementImpl.fromJsObject(jsObject))
-          as TemplateElementImpl;
-
   @override
   DocumentFragment get content =>
-      throw UnimplementedError('content not implemented');
+      safeDocumentFragmentFromObject(jsObject.content);
 }
