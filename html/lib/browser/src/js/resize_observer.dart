@@ -12,9 +12,7 @@ export 'observer.dart';
 extension ResizeObserverJsObject on JsObject {
   static JsFunction _constructor() => context['ResizeObserver'] as JsFunction;
 
-  static JsObject construct(
-    JsFunction /* ResizeObserverCallback */ callback
-  ) =>
+  static JsObject construct(JsFunction /* ResizeObserverCallback */ callback) =>
       JsObject(
         _constructor(),
         <Object?>[callback],
