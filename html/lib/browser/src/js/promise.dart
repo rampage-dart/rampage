@@ -29,3 +29,27 @@ Future<T> promiseToFuture<T>(JsObject promise) {
 
   return completer.future;
 }
+
+typedef ConvertPromiseResult<T> = T Function(JsObject);
+
+Future<T> promiseToFutureWithConversion<T>(
+  JsObject promise,
+  ConvertPromiseResult<T> convert,
+) {
+  final completer = Completer<T>();
+
+  void onFulfilled(Object? obj, JsObject value) {
+    completer.complete(convert(value));
+  }
+
+  void onRejected(Object? object, Object error) {
+    completer.completeError(error);
+  }
+
+  promise.callMethod('then', <Object?>[
+    JsFunction.withThis(onFulfilled),
+    JsFunction.withThis(onRejected),
+  ]);
+
+  return completer.future;
+}
