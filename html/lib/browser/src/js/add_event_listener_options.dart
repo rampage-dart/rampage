@@ -13,12 +13,11 @@ extension AddEventListenerOptionsJsObject on JsObject {
   static JsObject construct({
     required bool capture,
     required bool passive,
-    required bool once
+    required bool once,
   }) =>
       EventListenerOptionsJsObject.construct(
         capture: capture,
         extend: <String, Object?>{
-          'capture': capture,
           'passive': passive,
           'once': once,
         },
