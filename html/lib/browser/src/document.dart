@@ -8,7 +8,11 @@ import 'dart:js';
 import 'package:rampage_html/html.dart';
 
 import 'document_or_shadow_root.dart';
+import 'element_from_js_object.dart';
 import 'global_event_handlers.dart';
+import 'head_element.dart';
+import 'html_element_from_js_object.dart';
+import 'js/document.dart';
 import 'node.dart';
 import 'non_element_parent_node.dart';
 import 'parent_node.dart';
@@ -22,20 +26,42 @@ class DocumentImpl extends NodeImpl
         DocumentOrShadowRootImpl,
         GlobalEventHandlersImpl
     implements Document {
+  /// Create an instance of [DocumentImpl]
+  factory DocumentImpl() =>
+      DocumentImpl.fromJsObject(DocumentJsObject.construct());
+
   /// Create an instance of [DocumentImpl] from the [jsObject].
   DocumentImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
 
-  /// Create an instance of [DocumentImpl] from the [jsObject].
-  ///
-  /// This constructor should be used when its unclear if the [jsObject] has
-  /// already been wrapped.
-  factory DocumentImpl.safeFromJsObject(JsObject jsObject) =>
-      (jsObject.dartObject ?? DocumentImpl.fromJsObject(jsObject))
-          as DocumentImpl;
+  @override
+  HtmlElement? get body => safeHtmlElementFromObjectNullable(jsObject.body);
+  @override
+  set body(HtmlElement? value) {
+    jsObject.body = toJsObjectNullable(value);
+  }
 
   @override
-  HtmlElement? get body => throw UnimplementedError('body not implemented');
+  HeadElement? get head => safeHeadElementFromObjectNullable(jsObject.head);
+
   @override
-  set body(HtmlElement? value) =>
-      throw UnimplementedError('body not implemented');
+  Element? get documentElement =>
+      safeElementFromObjectNullable(jsObject.documentElement);
 }
+
+// \TODO Remove if constructor tear-offs are added to the language
+DocumentImpl _constructor(JsObject jsObject) =>
+    DocumentImpl.fromJsObject(jsObject);
+
+/// Create an instance of [Document] from the [object].
+///
+/// This should be used when its unclear if the [object] has already been
+/// wrapped.
+DocumentImpl safeDocumentFromObject(Object object) =>
+    safeJsWrapperFromObject<DocumentImpl>(object, _constructor);
+
+/// Create an instance of [Document] from the [object]; or null otherwise.
+///
+/// This should be used when its unclear if the [object] has already been
+/// wrapped.
+DocumentImpl? safeDocumentFromObjectNullable(Object? object) =>
+    safeJsWrapperFromObjectNullable<DocumentImpl>(object, _constructor);

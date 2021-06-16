@@ -5,9 +5,9 @@
 
 import 'dart:js';
 
-import 'package:rampage_html/browser/src/event_target_from_js_object.dart';
 import 'package:rampage_html/html.dart';
 
+import 'event_target_from_js_object.dart';
 import 'js/focus_event.dart';
 import 'js/focus_event_init.dart';
 import 'ui_event.dart';
@@ -25,28 +25,22 @@ class FocusEventImpl extends UIEventImpl implements FocusEvent {
     int detail = 0,
     EventTarget? relatedTarget,
   }) =>
-      FocusEventImpl.fromJsObject(FocusEventJsObject.construct(
-        type,
-        FocusEventInitJsObject.construct(
-          bubbles: bubbles,
-          cancelable: cancelable,
-          composed: composed,
-          view: null, // view,
-          detail: detail,
-          relatedTarget: null, // relatedTarget,
+      FocusEventImpl.fromJsObject(
+        FocusEventJsObject.construct(
+          type,
+          FocusEventInitJsObject.construct(
+            bubbles: bubbles,
+            cancelable: cancelable,
+            composed: composed,
+            view: toJsObjectNullable(view),
+            detail: detail,
+            relatedTarget: toJsObjectNullable(relatedTarget),
+          ),
         ),
-      ));
+      );
 
   /// Creates an instance of [FocusEventImpl] from the [jsObject].
   FocusEventImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
-
-  /// Create an instance of [FocusEventImpl] from the [jsObject].
-  ///
-  /// This constructor should be used when its unclear if the [jsObject] has
-  /// already been wrapped.
-  factory FocusEventImpl.safeFromJsObject(JsObject jsObject) =>
-      (jsObject.dartObject ?? FocusEventImpl.fromJsObject(jsObject))
-          as FocusEventImpl;
 
   @override
   EventTarget? get relatedTarget =>

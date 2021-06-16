@@ -7,6 +7,7 @@ import 'dart:js';
 
 import 'package:rampage_html/html.dart';
 
+import 'js/rectangle.dart';
 import 'wrapper.dart';
 
 /// Browser implementation of [ImmutableRectangle].
@@ -18,33 +19,40 @@ class ImmutableRectangleImpl extends JsWrapper implements ImmutableRectangle {
     double width = 0.0,
     double height = 0.0,
   }) =>
-      throw UnimplementedError('ImmutableRectangleImpl not implemented');
+      ImmutableRectangleImpl.fromJsObject(
+        ImmutableRectangleJsObject.construct(
+          x,
+          y,
+          width,
+          height,
+        ),
+      );
 
   /// Creates an instance of [ImmutableRectangleImpl] from the [jsObject].
   ImmutableRectangleImpl.fromJsObject(JsObject jsObject)
       : super.fromJsObject(jsObject);
 
   @override
-  double get x => throw UnimplementedError('x not implemented');
+  double get x => jsObject.x;
 
   @override
-  double get y => throw UnimplementedError('y not implemented');
+  double get y => jsObject.y;
 
   @override
-  double get width => throw UnimplementedError('width not implemented');
+  double get width => jsObject.width;
 
   @override
-  double get height => throw UnimplementedError('height not implemented');
+  double get height => jsObject.height;
 
   @override
-  double get top => throw UnimplementedError('top not implemented');
+  double get top => jsObject.top;
 
   @override
-  double get right => throw UnimplementedError('right not implemented');
+  double get right => jsObject.right;
 
   @override
-  double get left => throw UnimplementedError('left not implemented');
+  double get left => jsObject.left;
 
   @override
-  double get bottom => throw UnimplementedError('bottom not implemented');
+  double get bottom => jsObject.bottom;
 }

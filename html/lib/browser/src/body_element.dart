@@ -21,12 +21,18 @@ class BodyElementImpl extends HtmlElementImpl implements BodyElement {
   /// Create an instance of [BodyElementImpl] from the [jsObject]
   BodyElementImpl.fromJsObject(JsObject jsObject)
       : super.fromJsObject(jsObject);
-
-  /// Create an instance of [BodyElementImpl] from the [jsObject].
-  ///
-  /// This constructor should be used when its unclear if the [jsObject] has
-  /// already been wrapped.
-  factory BodyElementImpl.safeFromJsObject(JsObject jsObject) =>
-      (jsObject.dartObject ?? BodyElementImpl.fromJsObject(jsObject))
-          as BodyElementImpl;
 }
+
+// \TODO Remove if constructor tear-offs are added to the language
+BodyElementImpl _constructor(JsObject jsObject) =>
+    BodyElementImpl.fromJsObject(jsObject);
+
+/// Safely retrieves or creates an instance of [BodyElementImpl] from the
+/// [object].
+BodyElementImpl safeBodyElementFromObject(Object object) =>
+    safeJsWrapperFromObject<BodyElementImpl>(object, _constructor);
+
+/// Safely retrieves or creates an instance of [BodyElementImpl] from the
+/// [object] if it is not `null`.
+BodyElementImpl? safeBodyElementFromObjectNullable(Object? object) =>
+    safeJsWrapperFromObjectNullable<BodyElementImpl>(object, _constructor);

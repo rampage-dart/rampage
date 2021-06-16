@@ -10,6 +10,7 @@ import 'package:rampage_html/html.dart';
 import 'element.dart';
 import 'global_event_handlers.dart';
 import 'html_or_svg_element.dart';
+import 'js/html_element.dart';
 
 /// Browser implementation of [HtmlElement].
 class HtmlElementImpl extends ElementImpl
@@ -20,8 +21,9 @@ class HtmlElementImpl extends ElementImpl
       : super.fromJsObject(jsObject);
 
   @override
-  String get innerText => throw UnimplementedError('innerText not implemented');
+  String get innerText => jsObject.innerText;
   @override
-  set innerText(String value) =>
-      throw UnimplementedError('innerText not implemented');
+  set innerText(String value) {
+    jsObject.innerText = value;
+  }
 }

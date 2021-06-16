@@ -31,7 +31,14 @@ class CustomElementRegistryImpl extends JsWrapper
       : super.fromJsObject(jsObject);
 
   @override
-  void define(String name, Function construct, [List<String>? attributes]) {
+  void define(
+    String name,
+    CustomElementConstructor constructor, [
+    List<String>? attributes,
+  ]) {
+    HtmlElement construct(Object? scope, Object object) =>
+        constructor(JsObject.fromBrowserObject(object));
+
     jsObject.define(
       name,
       JsFunction.withThis(construct),
@@ -63,8 +70,8 @@ void _attributeChangedCallback(
   Object? scope,
   CustomElementImpl element,
   String name,
-  String oldValue,
-  String newValue,
+  String? oldValue,
+  String? newValue,
 ) {
   element.attributeChanged(name, oldValue, newValue);
 }

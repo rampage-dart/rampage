@@ -5,11 +5,13 @@
 
 import 'package:rampage_html/html.dart';
 
+import 'js/slotable.dart';
 import 'node.dart';
+import 'slot_element.dart';
 
 /// Browser implementation of [Slotable].
 mixin SlotableImpl on NodeImpl implements Slotable {
   @override
   SlotElement? get assignedSlot =>
-      throw UnimplementedError('assignedSlot not implemented');
+      safeSlotElementFromObjectNullable(jsObject.assignedSlot);
 }

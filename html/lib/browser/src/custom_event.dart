@@ -21,15 +21,17 @@ class CustomEventImpl extends EventImpl implements CustomEvent {
     bool composed = false,
     Object? detail,
   }) =>
-      CustomEventImpl.fromJsObject(CustomEventJsObject.construct(
-        type,
-        CustomEventInitJsObject.construct(
-          bubbles: bubbles,
-          cancelable: cancelable,
-          composed: composed,
-          detail: detail,
+      CustomEventImpl.fromJsObject(
+        CustomEventJsObject.construct(
+          type,
+          CustomEventInitJsObject.construct(
+            bubbles: bubbles,
+            cancelable: cancelable,
+            composed: composed,
+            detail: detail,
+          ),
         ),
-      ));
+      );
 
   /// Creates an instance of [CustomEventImpl] from the [jsObject].
   CustomEventImpl.fromJsObject(JsObject jsObject)

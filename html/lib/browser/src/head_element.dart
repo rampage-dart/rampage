@@ -21,12 +21,22 @@ class HeadElementImpl extends HtmlElementImpl implements HeadElement {
   /// Create an instance of [HeadElementImpl] from the [jsObject]
   HeadElementImpl.fromJsObject(JsObject jsObject)
       : super.fromJsObject(jsObject);
-
-  /// Create an instance of [HeadElementImpl] from the [jsObject].
-  ///
-  /// This constructor should be used when its unclear if the [jsObject] has
-  /// already been wrapped.
-  factory HeadElementImpl.safeFromJsObject(JsObject jsObject) =>
-      (jsObject.dartObject ?? HeadElementImpl.fromJsObject(jsObject))
-          as HeadElementImpl;
 }
+
+// \TODO Remove if constructor tear-offs are added to the language
+HeadElementImpl _constructor(JsObject jsObject) =>
+    HeadElementImpl.fromJsObject(jsObject);
+
+/// Create an instance of [HeadElement] from the [object].
+///
+/// This should be used when its unclear if the [object] has already been
+/// wrapped.
+HeadElement safeHeadElementFromObject(Object object) =>
+    safeJsWrapperFromObject<HeadElementImpl>(object, _constructor);
+
+/// Create an instance of [HeadElement] from the [object]; or null otherwise.
+///
+/// This should be used when its unclear if the [object] has already been
+/// wrapped.
+HeadElement? safeHeadElementFromObjectNullable(Object? object) =>
+    safeJsWrapperFromObjectNullable<HeadElementImpl>(object, _constructor);

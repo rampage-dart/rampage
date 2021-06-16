@@ -4,49 +4,83 @@
 // the LICENSE file.
 
 import 'dart:async';
-import 'dart:html';
 import 'dart:js';
 
 import 'package:rampage_html/html.dart';
 
+import 'element_from_js_object.dart';
+import 'js/resize_observer.dart';
+import 'js/resize_observer_entry.dart';
+import 'observer_stream.dart';
+import 'rectangle.dart';
 import 'wrapper.dart';
 
 /// Browser implementation of [ResizeObserver].
-class ResizeObserverImpl extends JsWrapper implements ResizeObserver {
+class ResizeObserverImpl extends DartJsWrapper
+    with ObserverImpl
+    implements ResizeObserver {
   /// Create an instance of [ResizeObserverImpl].
-  factory ResizeObserverImpl() =>
-      throw UnimplementedError('ResizeObserverImpl not implemented');
+  factory ResizeObserverImpl() => ResizeObserverImpl.fromJsObject(
+        ResizeObserverJsObject.construct(
+          JsFunction.withThis(_resizeCallback),
+        ),
+      );
 
   /// Create an instance of [ResizeObserverImpl] from the [jsObject].
   ResizeObserverImpl.fromJsObject(JsObject jsObject)
       : super.fromJsObject(jsObject);
 
-  @override
-  Stream<ResizeObserverEntry> get onResize =>
-      throw UnimplementedError('onResize not implemented');
+  // ignore: close_sinks
+  late final StreamController<ResizeObserverEntryImpl> _streamController =
+      StreamController<ResizeObserverEntryImpl>.broadcast(
+    onCancel: disconnect,
+  );
 
   @override
-  void observe(Element element) =>
-      throw UnimplementedError('observe not implemented');
+  late final ObserverStream<ResizeObserverEntry> onResize =
+      ObserverStreamImpl<ResizeObserverImpl, ResizeObserverEntryImpl>(
+    _streamController.stream,
+    this,
+  );
 
   @override
-  void unobserve(Element element) =>
-      throw UnimplementedError('unobserve not implemented');
+  void disconnect() {
+    jsObject.disconnect();
+  }
 
-  @override
-  void disconnect() => throw UnimplementedError('disconnect not implemented');
+  static void _resizeCallback(
+    Object? scope,
+    List<Object?> entries,
+    JsObject observer,
+  ) {
+    final dartObserver = observer.dartObject! as ResizeObserverImpl;
+
+    for (final entry in entries) {
+      dartObserver._streamController.add(
+        ResizeObserverEntryImpl.fromJsObject(
+          JsObject.fromBrowserObject(entry!),
+        ),
+      );
+    }
+  }
 }
 
 /// Browser implementation of [ResizeObserverEntryImpl].
-class ResizeObserverEntryImpl extends JsWrapper implements ResizeObserverEntry {
+class ResizeObserverEntryImpl extends JsWrapper
+    implements ObserverEntry, ResizeObserverEntry {
   /// Create an instance of [ResizeObserverEntryImpl].
   ResizeObserverEntryImpl.fromJsObject(JsObject jsObject)
       : super.fromJsObject(jsObject);
 
   @override
-  Element get target => throw UnimplementedError('target not implemented');
+  late final Element target = safeElementFromObject(jsObject.target);
 
   @override
-  ImmutableRectangle get contentRect =>
-      throw UnimplementedError('contentRect not implemented');
+  late final ImmutableRectangle contentRect =
+      ImmutableRectangleImpl.fromJsObject(
+    JsObject.fromBrowserObject(jsObject.contentRect),
+  );
+
+  @override
+  bool isTarget(Element element) => target == element;
 }

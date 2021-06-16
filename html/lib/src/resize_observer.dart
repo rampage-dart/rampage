@@ -16,7 +16,7 @@ abstract class ResizeObserver {
   /// Creates an instance of [ResizeObserver].
   factory ResizeObserver() = impl.ResizeObserverImpl;
 
-  /// Stream of resize events observered.
+  /// Stream of resize events observed.
   Stream<ResizeObserverEntry> get onResize;
 
   /// Initiates the observing of a specified [Element].

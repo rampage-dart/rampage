@@ -6,15 +6,17 @@
 import 'package:rampage_html/html.dart';
 
 import 'child_node.dart';
+import 'element_from_js_object.dart';
+import 'js/non_document_type_child_node.dart';
 
 /// Browser implementation of [NonElementParentNode].
 mixin NonDocumentTypeChildNodeImpl on ChildNodeImpl
     implements NonDocumentTypeChildNode {
   @override
   Element? get previousElementSibling =>
-      throw UnimplementedError('previousElementSibling not implemented');
+      safeElementFromObjectNullable(jsObject.previousElementSibling);
 
   @override
   Element? get nextElementSibling =>
-      throw UnimplementedError('nextElementSibling not implemented');
+      safeElementFromObjectNullable(jsObject.nextElementSibling);
 }
