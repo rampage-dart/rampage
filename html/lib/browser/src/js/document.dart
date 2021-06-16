@@ -22,6 +22,9 @@ extension DocumentJsObject on JsObject {
   Object? get head => this['head'];
   Object? get documentElement => this['documentElement'];
 
+  Object createAttribute(String localName) =>
+      callMethod('createAttribute', <Object?>[localName]) as Object;
+
   Object createElement(String localName) =>
       callMethod('createElement', <Object?>[localName]) as Object;
 

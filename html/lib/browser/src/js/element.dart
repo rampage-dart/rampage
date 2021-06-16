@@ -10,6 +10,8 @@ import 'dart:js';
 extension ElementJsObject on JsObject {
   bool get isInstanceOf => instanceof(context['Element'] as JsFunction);
 
+  Object get attributes => this['attributes'] as Object;
+
   String get tagName => this['tagName'] as String;
 
   String get className => this['className'] as String;
