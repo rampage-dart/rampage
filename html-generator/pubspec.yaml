@@ -1,0 +1,15 @@
+name: rampage_html_generator
+
+environment:
+  sdk: '>=2.13.0-0 <3.0.0'
+
+dependencies:
+  code_builder: ^4.0.0
+  dart_style: ^2.0.1
+  recase: ^4.0.0
+  web_idl:
+    path: ../../web-idl
+
+dependency_overrides:
+  code_builder:
+    path: ../code_builder
