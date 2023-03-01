@@ -23,4 +23,4 @@ abstract class Window implements EventTarget, GlobalEventHandlers {
 }
 
 /// The [Window] object.
-late final Window window = impl.window;
+final Window window = impl.window;
