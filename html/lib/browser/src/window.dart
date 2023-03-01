@@ -28,17 +28,17 @@ class WindowImpl extends EventTargetImpl
   late final Document document = safeDocumentFromObject(jsObject.document);
 }
 
-// \TODO Remove if constructor tear-offs are added to the language
-WindowImpl _constructor(JsObject jsObject) => WindowImpl.fromJsObject(jsObject);
-
 /// Safely retrieves or creates an instance of [WindowImpl] from the [object].
 WindowImpl safeWindowFromObject(Object object) =>
-    safeJsWrapperFromObject<WindowImpl>(object, _constructor);
+    safeJsWrapperFromObject<WindowImpl>(object, WindowImpl.fromJsObject);
 
 /// Safely retrieves or creates an instance of [WindowImpl] from the [object] if
 /// it is not `null`.
 WindowImpl? safeWindowFromObjectNullable(Object? object) =>
-    safeJsWrapperFromObjectNullable<WindowImpl>(object, _constructor);
+    safeJsWrapperFromObjectNullable<WindowImpl>(
+      object,
+      WindowImpl.fromJsObject,
+    );
 
 /// The [Window] object.
 Window get window => safeWindowFromObject(context['window'] as Object);

@@ -3,8 +3,6 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-import 'dart:js';
-
 import 'package:rampage_html/html.dart';
 
 import 'element_factory.dart';
@@ -39,20 +37,22 @@ class ScriptElementImpl extends HtmlElementImpl implements ScriptElement {
   bool get defer => jsObject.defer;
 }
 
-// \TODO Remove if constructor tear-offs are added to the language
-ScriptElementImpl _constructor(JsObject jsObject) =>
-    ScriptElementImpl.fromJsObject(jsObject);
-
 /// Create an instance of [ScriptElement] from the [object].
 ///
 /// This should be used when its unclear if the [object] has already been
 /// wrapped.
 ScriptElement safeScriptElementFromObject(Object object) =>
-    safeJsWrapperFromObject<ScriptElementImpl>(object, _constructor);
+    safeJsWrapperFromObject<ScriptElementImpl>(
+      object,
+      ScriptElementImpl.fromJsObject,
+    );
 
 /// Create an instance of [ScriptElement] from the [object]; or null otherwise.
 ///
 /// This should be used when its unclear if the [object] has already been
 /// wrapped.
 ScriptElement? safeScriptElementFromObjectNullable(Object? object) =>
-    safeJsWrapperFromObjectNullable<ScriptElementImpl>(object, _constructor);
+    safeJsWrapperFromObjectNullable<ScriptElementImpl>(
+      object,
+      ScriptElementImpl.fromJsObject,
+    );

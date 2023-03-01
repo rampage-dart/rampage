@@ -3,8 +3,6 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-import 'dart:js';
-
 import 'package:rampage_html/html.dart';
 
 import 'element_factory.dart';
@@ -34,16 +32,18 @@ class SlotElementImpl extends HtmlElementImpl implements SlotElement {
       throw UnimplementedError('assignedElements not implemented');
 }
 
-// \TODO Remove if constructor tear-offs are added to the language
-SlotElementImpl _constructor(JsObject jsObject) =>
-    SlotElementImpl.fromJsObject(jsObject);
-
 /// Safely retrieves or creates an instance of [SlotElementImpl] from the
 /// [object].
 SlotElementImpl safeSlotElementFromObject(Object object) =>
-    safeJsWrapperFromObject<SlotElementImpl>(object, _constructor);
+    safeJsWrapperFromObject<SlotElementImpl>(
+      object,
+      SlotElementImpl.fromJsObject,
+    );
 
 /// Safely retrieves or creates an instance of [SlotElementImpl] from the
 /// [object] if it is not `null`.
 SlotElementImpl? safeSlotElementFromObjectNullable(Object? object) =>
-    safeJsWrapperFromObjectNullable<SlotElementImpl>(object, _constructor);
+    safeJsWrapperFromObjectNullable<SlotElementImpl>(
+      object,
+      SlotElementImpl.fromJsObject,
+    );

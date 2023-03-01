@@ -4,7 +4,6 @@
 // the LICENSE file.
 
 import 'dart:async';
-import 'dart:js';
 
 import 'package:rampage_html/browser/html.dart' hide window;
 import 'package:rampage_html/html.dart';
@@ -54,10 +53,7 @@ class ClickCounterImpl extends CustomElementImpl implements ClickCounter {
   static void define() {
     window.customElements.define(
       'click-counter',
-      _constructor,
+      ClickCounterImpl.fromJsObject,
     );
   }
-
-  static HtmlElement _constructor(JsObject jsObject) =>
-      ClickCounterImpl.fromJsObject(jsObject);
 }

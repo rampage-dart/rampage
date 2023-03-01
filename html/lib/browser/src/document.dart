@@ -3,8 +3,6 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-import 'dart:js';
-
 import 'package:rampage_html/html.dart';
 
 import 'document_or_shadow_root.dart';
@@ -48,20 +46,19 @@ class DocumentImpl extends NodeImpl
       safeElementFromObjectNullable(jsObject.documentElement);
 }
 
-// \TODO Remove if constructor tear-offs are added to the language
-DocumentImpl _constructor(JsObject jsObject) =>
-    DocumentImpl.fromJsObject(jsObject);
-
 /// Create an instance of [Document] from the [object].
 ///
 /// This should be used when its unclear if the [object] has already been
 /// wrapped.
 DocumentImpl safeDocumentFromObject(Object object) =>
-    safeJsWrapperFromObject<DocumentImpl>(object, _constructor);
+    safeJsWrapperFromObject<DocumentImpl>(object, DocumentImpl.fromJsObject);
 
 /// Create an instance of [Document] from the [object]; or null otherwise.
 ///
 /// This should be used when its unclear if the [object] has already been
 /// wrapped.
 DocumentImpl? safeDocumentFromObjectNullable(Object? object) =>
-    safeJsWrapperFromObjectNullable<DocumentImpl>(object, _constructor);
+    safeJsWrapperFromObjectNullable<DocumentImpl>(
+      object,
+      DocumentImpl.fromJsObject,
+    );

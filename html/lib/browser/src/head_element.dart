@@ -3,8 +3,6 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-import 'dart:js';
-
 import 'package:rampage_html/html.dart';
 
 import 'element_factory.dart';
@@ -22,20 +20,22 @@ class HeadElementImpl extends HtmlElementImpl implements HeadElement {
   HeadElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 }
 
-// \TODO Remove if constructor tear-offs are added to the language
-HeadElementImpl _constructor(JsObject jsObject) =>
-    HeadElementImpl.fromJsObject(jsObject);
-
 /// Create an instance of [HeadElement] from the [object].
 ///
 /// This should be used when its unclear if the [object] has already been
 /// wrapped.
 HeadElement safeHeadElementFromObject(Object object) =>
-    safeJsWrapperFromObject<HeadElementImpl>(object, _constructor);
+    safeJsWrapperFromObject<HeadElementImpl>(
+      object,
+      HeadElementImpl.fromJsObject,
+    );
 
 /// Create an instance of [HeadElement] from the [object]; or null otherwise.
 ///
 /// This should be used when its unclear if the [object] has already been
 /// wrapped.
 HeadElement? safeHeadElementFromObjectNullable(Object? object) =>
-    safeJsWrapperFromObjectNullable<HeadElementImpl>(object, _constructor);
+    safeJsWrapperFromObjectNullable<HeadElementImpl>(
+      object,
+      HeadElementImpl.fromJsObject,
+    );

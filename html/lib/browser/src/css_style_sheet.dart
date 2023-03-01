@@ -3,8 +3,6 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-import 'dart:js';
-
 import 'package:rampage_html/html.dart';
 
 import 'js/css_style_sheet.dart';
@@ -41,16 +39,18 @@ class CssStyleSheetImpl extends StyleSheetImpl implements CssStyleSheet {
   }
 }
 
-// \TODO Remove if constructor tear-offs are added to the language
-CssStyleSheetImpl _constructor(JsObject jsObject) =>
-    CssStyleSheetImpl.fromJsObject(jsObject);
-
 /// Safely retrieves or creates an instance of [CssStyleSheetImpl] from the
 /// [object].
 CssStyleSheetImpl safeCssStyleSheetFromObject(Object object) =>
-    safeJsWrapperFromObject<CssStyleSheetImpl>(object, _constructor);
+    safeJsWrapperFromObject<CssStyleSheetImpl>(
+      object,
+      CssStyleSheetImpl.fromJsObject,
+    );
 
 /// Safely retrieves or creates an instance of [CssStyleSheetImpl] from the
 /// [object] if it is not `null`.
 CssStyleSheetImpl? safeCssStyleSheetFromObjectNullable(Object? object) =>
-    safeJsWrapperFromObjectNullable<CssStyleSheetImpl>(object, _constructor);
+    safeJsWrapperFromObjectNullable<CssStyleSheetImpl>(
+      object,
+      CssStyleSheetImpl.fromJsObject,
+    );

@@ -3,8 +3,6 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-import 'dart:js';
-
 import 'package:rampage_html/html.dart';
 
 import 'element_factory.dart';
@@ -22,16 +20,18 @@ class BodyElementImpl extends HtmlElementImpl implements BodyElement {
   BodyElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 }
 
-// \TODO Remove if constructor tear-offs are added to the language
-BodyElementImpl _constructor(JsObject jsObject) =>
-    BodyElementImpl.fromJsObject(jsObject);
-
 /// Safely retrieves or creates an instance of [BodyElementImpl] from the
 /// [object].
 BodyElementImpl safeBodyElementFromObject(Object object) =>
-    safeJsWrapperFromObject<BodyElementImpl>(object, _constructor);
+    safeJsWrapperFromObject<BodyElementImpl>(
+      object,
+      BodyElementImpl.fromJsObject,
+    );
 
 /// Safely retrieves or creates an instance of [BodyElementImpl] from the
 /// [object] if it is not `null`.
 BodyElementImpl? safeBodyElementFromObjectNullable(Object? object) =>
-    safeJsWrapperFromObjectNullable<BodyElementImpl>(object, _constructor);
+    safeJsWrapperFromObjectNullable<BodyElementImpl>(
+      object,
+      BodyElementImpl.fromJsObject,
+    );

@@ -3,8 +3,6 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-import 'dart:js';
-
 import 'package:rampage_html/html.dart';
 
 import 'document_fragment.dart';
@@ -24,20 +22,22 @@ class ShadowRootImpl extends DocumentFragmentImpl
   late final Element host = safeElementFromObject(jsObject.host);
 }
 
-// \TODO Remove if constructor tear-offs are added to the language
-ShadowRootImpl _constructor(JsObject jsObject) =>
-    ShadowRootImpl.fromJsObject(jsObject);
-
 /// Create an instance of [ShadowRoot] from the [object].
 ///
 /// This should be used when its unclear if the [object] has already been
 /// wrapped.
 ShadowRoot safeShadowRootFromObject(Object object) =>
-    safeJsWrapperFromObject<ShadowRootImpl>(object, _constructor);
+    safeJsWrapperFromObject<ShadowRootImpl>(
+      object,
+      ShadowRootImpl.fromJsObject,
+    );
 
 /// Create an instance of [ShadowRoot] from the [object]; or null otherwise.
 ///
 /// This should be used when its unclear if the [object] has already been
 /// wrapped.
 ShadowRoot? safeShadowRootFromObjectNullable(Object? object) =>
-    safeJsWrapperFromObjectNullable<ShadowRootImpl>(object, _constructor);
+    safeJsWrapperFromObjectNullable<ShadowRootImpl>(
+      object,
+      ShadowRootImpl.fromJsObject,
+    );
