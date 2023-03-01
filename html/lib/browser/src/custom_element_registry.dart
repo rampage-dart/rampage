@@ -27,8 +27,7 @@ class CustomElementRegistryImpl extends JsWrapper
   }
 
   /// Create an instance of [CustomElementRegistryImpl] from the [jsObject].
-  CustomElementRegistryImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  CustomElementRegistryImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   void define(

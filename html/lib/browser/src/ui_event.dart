@@ -38,7 +38,7 @@ class UIEventImpl extends EventImpl implements UIEvent {
       );
 
   /// Creates an instance of [UIEventImpl] from the [jsObject].
-  UIEventImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  UIEventImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   Window? get view => safeWindowFromObjectNullable(jsObject.view);

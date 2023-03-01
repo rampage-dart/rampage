@@ -11,8 +11,7 @@ import 'package:rampage_html/html.dart';
 import '../main.dart';
 
 class ClickCounterImpl extends CustomElementImpl implements ClickCounter {
-  ClickCounterImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject) {
+  ClickCounterImpl.fromJsObject(super.jsObject) : super.fromJsObject() {
     final root = attachShadow();
     final template = window.document
         .querySelector<TemplateElement>('#click-counter-tmpl')!

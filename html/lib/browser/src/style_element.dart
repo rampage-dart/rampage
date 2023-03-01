@@ -19,8 +19,7 @@ class StyleElementImpl extends HtmlElementImpl implements StyleElement {
       StyleElementImpl.fromJsObject(createElementJsObject(ElementTag.style));
 
   /// Create an instance of [StyleElementImpl] from the [jsObject]
-  StyleElementImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  StyleElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   String get media => jsObject.media;

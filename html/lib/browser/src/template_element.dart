@@ -21,8 +21,7 @@ class TemplateElementImpl extends HtmlElementImpl implements TemplateElement {
       );
 
   /// Create an instance of [TemplateElementImpl] from the [jsObject].
-  TemplateElementImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  TemplateElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   DocumentFragment get content =>

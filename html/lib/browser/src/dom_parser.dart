@@ -18,7 +18,7 @@ class DomParserImpl extends JsWrapper implements DomParser {
       DomParserImpl.fromJsObject(DomParserJsObject.construct());
 
   /// Create an instance of [DomParserImpl] from the [jsObject].
-  DomParserImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  DomParserImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   Document parseFromString(String string, String type) =>

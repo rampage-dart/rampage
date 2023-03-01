@@ -19,8 +19,7 @@ class BodyElementImpl extends HtmlElementImpl implements BodyElement {
       BodyElementImpl.fromJsObject(createElementJsObject(ElementTag.body));
 
   /// Create an instance of [BodyElementImpl] from the [jsObject]
-  BodyElementImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  BodyElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 }
 
 // \TODO Remove if constructor tear-offs are added to the language

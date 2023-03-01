@@ -17,8 +17,7 @@ class HtmlElementImpl extends ElementImpl
     with HtmlOrSvgElementImpl, GlobalEventHandlersImpl
     implements HtmlElement {
   /// Creates an instance of [HtmlElementImpl] from the [jsObject].
-  HtmlElementImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  HtmlElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   String get innerText => jsObject.innerText;

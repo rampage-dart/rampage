@@ -38,8 +38,7 @@ class IntersectionObserverImpl extends DartJsWrapper
       );
 
   /// Creates an instance of [IntersectionObserverImpl] from the [jsObject].
-  IntersectionObserverImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  IntersectionObserverImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   // ignore: close_sinks
   late final StreamController<IntersectionObserverEntryImpl> _streamController =
@@ -91,8 +90,8 @@ class IntersectionObserverEntryImpl extends JsWrapper
     implements ObserverEntry, IntersectionObserverEntry {
   /// Creates an instance of [IntersectionObserverEntryImpl] from the
   /// [jsObject].
-  IntersectionObserverEntryImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  IntersectionObserverEntryImpl.fromJsObject(super.jsObject)
+      : super.fromJsObject();
 
   @override
   ImmutableRectangle get boundingClientRect =>

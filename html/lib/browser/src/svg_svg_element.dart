@@ -18,6 +18,5 @@ class SvgSvgElementImpl extends SvgElementImpl {
       SvgSvgElementImpl.fromJsObject(createSvgElementJsObject(ElementTag.svg));
 
   /// Create an instance of [BodyElementImpl] from the [jsObject]
-  SvgSvgElementImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  SvgSvgElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 }

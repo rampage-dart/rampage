@@ -19,8 +19,7 @@ class ImageElementImpl extends HtmlElementImpl implements ImageElement {
       ImageElementImpl.fromJsObject(createElementJsObject(ElementTag.image));
 
   /// Create an instance of [ImageElementImpl] from the [jsObject].
-  ImageElementImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  ImageElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   String get src => jsObject.src;

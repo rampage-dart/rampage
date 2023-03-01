@@ -87,7 +87,7 @@ class WheelEventImpl extends MouseEventImpl implements WheelEvent {
       );
 
   /// Creates an instance of [WheelEventImpl] from the [jsObject].
-  WheelEventImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  WheelEventImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   double get deltaX => jsObject.deltaX;

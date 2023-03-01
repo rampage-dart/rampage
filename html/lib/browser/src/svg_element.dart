@@ -16,5 +16,5 @@ class SvgElementImpl extends ElementImpl
     with HtmlOrSvgElementImpl, GlobalEventHandlersImpl
     implements SvgElement {
   /// Creates an instance of [SvgElementImpl] from the [jsObject].
-  SvgElementImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  SvgElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 }

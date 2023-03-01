@@ -14,7 +14,7 @@ import 'wrapper.dart';
 /// Browser implementation of [Event].
 class EventImpl extends DartJsWrapper implements Event {
   /// Create an instance of [EventImpl] from the [jsObject].
-  EventImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  EventImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   String get type => jsObject.type;

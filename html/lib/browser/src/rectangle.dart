@@ -29,8 +29,7 @@ class ImmutableRectangleImpl extends JsWrapper implements ImmutableRectangle {
       );
 
   /// Creates an instance of [ImmutableRectangleImpl] from the [jsObject].
-  ImmutableRectangleImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  ImmutableRectangleImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   double get x => jsObject.x;

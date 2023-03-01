@@ -19,8 +19,7 @@ class HeadElementImpl extends HtmlElementImpl implements HeadElement {
       HeadElementImpl.fromJsObject(createElementJsObject(ElementTag.head));
 
   /// Create an instance of [HeadElementImpl] from the [jsObject]
-  HeadElementImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  HeadElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 }
 
 // \TODO Remove if constructor tear-offs are added to the language

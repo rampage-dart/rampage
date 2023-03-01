@@ -20,8 +20,7 @@ class SlotElementImpl extends HtmlElementImpl implements SlotElement {
       SlotElementImpl.fromJsObject(createElementJsObject(ElementTag.slot));
 
   /// Create an instance of [SlotElementImpl] from the [jsObject].
-  SlotElementImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  SlotElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   String get name => jsObject.name;

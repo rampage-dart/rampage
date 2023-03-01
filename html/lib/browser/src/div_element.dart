@@ -18,5 +18,5 @@ class DivElementImpl extends HtmlElementImpl implements DivElement {
       DivElementImpl.fromJsObject(createElementJsObject(ElementTag.div));
 
   /// Create an instance of [DivElementImpl] from the [jsObject]
-  DivElementImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  DivElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 }

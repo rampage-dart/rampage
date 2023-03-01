@@ -15,8 +15,7 @@ import 'wrapper.dart';
 /// Browser implementation of [EventTarget].
 class EventTargetImpl extends DartJsWrapper implements EventTarget {
   /// Creates an instance of [EventTargetImpl] from the [JsObject].
-  EventTargetImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  EventTargetImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   late final Map<String, Stream<Event>> on =

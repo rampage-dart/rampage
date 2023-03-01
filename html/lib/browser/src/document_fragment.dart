@@ -21,6 +21,5 @@ class DocumentFragmentImpl extends NodeImpl
       DocumentFragmentImpl.fromJsObject(DocumentFragmentJsObject.construct());
 
   /// Create an instance of [DocumentFragmentImpl] from the [jsObject]
-  DocumentFragmentImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  DocumentFragmentImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 }

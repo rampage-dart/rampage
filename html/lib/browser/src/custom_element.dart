@@ -12,8 +12,7 @@ import 'html_element.dart';
 /// Browser implementation of [CustomElement].
 class CustomElementImpl extends HtmlElementImpl implements CustomElement {
   /// Create an instance of [CustomElementImpl] from the [jsObject].
-  CustomElementImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  CustomElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   void connected() {}

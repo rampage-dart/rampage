@@ -15,7 +15,7 @@ import 'node_from_js_object.dart';
 /// Browser implementation of [Node].
 class NodeImpl extends EventTargetImpl implements Node {
   /// Create an instance of [NodeImpl] from the [jsObject].
-  NodeImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  NodeImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   bool get isConnected => jsObject.isConnected;

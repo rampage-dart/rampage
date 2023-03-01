@@ -12,7 +12,7 @@ import 'wrapper.dart';
 /// Browser implementation of [StyleSheet].
 class StyleSheetImpl extends DartJsWrapper implements StyleSheet {
   /// Creates an instance of [StyleSheetImpl] from the [JsObject].
-  StyleSheetImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  StyleSheetImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   String get type => throw UnimplementedError('type not implemented');

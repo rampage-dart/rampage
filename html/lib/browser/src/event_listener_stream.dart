@@ -10,7 +10,7 @@ import 'js/event_target.dart';
 import 'wrapper.dart';
 
 class EventListeners extends JsWrapper with MapMixin<String, Stream<Event>> {
-  EventListeners.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  EventListeners.fromJsObject(super.jsObject) : super.fromJsObject();
 
   final Map<String, StreamController<Event>> _controllers =
       <String, StreamController<Event>>{};

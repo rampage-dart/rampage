@@ -27,8 +27,7 @@ class ResizeObserverImpl extends DartJsWrapper
       );
 
   /// Create an instance of [ResizeObserverImpl] from the [jsObject].
-  ResizeObserverImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  ResizeObserverImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   // ignore: close_sinks
   late final StreamController<ResizeObserverEntryImpl> _streamController =
@@ -69,8 +68,7 @@ class ResizeObserverImpl extends DartJsWrapper
 class ResizeObserverEntryImpl extends JsWrapper
     implements ObserverEntry, ResizeObserverEntry {
   /// Create an instance of [ResizeObserverEntryImpl].
-  ResizeObserverEntryImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  ResizeObserverEntryImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   late final Element target = safeElementFromObject(jsObject.target);

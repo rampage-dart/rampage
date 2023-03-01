@@ -80,7 +80,7 @@ class MouseEventImpl extends UIEventImpl implements MouseEvent {
       );
 
   /// Creates an instance of [MouseEventImpl] from the [jsObject].
-  MouseEventImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  MouseEventImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   int get screenX => jsObject.screenX;

@@ -26,7 +26,7 @@ class ElementImpl extends NodeImpl
         SlotableImpl
     implements Element {
   /// Creates an instance of [ElementImpl] from the [jsObject].
-  ElementImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  ElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   String get tagName => jsObject.tagName;

@@ -19,7 +19,7 @@ class WindowImpl extends EventTargetImpl
     with GlobalEventHandlersImpl
     implements Window {
   /// Create an instance of [WindowImpl] from the [jsObject].
-  WindowImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  WindowImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   late final CustomElementRegistry customElements = CustomElementRegistryImpl();

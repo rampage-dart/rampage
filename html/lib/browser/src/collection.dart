@@ -14,7 +14,7 @@ import 'wrapper.dart';
 
 ///
 class Collection<T extends Node> extends JsWrapper with ListMixin<T> {
-  Collection.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  Collection.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   int get length => jsObject.length;

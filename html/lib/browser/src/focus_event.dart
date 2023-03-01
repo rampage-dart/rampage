@@ -40,7 +40,7 @@ class FocusEventImpl extends UIEventImpl implements FocusEvent {
       );
 
   /// Creates an instance of [FocusEventImpl] from the [jsObject].
-  FocusEventImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  FocusEventImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   EventTarget? get relatedTarget =>

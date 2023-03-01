@@ -75,8 +75,7 @@ class KeyboardEventImpl extends UIEventImpl implements KeyboardEvent {
       );
 
   /// Creates an instance of [KeyboardEventImpl] from the [jsObject].
-  KeyboardEventImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  KeyboardEventImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   String get key => jsObject.key;

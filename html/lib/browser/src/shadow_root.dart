@@ -18,7 +18,7 @@ class ShadowRootImpl extends DocumentFragmentImpl
     with DocumentOrShadowRootImpl
     implements ShadowRoot {
   /// Create an instance of [ShadowRootImpl] from the [jsObject].
-  ShadowRootImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  ShadowRootImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   late final Element host = safeElementFromObject(jsObject.host);

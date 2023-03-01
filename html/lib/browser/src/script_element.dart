@@ -21,8 +21,7 @@ class ScriptElementImpl extends HtmlElementImpl implements ScriptElement {
       );
 
   /// Create an instance of [ScriptElementImpl] from the [jsObject].
-  ScriptElementImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  ScriptElementImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   String get src => jsObject.src;

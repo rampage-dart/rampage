@@ -31,7 +31,7 @@ class DocumentImpl extends NodeImpl
       DocumentImpl.fromJsObject(DocumentJsObject.construct());
 
   /// Create an instance of [DocumentImpl] from the [jsObject].
-  DocumentImpl.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  DocumentImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   HtmlElement? get body => safeHtmlElementFromObjectNullable(jsObject.body);

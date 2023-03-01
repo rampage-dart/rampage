@@ -34,8 +34,7 @@ class CustomEventImpl extends EventImpl implements CustomEvent {
       );
 
   /// Creates an instance of [CustomEventImpl] from the [jsObject].
-  CustomEventImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  CustomEventImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   Object? get detail => jsObject.detail;

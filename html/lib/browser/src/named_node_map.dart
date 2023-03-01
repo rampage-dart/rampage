@@ -9,7 +9,7 @@ import 'wrapper.dart';
 class NamedNodeMap extends JsWrapper
     with MapMixin<String, String>
     implements Map<String, String> {
-  NamedNodeMap.fromJsObject(JsObject jsObject) : super.fromJsObject(jsObject);
+  NamedNodeMap.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   String? operator [](Object? key) =>

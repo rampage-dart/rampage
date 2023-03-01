@@ -23,9 +23,7 @@ abstract class ObserverEntry {
 
 class ObserverStreamImpl<Observer extends ObserverImpl, T extends ObserverEntry>
     extends DelegatingStream<T> implements ObserverStream<T> {
-  ObserverStreamImpl(Stream<T> stream, Observer observer)
-      : _observer = observer,
-        super(stream);
+  ObserverStreamImpl(super.stream, Observer observer) : _observer = observer;
 
   final Observer _observer;
 
@@ -54,10 +52,10 @@ class ObserverStreamImpl<Observer extends ObserverImpl, T extends ObserverEntry>
 class _ObserveElementStreamSubscription<Observer extends ObserverImpl,
     T extends ObserverEntry> extends DelegatingStreamSubscription<T> {
   _ObserveElementStreamSubscription(
-    StreamSubscription<T> sourceSubscription,
+    super.sourceSubscription,
     this._observer,
     this._element,
-  ) : super(sourceSubscription);
+  );
 
   final Observer _observer;
   final Element _element;

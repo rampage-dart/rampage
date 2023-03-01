@@ -33,8 +33,7 @@ class CssStyleSheetImpl extends StyleSheetImpl implements CssStyleSheet {
       );
 
   /// Create an instance of [CssStyleSheetImpl] from the [jsObject].
-  CssStyleSheetImpl.fromJsObject(JsObject jsObject)
-      : super.fromJsObject(jsObject);
+  CssStyleSheetImpl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   @override
   void replaceSync(String text) {
