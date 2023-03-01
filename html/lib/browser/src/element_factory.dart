@@ -18,7 +18,8 @@ JsObject createElementJsObject(String tag) =>
     JsObject.fromBrowserObject(_documentCreateElement(tag));
 
 JsObject createSvgElementJsObject(String tag) => JsObject.fromBrowserObject(
-    _documentCreateElementNS('http://www.w3.org/2000/svg', tag));
+      _documentCreateElementNS('http://www.w3.org/2000/svg', tag),
+    );
 
 Object _documentCreateElement(String tag) => _document.createElement(tag);
 

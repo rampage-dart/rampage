@@ -47,7 +47,8 @@ class ElementImpl extends NodeImpl
 
   @override
   late Map<String, String> attributes = NamedNodeMap.fromJsObject(
-      JsObject.fromBrowserObject(jsObject.attributes));
+    JsObject.fromBrowserObject(jsObject.attributes),
+  );
 
   @override
   String get slot => jsObject.slot;
@@ -61,13 +62,14 @@ class ElementImpl extends NodeImpl
       safeShadowRootFromObjectNullable(jsObject.shadowRoot);
 
   @override
-  ShadowRoot attachShadow() =>
-      ShadowRootImpl.fromJsObject(JsObject.fromBrowserObject(
-        jsObject.attachShadow(
-          ShadowRootInitOptionsJsObject.construct(
-            mode: 'open',
-            delegatesFocus: false,
+  ShadowRoot attachShadow() => ShadowRootImpl.fromJsObject(
+        JsObject.fromBrowserObject(
+          jsObject.attachShadow(
+            ShadowRootInitOptionsJsObject.construct(
+              mode: 'open',
+              delegatesFocus: false,
+            ),
           ),
         ),
-      ));
+      );
 }
