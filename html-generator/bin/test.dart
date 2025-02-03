@@ -27,7 +27,7 @@ Future<void> main() async {
 
   final jsWriter = CodeWriter(
     JsBuilder(),
-    'C:/Users/don/Documents/GitHub/rampage-dart/rampage/html-generated-code/lib/js',
+    'C:/Users/donjo/Documents/GitHub/rampage-dart/rampage/html-generated-code/lib/js',
     _headerJs,
   );
 
@@ -35,7 +35,7 @@ Future<void> main() async {
 
   final implementationWriter = CodeWriter(
     ImplementationBuilder(),
-    'C:/Users/don/Documents/GitHub/rampage-dart/rampage/html-generated-code/lib/browser',
+    'C:/Users/donjo/Documents/GitHub/rampage-dart/rampage/html-generated-code/lib/browser',
     _copyright,
   );
 
@@ -43,7 +43,7 @@ Future<void> main() async {
 
   final interfaceWriter = CodeWriter(
     InterfaceBuilder(),
-    'C:/Users/don/Documents/GitHub/rampage-dart/rampage/html-generated-code/lib',
+    'C:/Users/donjo/Documents/GitHub/rampage-dart/rampage/html-generated-code/lib',
     _copyright,
   );
 

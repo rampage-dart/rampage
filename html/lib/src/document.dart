@@ -3,8 +3,6 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-import 'package:rampage_html/html.dart';
-
 import 'document_or_shadow_root.dart';
 import 'element.dart';
 import 'global_event_handlers.dart';

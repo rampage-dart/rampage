@@ -7,12 +7,12 @@ import 'methods.dart';
 
 Future<T> promiseToFuture<T>(JsObject promise) {
   final completer = Completer<T>();
-  final thenFunc = (Object? obj, T value) {
+  void thenFunc(Object? obj, T value) {
     completer.complete(value);
-  };
-  final catchFunc = (Object? obj, Object error) {
+  }
+  void catchFunc(Object? obj, Object error) {
     completer.completeError(error);
-  };
+  }
 
   promise..callMethod1<T>('then', callback1(thenFunc))..callMethod1<Object?>(method, arg0)
 
