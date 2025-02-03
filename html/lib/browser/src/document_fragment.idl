@@ -1,7 +1,0 @@
-// IDL from DOM Living Standard - December 2020
-// https://github.com/whatwg/dom/blob/master/review-drafts/2020-12.bs
-
-[Exposed=Window]
-interface DocumentFragment : Node {
-  constructor();
-};

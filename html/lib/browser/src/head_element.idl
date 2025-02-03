@@ -1,7 +1,0 @@
-// IDL from HTML Living Standard - January 2021
-// https://github.com/whatwg/html/tree/fba814bb53435658869d77e829f57ba2035a6926
-
-[Exposed=Window]
-interface HTMLHeadElement : HTMLElement {
-  [HTMLConstructor] constructor();
-};
