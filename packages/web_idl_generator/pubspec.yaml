@@ -1,0 +1,21 @@
+name: rampage_web_idl_generator
+publish_to: none # internal only for now
+version: 1.0.0-wip
+description: Generator scripts for Rampage.
+repository: https://github.com/rampage-dart/rampage
+
+environment:
+  sdk: ^3.6.0
+
+resolution: workspace
+
+dependencies:
+  args: ^2.4.0
+  code_builder: ^4.10.1
+  dart_style: ^3.0.1
+  meta: ^1.16.0
+  web_idl:
+    path: ../../../web-idl
+
+dev_dependencies:
+  lints: ^5.1.1
