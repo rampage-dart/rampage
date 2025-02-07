@@ -6,14 +6,12 @@
 import 'dart:js_interop';
 
 import 'package:meta/meta.dart';
-import 'package:web/web.dart' as js
-    hide CustomElementConstructor, CustomElementRegistry;
+import 'package:rampage_js_interop/js_interop.dart' as js;
 
-import 'element.dart';
-import 'js/custom_element_registry.dart' as js;
+import 'js_interop/custom_element_registry.dart' as js;
 import 'wrapper.dart';
 
-class CustomElement extends Element<js.HTMLElement> {
+class CustomElement extends HTMLElement<js.HTMLElement> {
   /// Creates a [CustomElement] from a [jsObject].
   ///
   /// This should never be called outside of generated code.
@@ -32,7 +30,8 @@ class CustomElement extends Element<js.HTMLElement> {
   void attributeChanged(String name, String? oldValue, String? newValue) {}
 }
 
-typedef CustomElementConstructor = CustomElement Function(js.HTMLElement object);
+typedef CustomElementConstructor =
+    CustomElement Function(js.HTMLElement object);
 
 /// The [CustomElementRegistry] interface provides methods for registering
 /// [CustomElement]s and querying registered elements.
@@ -76,9 +75,14 @@ class CustomElementRegistry extends JsWrapper<js.CustomElementRegistry> {
     String? oldValue,
     String? newValue,
   ) {
-    (element.toDart as CustomElement)
-        .attributeChanged(name, oldValue, newValue);
+    (element.toDart as CustomElement).attributeChanged(
+      name,
+      oldValue,
+      newValue,
+    );
   }
 }
 
-final customElements = CustomElementRegistry.fromJsObject(js.CustomElementRegistry());
+final customElements = CustomElementRegistry.fromJsObject(
+  js.CustomElementRegistry(),
+);

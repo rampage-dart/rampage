@@ -1,12 +1,14 @@
+// Copyright (c) 2025 the Rampage Project Authors.
+// Please see the AUTHORS file for details. All rights reserved.
+// Use of this source code is governed by a zlib license that can be found in
+// the LICENSE file.
 
 import 'dart:js_interop';
-
-import 'js/wrapper.dart' as js;
 
 /// A Dart object that wraps a [JSObject].
 class JsWrapper<T extends JSObject> {
   /// Creates a [JsWrapper] around the [jsObject].
-  /// 
+  ///
   /// This should never be called outside of generated code.
   JsWrapper.fromJsObject(this.jsObject);
 
@@ -19,22 +21,29 @@ class JsWrapper<T extends JSObject> {
 /// A bidirectional wrapper between Dart and JavaScript.
 class DartJsWrapper<T extends JSObject> implements JsWrapper<T> {
   /// Creates a [DartJsWrapper] around the [jsObject].
-  /// 
+  ///
   /// This should never be called outside of generated code.
   DartJsWrapper.fromJsObject(this.jsObject) {
     assert(
-      (jsObject as js.DartWrapper).dartObject == null,
+      (jsObject as DartWrapper).dartObject == null,
       'Another Dart Object is already attached to the JsObject',
     );
-    (jsObject as js.DartWrapper).dartObject = toJSBox;
+    (jsObject as DartWrapper).dartObject = toJSBox;
   }
 
   @override
   final T jsObject;
 }
 
+/// A JavaScript object that wraps a Dart object.
+extension type DartWrapper(JSObject _) implements JSObject {
+  @JS(r'$dart')
+  external JSBoxedDartObject? dartObject;
+}
+
 /// Constructs a [JsWrapper] from a [JSObject].
-typedef JsWrapperConstructor = JsWrapper Function(JSObject jsObject);
+typedef JsWrapperConstructor<T extends JSObject> =
+    JsWrapper<T> Function(T jsObject);
 
 /// Safely retrieves or creates an instance of [JsWrapper] from the [object].
 ///
@@ -44,10 +53,12 @@ typedef JsWrapperConstructor = JsWrapper Function(JSObject jsObject);
 ///
 /// This should be used whenever it isn't clear if the [Object] has been
 /// initialized already.
-T safeJsWrapperFromObject<T extends JsWrapper>(
-  JSObject object,
-  JsWrapperConstructor construct,
-) => ((object as js.DartWrapper).dartObject ?? construct(object)) as T;
+JsWrapper<T> safeJsWrapperFromObject<T extends JSObject>(
+  T object,
+  JsWrapperConstructor<T> construct,
+) =>
+    ((object as DartWrapper).dartObject?.toDart ?? construct(object))
+        as JsWrapper<T>;
 
 /// Safely retrieves or creates an instance of [JsWrapper] from the [object] if
 /// it is not `null`.
@@ -58,8 +69,7 @@ T safeJsWrapperFromObject<T extends JsWrapper>(
 ///
 /// This should be used whenever it isn't clear if the [Object?] has been
 /// initialized already.
-T? safeJsWrapperFromObjectNullable<T extends JsWrapper>(
-  JSObject? object,
-  JsWrapperConstructor construct,
-) =>
-    object != null ? safeJsWrapperFromObject<T>(object, construct) : null;
+JsWrapper<T>? safeJsWrapperFromObjectNullable<T extends JSObject>(
+  T? object,
+  JsWrapperConstructor<T> construct,
+) => object != null ? safeJsWrapperFromObject<T>(object, construct) : null;

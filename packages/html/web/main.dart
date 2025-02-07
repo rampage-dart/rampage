@@ -1,10 +1,9 @@
-// Copyright (c) 2021 the Rampage Project Authors.
+// Copyright (c) 2025 the Rampage Project Authors.
 // Please see the AUTHORS file for details. All rights reserved.
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
 import 'package:rampage_html/html.dart';
-
 
 class ClickCounter extends CustomElement {
   factory ClickCounter() => Element.tag('click-counter') as ClickCounter;
@@ -14,10 +13,7 @@ class ClickCounter extends CustomElement {
   int clicks = 0;
 
   static void define() {
-    customElements.define(
-      'click-counter',
-      ClickCounter.fromJsObject,
-    );
+    customElements.define('click-counter', ClickCounter.fromJsObject);
   }
 }
 

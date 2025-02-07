@@ -7,9 +7,10 @@ import 'package:args/command_runner.dart';
 import 'package:rampage_web_idl_generator/generator.dart';
 
 Future<void> main(List<String> args) async {
-  final runner = CommandRunner<void>('web_idl_generator', 'do stuff')
-    ..addCommand(DartGeneratorCommand())
-    ..addCommand(JsInteropGeneratorCommand());
+  final runner =
+      CommandRunner<void>('web_idl_generator', 'do stuff')
+        ..addCommand(DartGeneratorCommand())
+        ..addCommand(JsInteropGeneratorCommand());
 
   runner.argParser.addOption(
     'output',

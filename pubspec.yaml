@@ -3,8 +3,9 @@ name: _
 publish_to: none
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.7.0
 
 workspace:
+  - packages/js_interop
   - packages/html
   - packages/web_idl_generator

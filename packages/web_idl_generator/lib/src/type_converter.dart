@@ -1,27 +1,34 @@
+// Copyright (c) 2025 the Rampage Project Authors.
+// Please see the AUTHORS file for details. All rights reserved.
+// Use of this source code is governed by a zlib license that can be found in
+// the LICENSE file.
+
 import 'package:code_builder/code_builder.dart';
 import 'package:web_idl/web_idl.dart';
 
-typedef TypeMap = Map<String, (String, String?)>;
+typedef TypeMapKey = String;
+typedef TypeMapValue = (String, String?);
+typedef TypeMapEntry = MapEntry<TypeMapKey, TypeMapValue>;
+typedef TypeMap = Map<TypeMapKey, TypeMapValue>;
 
 class TypeConverter {
-  factory TypeConverter.jsInterop({TypeMap? mapping}) = _JSTypeConverter;
+  factory TypeConverter.jsInterop([TypeMap? mapping]) = _JSTypeConverter;
 
-  factory TypeConverter.dart({TypeMap? mapping}) => TypeConverter._(
-        dartAny,
-        <String, (String, String?)>{
-          ..._builtinMap(
-            any: 'Object',
-            undefined: 'void',
-            boolean: 'bool',
-            integer: 'int',
-            number: 'double',
-            string: 'String',
-            list: 'List',
-            object: 'Object',
-          ),
-          ...?mapping,
-        },
-      );
+  factory TypeConverter.dart([TypeMap? mapping]) =>
+      TypeConverter._(dartAny, <String, (String, String?)>{
+        ..._builtinMap(
+          any: 'Object',
+          undefined: 'void',
+          boolean: 'bool',
+          integer: 'int',
+          number: 'double',
+          string: 'String',
+          list: 'List',
+          object: 'Object',
+          promise: 'Future',
+        ),
+        ...?mapping,
+      });
 
   TypeConverter._(this._unionType, this._mapping);
 
@@ -31,9 +38,10 @@ class TypeConverter {
   /// Map from IDL name to Dart name
   final TypeMap _mapping;
 
-  TypeReference convert(WebIdlType idl) => idl is UnionType
-      ? convertUnionType(idl)
-      : convertSingleType(idl as SingleType);
+  TypeReference convert(WebIdlType idl) =>
+      idl is UnionType
+          ? convertUnionType(idl)
+          : convertSingleType(idl as SingleType);
 
   TypeReference convertUnionType(UnionType idl) => _unionType;
 
@@ -42,11 +50,12 @@ class TypeConverter {
     final (symbol, url) = _mapping[idl.name] ?? (name, null);
 
     return TypeReference(
-      (t) => t
-        ..symbol = symbol
-        ..isNullable = idl.isNullable
-        ..url = url
-        ..types.addAll(idl.typeArguments.map(convert)),
+      (t) =>
+          t
+            ..symbol = symbol
+            ..isNullable = idl.isNullable
+            ..url = url
+            ..types.addAll(idl.typeArguments.map(convert)),
     );
   }
 
@@ -68,17 +77,22 @@ class TypeConverter {
   static TypeReference _jsInteropType(
     String symbol, {
     bool isNullable = false,
-  }) =>
-      TypeReference(
-        (t) => t
+  }) => TypeReference(
+    (t) =>
+        t
           ..symbol = symbol
           ..isNullable = isNullable
           ..url = 'dart:js_interop',
-      );
+  );
 
-  static final dartAny = TypeReference((t) => t
-    ..symbol = 'Object'
-    ..isNullable = true);
+  static final dartAny = TypeReference(
+    (t) =>
+        t
+          ..symbol = 'Object'
+          ..isNullable = true,
+  );
+
+  static final dartString = TypeReference((t) => t..symbol = 'String');
 
   static TypeMap _builtinMap({
     required String any,
@@ -89,65 +103,64 @@ class TypeConverter {
     required String string,
     required String list,
     required String object,
-  }) =>
-      <String, (String, String?)>{
-        'any': (any, null),
-        'undefined': (undefined, null),
-        'boolean': (boolean, null),
-        'byte': (integer, null),
-        'octet': (integer, null),
-        'short': (integer, null),
-        'unsigned short': (integer, null),
-        'long': (integer, null),
-        'unsigned long': (integer, null),
-        'long long': (integer, null),
-        'unsigned long long': (integer, null),
-        'float': (number, null),
-        'unrestricted float': (number, null),
-        'double': (number, null),
-        'unrestricted double': (number, null),
-        'DOMString': (string, null),
-        'ByteString': (string, null),
-        'USVString': (string, null),
-        'sequence': (list, null),
-        'object': (object, null),
-      };
+    required String promise,
+  }) => <String, (String, String?)>{
+    'any': (any, null),
+    'undefined': (undefined, null),
+    'boolean': (boolean, null),
+    'byte': (integer, null),
+    'octet': (integer, null),
+    'short': (integer, null),
+    'unsigned short': (integer, null),
+    'long': (integer, null),
+    'unsigned long': (integer, null),
+    'long long': (integer, null),
+    'unsigned long long': (integer, null),
+    'float': (number, null),
+    'unrestricted float': (number, null),
+    'double': (number, null),
+    'unrestricted double': (number, null),
+    'DOMString': (string, null),
+    'ByteString': (string, null),
+    'USVString': (string, null),
+    'sequence': (list, null),
+    'FrozenArray': (list, null),
+    'ObservableArray': (list, null),
+    'object': (object, null),
+    'Promise': (promise, null),
+  };
 }
 
 final class _JSTypeConverter extends TypeConverter {
-  _JSTypeConverter({TypeMap? mapping})
-      : _inner = TypeConverter._(
-          TypeConverter.jsAny,
-          <String, (String, String?)>{
-            ...TypeConverter._builtinMap(
-              any: 'JSAny',
-              undefined: 'void',
-              boolean: 'JSBoolean',
-              integer: 'JSNumber',
-              number: 'JSNumber',
-              string: 'JSString',
-              list: 'JSArray',
-              object: 'JSObject',
-            ),
-            ...?mapping,
-          },
+  _JSTypeConverter([TypeMap? mapping])
+    : _inner = TypeConverter._(TypeConverter.jsAny, <String, (String, String?)>{
+        ...TypeConverter._builtinMap(
+          any: 'JSAny',
+          undefined: 'JSAny?',
+          boolean: 'JSBoolean',
+          integer: 'JSNumber',
+          number: 'JSNumber',
+          string: 'JSString',
+          list: 'JSArray',
+          object: 'JSObject',
+          promise: 'JSPromise',
         ),
-        super._(
-          TypeConverter.jsAny,
-          <String, (String, String?)>{
-            ...TypeConverter._builtinMap(
-              any: 'JSAny',
-              undefined: 'void',
-              boolean: 'bool',
-              integer: 'int',
-              number: 'double',
-              string: 'String',
-              list: 'List',
-              object: 'JSObject',
-            ),
-            ...?mapping,
-          },
-        );
+        ...?mapping,
+      }),
+      super._(TypeConverter.jsAny, <String, (String, String?)>{
+        ...TypeConverter._builtinMap(
+          any: 'JSAny',
+          undefined: 'void',
+          boolean: 'bool',
+          integer: 'int',
+          number: 'double',
+          string: 'String',
+          list: 'List',
+          object: 'JSObject',
+          promise: 'JSPromise',
+        ),
+        ...?mapping,
+      });
 
   final TypeConverter _inner;
 
@@ -156,8 +169,10 @@ final class _JSTypeConverter extends TypeConverter {
     final name = idl.name;
 
     return switch (name) {
-      'sequence' => _inner.convertSingleType(idl),
-      _ => super.convertSingleType(idl)
+      'sequence' ||
+      'ObservableArray' ||
+      'FrozenArray' => _inner.convertSingleType(idl),
+      _ => super.convertSingleType(idl),
     };
   }
 }
