@@ -1,0 +1,9 @@
+name: _
+
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+
+workspace:
+- packages/html
