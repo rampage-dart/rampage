@@ -32,7 +32,9 @@ class NamedNodeMap extends JsWrapper<js.NamedNodeMap>
 
   @override
   void clear() {
-    keys.forEach(jsObject.removeNamedItem);
+    for (final key in keys) {
+      jsObject.removeNamedItem(key);
+    }
   }
 
   @override
