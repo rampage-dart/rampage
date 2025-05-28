@@ -3,14 +3,14 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
-part of 'event_target.dart';
+part of 'element.dart';
 
 @internal
-EventTarget<T> eventTargetFromJsObject<T extends js.EventTarget>(T jsObject) {
+Element<T> elementFromJsObject<T extends js.Element>(T jsObject) {
   assert(
     js.DartWrapper(jsObject).dartObject == null,
     'the jsObject should not be wrapped',
   );
 
-  return EventTarget.fromJsObject(jsObject);
+  return Element.fromJsObject(jsObject);
 }
