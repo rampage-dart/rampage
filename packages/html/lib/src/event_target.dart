@@ -8,6 +8,10 @@ import 'package:meta/meta.dart';
 import 'js_interop/event_target.dart' as js;
 import 'wrapper.dart';
 
+// FIXME: https://github.com/dart-lang/sdk/issues/56204
+// ignore: directives_ordering
+import 'js_interop/wrapper.dart' as js;
+
 part 'event_target_augment.dart';
 
 class EventTarget<T extends js.EventTarget> extends DartJsWrapper<T> {
