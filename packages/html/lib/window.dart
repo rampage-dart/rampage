@@ -9,6 +9,8 @@ library;
 export 'dom.dart';
 export 'src/body_element.dart';
 export 'src/child_node.dart';
+export 'src/custom_element.dart';
+export 'src/custom_element_registry.dart';
 export 'src/div_element.dart';
 export 'src/document.dart'
     hide safeDocumentFromObject, safeDocumentFromObjectNullable;

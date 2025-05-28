@@ -5,6 +5,7 @@
 
 import 'package:meta/meta.dart';
 
+import 'custom_element_registry.dart';
 import 'document.dart';
 import 'event_target.dart';
 import 'js_interop/window.dart' as js;
@@ -13,6 +14,8 @@ import 'wrapper.dart';
 class Window extends EventTarget<js.Window> {
   @protected
   Window.fromJsObject(super.jsObject) : super.fromJsObject();
+
+  late final CustomElementRegistry customElements = CustomElementRegistry();
 
   late final Document document = safeDocumentFromObject(jsObject.document);
 }
