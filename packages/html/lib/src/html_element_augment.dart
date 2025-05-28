@@ -12,5 +12,17 @@ HtmlElement<T> htmlElementFromJsObject<T extends js.HTMLElement>(T jsObject) {
     'the jsObject should not be wrapped',
   );
 
-  return HtmlElement.fromJsObject(jsObject);
+  final tagName = jsObject.tagName;
+  return switch (tagName) {
+        tag.div => DivElement.fromJsObject(jsObject as js.HTMLDivElement),
+        tag.image => ImageElement.fromJsObject(jsObject as js.HTMLImageElement),
+        tag.slot => SlotElement.fromJsObject(jsObject as js.HTMLSlotElement),
+        tag.template => TemplateElement.fromJsObject(
+          jsObject as js.HTMLTemplateElement,
+        ),
+        tag.body => BodyElement.fromJsObject(jsObject as js.HTMLBodyElement),
+
+        _ => throw UnsupportedError('Unsupported $tagName element'),
+      }
+      as HtmlElement<T>;
 }

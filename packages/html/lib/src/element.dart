@@ -6,6 +6,7 @@
 import 'package:meta/meta.dart';
 
 import 'child_node.dart';
+import 'js_interop/document.dart' as js;
 import 'js_interop/element.dart' as js;
 import 'js_interop/shadow_root_init.dart' as js;
 import 'named_node_map.dart';
@@ -20,7 +21,13 @@ import 'wrapper.dart';
 
 // FIXME: https://github.com/dart-lang/sdk/issues/56204
 // ignore: directives_ordering
+import 'dart:js_interop';
+// ignore: directives_ordering
+import 'js_interop/html_element.dart' as js;
+// ignore: directives_ordering
 import 'js_interop/wrapper.dart' as js;
+// ignore: directives_ordering
+import 'html_element.dart';
 
 part 'element_augment.dart';
 
@@ -30,6 +37,9 @@ class Element<T extends js.Element> extends Node<T>
         ChildNode<T>,
         NonDocumentTypeChildNode<T>,
         Slottable<T> {
+  factory Element.tag(String name) =>
+      safeElementFromJsObject<T>(js.document.createElement(name) as T);
+
   @protected
   Element.fromJsObject(super.jsObject) : super.fromJsObject();
 

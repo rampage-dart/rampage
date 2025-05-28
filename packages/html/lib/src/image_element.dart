@@ -7,10 +7,16 @@ import 'dart:js_interop';
 
 import 'package:meta/meta.dart';
 
+import 'element_tag.dart' as tag;
 import 'html_element.dart';
+import 'js_interop/document.dart' as js;
 import 'js_interop/image_element.dart' as js;
 
 final class ImageElement extends HtmlElement<js.HTMLImageElement> {
+  factory ImageElement() => ImageElement.fromJsObject(
+    js.document.createElement(tag.image) as js.HTMLImageElement,
+  );
+
   @protected
   ImageElement.fromJsObject(super.jsObject) : super.fromJsObject();
 

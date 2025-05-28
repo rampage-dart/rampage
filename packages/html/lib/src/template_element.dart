@@ -6,10 +6,16 @@
 import 'package:meta/meta.dart';
 
 import 'document_fragment.dart';
+import 'element_tag.dart' as tag;
 import 'html_element.dart';
+import 'js_interop/document.dart' as js;
 import 'js_interop/template_element.dart' as js;
 
 final class TemplateElement extends HtmlElement<js.HTMLTemplateElement> {
+  factory TemplateElement() => TemplateElement.fromJsObject(
+    js.document.createElement(tag.template) as js.HTMLTemplateElement,
+  );
+
   @protected
   TemplateElement.fromJsObject(super.jsObject) : super.fromJsObject();
 

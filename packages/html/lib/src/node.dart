@@ -3,6 +3,8 @@
 // Use of this source code is governed by a zlib license that can be found in
 // the LICENSE file.
 
+// ignore_for_file: directives_ordering
+
 import 'package:meta/meta.dart';
 
 import 'element.dart';
@@ -11,7 +13,11 @@ import 'js_interop/node.dart' as js;
 import 'wrapper.dart';
 
 // FIXME: https://github.com/dart-lang/sdk/issues/56204
-// ignore: directives_ordering
+import 'document.dart';
+import 'document_fragment.dart';
+import 'js_interop/document.dart' as js;
+import 'js_interop/document_fragment.dart' as js;
+import 'js_interop/element.dart' as js;
 import 'js_interop/wrapper.dart' as js;
 
 part 'node_augment.dart';
