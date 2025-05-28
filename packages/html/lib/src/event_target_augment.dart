@@ -12,5 +12,7 @@ EventTarget<T> eventTargetFromJsObject<T extends js.EventTarget>(T jsObject) {
     'the jsObject should not be wrapped',
   );
 
-  return EventTarget.fromJsObject(jsObject);
+  return jsObject.isA<js.Node>()
+      ? nodeFromJsObject(jsObject as js.Node) as EventTarget<T>
+      : EventTarget.fromJsObject(jsObject);
 }

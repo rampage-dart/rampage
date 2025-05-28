@@ -6,9 +6,14 @@
 import 'package:meta/meta.dart';
 
 import 'js_interop/event_target.dart' as js;
+import 'node.dart';
 import 'wrapper.dart';
 
 // FIXME: https://github.com/dart-lang/sdk/issues/56204
+// ignore: directives_ordering
+import 'dart:js_interop';
+// ignore: directives_ordering
+import 'js_interop/node.dart' as js;
 // ignore: directives_ordering
 import 'js_interop/wrapper.dart' as js;
 

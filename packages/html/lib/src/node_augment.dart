@@ -12,5 +12,12 @@ Node<T> nodeFromJsObject<T extends js.Node>(T jsObject) {
     'the jsObject should not be wrapped',
   );
 
-  return Node.fromJsObject(jsObject);
+  final nodeType = jsObject.nodeType;
+  return switch (nodeType) {
+        1 => elementFromJsObject(jsObject as js.Element),
+        9 => Document.fromJsObject(jsObject as js.Document),
+        11 => DocumentFragment.fromJsObject(jsObject as js.DocumentFragment),
+        _ => throw UnsupportedError('Unknown node type $nodeType'),
+      }
+      as Node<T>;
 }

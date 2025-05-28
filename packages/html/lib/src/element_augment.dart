@@ -12,5 +12,8 @@ Element<T> elementFromJsObject<T extends js.Element>(T jsObject) {
     'the jsObject should not be wrapped',
   );
 
-  return Element.fromJsObject(jsObject);
+  return jsObject.isA<js.HTMLElement>()
+      ? htmlElementFromJsObject<js.HTMLElement>(jsObject as js.HTMLElement)
+            as Element<T>
+      : throw UnsupportedError('svg not supported');
 }
