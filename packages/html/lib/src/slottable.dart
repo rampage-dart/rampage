@@ -5,5 +5,9 @@
 
 import 'js_interop/slottable.dart' as js;
 import 'node.dart';
+import 'slot_element.dart';
 
-abstract mixin class Slottable<T extends js.Slottable> implements Node<T> {}
+abstract mixin class Slottable<T extends js.Slottable> implements Node<T> {
+  SlotElement? get assignedSlot =>
+      safeSlotElementFromObjectNullable(jsObject.assignedSlot);
+}
