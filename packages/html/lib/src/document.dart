@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 
 import 'document_or_shadow_root.dart';
 import 'element.dart';
+import 'html_element.dart';
 import 'js_interop/document.dart' as js;
 import 'node.dart';
 import 'non_element_parent_node.dart';
@@ -23,6 +24,11 @@ final class Document extends Node<js.Document>
 
   @protected
   Document.fromJsObject(super.jsObject) : super.fromJsObject();
+
+  HtmlElement? get body => safeHtmlElementFromJsObjectNullable(jsObject.body);
+  set body(HtmlElement? value) {
+    jsObject.body = value?.jsObject;
+  }
 
   Element? get documentElement =>
       safeElementFromJsObjectNullable(jsObject.documentElement);

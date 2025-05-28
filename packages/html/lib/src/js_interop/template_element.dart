@@ -5,9 +5,12 @@
 
 import 'dart:js_interop';
 
-import 'node.dart';
-import 'slot_element.dart';
+import 'document_fragment.dart';
+import 'html_element.dart';
 
-extension type Slottable._(JSObject _) implements JSObject, Node {
-  external HTMLSlotElement? get assignedSlot;
+extension type HTMLTemplateElement._(JSObject _)
+    implements JSObject, HTMLElement {
+  external factory HTMLTemplateElement();
+
+  external DocumentFragment get content;
 }

@@ -9,9 +9,28 @@ import 'js_interop/document_fragment.dart' as js;
 import 'node.dart';
 import 'non_element_parent_node.dart';
 import 'parent_node.dart';
+import 'wrapper.dart';
 
 class DocumentFragment<T extends js.DocumentFragment> extends Node<T>
     with ParentNode<T>, NonElementParentNode<T> {
   @protected
   DocumentFragment.fromJsObject(super.jsObject) : super.fromJsObject();
 }
+
+@internal
+DocumentFragment safeDocumentFragmentFromObject(js.DocumentFragment jsObject) =>
+    safeJsWrapperFromJsObject<js.DocumentFragment>(
+          jsObject,
+          DocumentFragment.fromJsObject,
+        )
+        as DocumentFragment;
+
+@internal
+DocumentFragment? safeDocumentFragmentFromObjectNullable(
+  js.DocumentFragment? object,
+) =>
+    safeJsWrapperFromJsObjectNullable<js.DocumentFragment>(
+          object,
+          DocumentFragment.fromJsObject,
+        )
+        as DocumentFragment;
