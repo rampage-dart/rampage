@@ -28,6 +28,8 @@ export 'src/element.dart'
         safeElementFromJsObject,
         safeElementFromJsObjectNullable;
 export 'src/focus_event.dart';
+export 'src/head_element.dart'
+    hide safeHeadElementFromJsObject, safeHeadElementFromJsObjectNullable;
 export 'src/html_element.dart'
     hide
         htmlElementFromJsObject,
