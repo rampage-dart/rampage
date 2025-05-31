@@ -13,6 +13,10 @@ const String body = 'BODY';
 @internal
 const String div = 'DIV';
 
+/// `<head>`
+@internal
+const String head = 'HEAD';
+
 /// `<image>`
 @internal
 const String image = 'IMG';

@@ -8,6 +8,7 @@ import 'dart:js_interop';
 import 'attr.dart';
 import 'document_or_shadow_root.dart';
 import 'element.dart';
+import 'head_element.dart';
 import 'html_element.dart';
 import 'node.dart';
 import 'non_element_parent_node.dart';
@@ -28,6 +29,7 @@ extension type Document._(JSObject _)
   external set dir(String value);
   external HTMLElement? get body;
   external set body(HTMLElement? value);
+  external HTMLHeadElement? get head;
   external Element? get documentElement;
   external Attr createAttribute(String localName);
   external Element createElement(String localName, [JSAny options]);
