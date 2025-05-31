@@ -7,6 +7,7 @@
 library;
 
 export 'src/abort_signal.dart';
+export 'src/custom_event.dart';
 export 'src/event.dart'
     hide
         eventFromJsObject,
