@@ -20,5 +20,5 @@ final class TemplateElement extends HtmlElement<js.HTMLTemplateElement> {
   TemplateElement.fromJsObject(super.jsObject) : super.fromJsObject();
 
   DocumentFragment get content =>
-      safeDocumentFragmentFromObject(jsObject.content);
+      safeDocumentFragmentFromJsObject(jsObject.content);
 }

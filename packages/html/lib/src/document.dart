@@ -37,12 +37,12 @@ final class Document extends Node<js.Document>
 }
 
 @internal
-Document safeDocumentFromObject(js.Document jsObject) =>
+Document safeDocumentFromJsObject(js.Document jsObject) =>
     safeJsWrapperFromJsObject<js.Document>(jsObject, Document.fromJsObject)
         as Document;
 
 @internal
-Document? safeDocumentFromObjectNullable(js.Document? object) =>
+Document? safeDocumentFromJsObjectNullable(js.Document? object) =>
     safeJsWrapperFromJsObjectNullable<js.Document>(
           object,
           Document.fromJsObject,

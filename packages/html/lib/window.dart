@@ -13,9 +13,11 @@ export 'src/custom_element.dart';
 export 'src/custom_element_registry.dart';
 export 'src/div_element.dart';
 export 'src/document.dart'
-    hide safeDocumentFromObject, safeDocumentFromObjectNullable;
+    hide safeDocumentFromJsObject, safeDocumentFromJsObjectNullable;
 export 'src/document_fragment.dart'
-    hide safeDocumentFragmentFromObject, safeDocumentFragmentFromObjectNullable;
+    hide
+        safeDocumentFragmentFromJsObject,
+        safeDocumentFragmentFromJsObjectNullable;
 export 'src/document_or_shadow_root.dart';
 export 'src/element.dart'
     hide
@@ -34,12 +36,12 @@ export 'src/non_document_type_child_node.dart';
 export 'src/non_element_parent_node.dart';
 export 'src/parent_node.dart';
 export 'src/shadow_root.dart'
-    hide safeShadowRootFromObject, safeShadowRootFromObjectNullable;
+    hide safeShadowRootFromJsObject, safeShadowRootFromJsObjectNullable;
 export 'src/shadow_root_mode.dart' hide ShadowRootModeDartObject;
 export 'src/slot_assignment_mode.dart' hide SlotAssignmentModeDartObject;
 export 'src/slot_element.dart'
-    hide safeSlotElementFromObject, safeSlotElementFromObjectNullable;
+    hide safeSlotElementFromJsObject, safeSlotElementFromJsObjectNullable;
 export 'src/slottable.dart';
 export 'src/template_element.dart';
 export 'src/window.dart'
-    hide safeWindowFromObject, safeWindowFromObjectNullable;
+    hide safeWindowFromJsObject, safeWindowFromJsObjectNullable;

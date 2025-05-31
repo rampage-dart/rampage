@@ -21,12 +21,12 @@ class ShadowRoot extends DocumentFragment<js.ShadowRoot>
 }
 
 @internal
-ShadowRoot safeShadowRootFromObject(js.ShadowRoot jsObject) =>
+ShadowRoot safeShadowRootFromJsObject(js.ShadowRoot jsObject) =>
     safeJsWrapperFromJsObject<js.ShadowRoot>(jsObject, ShadowRoot.fromJsObject)
         as ShadowRoot;
 
 @internal
-ShadowRoot? safeShadowRootFromObjectNullable(js.ShadowRoot? jsObject) =>
+ShadowRoot? safeShadowRootFromJsObjectNullable(js.ShadowRoot? jsObject) =>
     safeJsWrapperFromJsObjectNullable<js.ShadowRoot>(
           jsObject,
           ShadowRoot.fromJsObject,

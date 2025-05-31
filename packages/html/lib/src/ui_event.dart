@@ -29,7 +29,7 @@ class UIEvent<T extends js.UIEvent> extends Event<T> {
   @protected
   UIEvent.fromJsObject(super.jsObject) : super.fromJsObject();
 
-  Window? get view => safeWindowFromObjectNullable(jsObject.view);
+  Window? get view => safeWindowFromJsObjectNullable(jsObject.view);
 
   int get detail => jsObject.detail;
 

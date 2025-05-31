@@ -68,7 +68,7 @@ class Element<T extends js.Element> extends Node<T>
   }
 
   ShadowRoot? get shadowRoot =>
-      safeShadowRootFromObjectNullable(jsObject.shadowRoot);
+      safeShadowRootFromJsObjectNullable(jsObject.shadowRoot);
 
   ShadowRoot attachShadow({
     ShadowRootMode mode = ShadowRootMode.closed,
