@@ -26,7 +26,7 @@ final class SlotElement extends HtmlElement<js.HTMLSlotElement> {
 }
 
 @internal
-SlotElement safeSlotElementFromObject(js.HTMLSlotElement jsObject) =>
+SlotElement safeSlotElementFromJsObject(js.HTMLSlotElement jsObject) =>
     safeJsWrapperFromJsObject<js.HTMLSlotElement>(
           jsObject,
           SlotElement.fromJsObject,
@@ -34,7 +34,7 @@ SlotElement safeSlotElementFromObject(js.HTMLSlotElement jsObject) =>
         as SlotElement;
 
 @internal
-SlotElement? safeSlotElementFromObjectNullable(js.HTMLSlotElement? object) =>
+SlotElement? safeSlotElementFromJsObjectNullable(js.HTMLSlotElement? object) =>
     safeJsWrapperFromJsObjectNullable<js.HTMLSlotElement>(
           object,
           SlotElement.fromJsObject,

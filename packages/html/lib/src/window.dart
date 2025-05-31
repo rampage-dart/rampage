@@ -19,17 +19,17 @@ final class Window extends EventTarget<js.Window>
 
   late final CustomElementRegistry customElements = CustomElementRegistry();
 
-  late final Document document = safeDocumentFromObject(jsObject.document);
+  late final Document document = safeDocumentFromJsObject(jsObject.document);
 }
 
 @internal
-Window safeWindowFromObject(js.Window jsObject) =>
+Window safeWindowFromJsObject(js.Window jsObject) =>
     safeJsWrapperFromJsObject<js.Window>(jsObject, Window.fromJsObject)
         as Window;
 
 @internal
-Window? safeWindowFromObjectNullable(js.Window? jsObject) =>
+Window? safeWindowFromJsObjectNullable(js.Window? jsObject) =>
     safeJsWrapperFromJsObjectNullable<js.Window>(jsObject, Window.fromJsObject)
         as Window;
 
-final Window window = safeWindowFromObject(js.window);
+final Window window = safeWindowFromJsObject(js.window);

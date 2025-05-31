@@ -18,7 +18,9 @@ class DocumentFragment<T extends js.DocumentFragment> extends Node<T>
 }
 
 @internal
-DocumentFragment safeDocumentFragmentFromObject(js.DocumentFragment jsObject) =>
+DocumentFragment safeDocumentFragmentFromJsObject(
+  js.DocumentFragment jsObject,
+) =>
     safeJsWrapperFromJsObject<js.DocumentFragment>(
           jsObject,
           DocumentFragment.fromJsObject,
@@ -26,7 +28,7 @@ DocumentFragment safeDocumentFragmentFromObject(js.DocumentFragment jsObject) =>
         as DocumentFragment;
 
 @internal
-DocumentFragment? safeDocumentFragmentFromObjectNullable(
+DocumentFragment? safeDocumentFragmentFromJsObjectNullable(
   js.DocumentFragment? object,
 ) =>
     safeJsWrapperFromJsObjectNullable<js.DocumentFragment>(
