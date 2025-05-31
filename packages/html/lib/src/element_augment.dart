@@ -15,5 +15,5 @@ Element<T> elementFromJsObject<T extends js.Element>(T jsObject) {
   return jsObject.isA<js.HTMLElement>()
       ? htmlElementFromJsObject<js.HTMLElement>(jsObject as js.HTMLElement)
             as Element<T>
-      : throw UnsupportedError('svg not supported');
+      : Element.fromJsObject(jsObject);
 }
