@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 
 import 'document_or_shadow_root.dart';
 import 'element.dart';
+import 'global_event_handlers.dart';
 import 'html_element.dart';
 import 'js_interop/document.dart' as js;
 import 'node.dart';
@@ -18,7 +19,8 @@ final class Document extends Node<js.Document>
     with
         ParentNode<js.Document>,
         NonElementParentNode<js.Document>,
-        DocumentOrShadowRoot<js.Document> {
+        DocumentOrShadowRoot<js.Document>,
+        GlobalEventHandlers<js.Document> {
   /// Create an instance of [Document].
   factory Document() => Document.fromJsObject(js.Document());
 

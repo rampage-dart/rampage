@@ -13,6 +13,10 @@ abstract mixin class ParentNode<T extends js.ParentNode> implements Node<T> {
     jsObject.children,
   );
 
+  void append(Node node) {
+    jsObject.append(node.jsObject);
+  }
+
   U? querySelector<U extends Element>(String selectors) =>
       safeElementFromJsObjectNullable(jsObject.querySelector(selectors)) as U?;
 

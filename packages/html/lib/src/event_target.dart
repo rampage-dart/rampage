@@ -5,6 +5,8 @@
 
 import 'package:meta/meta.dart';
 
+import 'element_events.dart';
+import 'event.dart';
 import 'js_interop/event_target.dart' as js;
 import 'node.dart';
 import 'wrapper.dart';
@@ -22,6 +24,10 @@ part 'event_target_augment.dart';
 class EventTarget<T extends js.EventTarget> extends DartJsWrapper<T> {
   @protected
   EventTarget.fromJsObject(super.jsObject) : super.fromJsObject();
+
+  late final Map<String, Stream<Event>> on = ElementEvents.fromJsObject(
+    jsObject,
+  );
 }
 
 @internal
