@@ -19,6 +19,9 @@ export 'src/document_fragment.dart'
         safeDocumentFragmentFromJsObject,
         safeDocumentFragmentFromJsObjectNullable;
 export 'src/document_or_shadow_root.dart';
+export 'src/dom_parser.dart';
+export 'src/dom_parser_supported_type.dart'
+    hide DomParserSupportedTypeDartObject;
 export 'src/element.dart'
     hide
         elementFromJsObject,
