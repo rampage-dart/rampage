@@ -8,10 +8,12 @@ import 'package:meta/meta.dart';
 import 'custom_element_registry.dart';
 import 'document.dart';
 import 'event_target.dart';
+import 'global_event_handlers.dart';
 import 'js_interop/window.dart' as js;
 import 'wrapper.dart';
 
-class Window extends EventTarget<js.Window> {
+final class Window extends EventTarget<js.Window>
+    with GlobalEventHandlers<js.Window> {
   @protected
   Window.fromJsObject(super.jsObject) : super.fromJsObject();
 

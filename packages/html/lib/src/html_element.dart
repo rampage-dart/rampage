@@ -8,6 +8,7 @@
 import 'package:meta/meta.dart';
 
 import 'element.dart';
+import 'global_event_handlers.dart';
 import 'html_or_svg_element.dart';
 import 'js_interop/html_element.dart' as js;
 import 'wrapper.dart';
@@ -29,7 +30,7 @@ import 'template_element.dart';
 part 'html_element_augment.dart';
 
 class HtmlElement<T extends js.HTMLElement> extends Element<T>
-    with HtmlOrSvgElement<T> {
+    with GlobalEventHandlers<T>, HtmlOrSvgElement<T> {
   @protected
   HtmlElement.fromJsObject(super.jsObject) : super.fromJsObject();
 
