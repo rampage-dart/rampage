@@ -19,9 +19,11 @@ export 'src/document_fragment.dart'
         safeDocumentFragmentFromJsObject,
         safeDocumentFragmentFromJsObjectNullable;
 export 'src/document_or_shadow_root.dart';
+export 'src/dom_high_res_time_stamp.dart';
 export 'src/dom_parser.dart';
 export 'src/dom_parser_supported_type.dart'
     hide DomParserSupportedTypeDartObject;
+export 'src/dom_rect_read_only.dart';
 export 'src/element.dart'
     hide
         elementFromJsObject,
@@ -37,6 +39,8 @@ export 'src/html_element.dart'
         safeHtmlElementFromJsObjectNullable;
 export 'src/html_or_svg_element.dart';
 export 'src/image_element.dart';
+export 'src/intersection_observer.dart';
+export 'src/intersection_observer_entry.dart';
 export 'src/keyboard_event.dart';
 export 'src/mouse_event.dart';
 export 'src/node.dart' hide nodeFromJsObject;
