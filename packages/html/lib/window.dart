@@ -47,6 +47,12 @@ export 'src/node.dart' hide nodeFromJsObject;
 export 'src/non_document_type_child_node.dart';
 export 'src/non_element_parent_node.dart';
 export 'src/parent_node.dart';
+export 'src/resize_observation.dart';
+export 'src/resize_observer.dart';
+export 'src/resize_observer_box_options.dart'
+    hide ResizeObserverBoxOptionsDartObject;
+export 'src/resize_observer_entry.dart';
+export 'src/resize_observer_size.dart' hide JSResizeObserverArray;
 export 'src/shadow_root.dart'
     hide safeShadowRootFromJsObject, safeShadowRootFromJsObjectNullable;
 export 'src/shadow_root_mode.dart' hide ShadowRootModeDartObject;
