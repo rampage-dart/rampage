@@ -5,7 +5,6 @@
 
 import 'package:rampage_html/html.dart';
 
-
 class ClickCounter extends CustomElement {
   factory ClickCounter() => Element.tag('click-counter') as ClickCounter;
 
@@ -14,10 +13,7 @@ class ClickCounter extends CustomElement {
   int clicks = 0;
 
   static void define() {
-    customElements.define(
-      'click-counter',
-      ClickCounter.fromJsObject,
-    );
+    customElements.define('click-counter', ClickCounter.fromJsObject);
   }
 }
 

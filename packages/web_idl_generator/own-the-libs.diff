@@ -1,0 +1,1191 @@
+diff --git a/packages/web_idl_generator/lib/src/dart_generator.dart b/packages/web_idl_generator/lib/src/dart_generator.dart
+index d618034..0f76cf9 100644
+--- a/packages/web_idl_generator/lib/src/dart_generator.dart
++++ b/packages/web_idl_generator/lib/src/dart_generator.dart
+@@ -1,3 +1,4 @@
++import 'package:change_case/change_case.dart';
+ import 'package:code_builder/code_builder.dart';
+ import 'package:web_idl/web_idl.dart';
+ 
+@@ -5,9 +6,315 @@ import 'generator_command.dart';
+ import 'source_generator.dart';
+ import 'type_converter.dart';
+ 
++extension on TypeReference {
++  TypeReference withPrefix(String prefix) => TypeReference(
++    (t) =>
++        t
++          ..symbol = '$prefix.$symbol'
++          ..url = url
++          ..types.addAll(types),
++  );
++
++  TypeReference withTypeParam(TypeReference reference) => TypeReference(
++    (t) =>
++        t
++          ..symbol = symbol
++          ..url = url
++          ..types.add(reference),
++  );
++}
++
+ final class DartGenerator extends SourceGenerator {
+-  DartGenerator({TypeMap? mapping})
+-      : super(TypeConverter.dart(mapping: mapping));
++  @override
++  TypeConverter typeConverter(TypeMap? mapping) => TypeConverter.dart(mapping);
++
++  @override
++  Iterable<Directive> directives() => <Directive>[
++    Directive.import('package:rampage_js_interop/js_interop.dart', as: 'js'),
++  ];
++
++  @override
++  Iterable<Spec> enumeration(EnumElement element) sync* {
++    final enumValues = element.values.map(_enumerationValue);
++
++    yield Enum(
++      (e) =>
++          e
++            ..name = element.name
++            ..values.addAll(
++              enumValues.map(
++                (r) => EnumValue(
++                  (v) =>
++                      v
++                        ..name = r.name
++                        ..arguments.add(literalString(r.value)),
++                ),
++              ),
++            )
++            ..constructors.add(
++              Constructor(
++                (c) =>
++                    c
++                      ..constant = true
++                      ..requiredParameters.add(
++                        Parameter(
++                          (p) =>
++                              p
++                                ..name = 'toJS'
++                                ..toThis = true,
++                        ),
++                      ),
++              ),
++            )
++            ..fields.add(
++              Field(
++                (f) =>
++                    f
++                      ..name = 'toJS'
++                      ..modifier = FieldModifier.final$
++                      ..type = TypeConverter.dartString,
++              ),
++            ),
++    );
++
++    final methodBody =
++        StringBuffer()..writeAll([
++          'switch (this) {',
++          ...enumValues.map(
++            (r) => "'${r.value}' => ${element.name}.${r.name},",
++          ),
++          "_ => throw UnsupportedError('\$this is not a member of ${element.name}'),}",
++        ]);
++
++    yield Extension(
++      (e) =>
++          e
++            ..name = '${element.name}DartObject'
++            ..on = TypeConverter.dartString
++            ..methods.add(
++              Method(
++                (m) =>
++                    m
++                      ..name = 'toDart'
++                      ..returns = types.convertSingleType(element.thisType)
++                      ..type = MethodType.getter
++                      ..lambda = true
++                      ..body = Code(methodBody.toString()),
++              ),
++            ),
++    );
++  }
++
++  ({String name, String value}) _enumerationValue(String value) {
++    final name = switch (value) {
++      'default' => 'default_',
++      '2d' => 'canvas',
++      '' => 'empty',
++      _ => value.toCamelCase(),
++    };
++
++    return (name: name, value: value);
++  }
++
++  @override
++  Iterable<Spec> interface(InterfaceElement element) sync* {
++    final library = element.enclosingElement as FragmentElement;
++    final mixins = library.includes
++        .where((e) => e.on.name == element.name)
++        .map((e) => types.convert(e.mixin));
++
++    final methods = [...element.allAttributes.expand(_interfaceAttribute)];
++
++    if (element.isMixin) {
++      yield Mixin(
++        (m) =>
++            m
++              ..name = element.name
++              ..on = _dartJsWrapper(TypeConverter.jsObject)
++              ..implements.addAll(mixins)
++              ..methods.addAll(methods),
++      );
++    } else {
++      final hasSubclass =
++          _hackHasSubclass.contains(element.name) ||
++          library.interfaces
++                  .where((e) => e.supertype?.name == element.name)
++                  .firstOrNull !=
++              null;
++
++      final jsObjectType = _toJsTypeReference(
++        types.convertSingleType(element.thisType),
++      );
++
++      final supertype = element.supertype;
++      final extendType = hasSubclass ? _genericType : jsObjectType;
++      final extend =
++          supertype != null
++              ? types.convertSingleType(supertype).withTypeParam(extendType)
++              : _dartJsWrapper(extendType);
++
++      yield Class(
++        (e) =>
++            e
++              ..name = element.name
++              ..extend = extend
++              ..types.addAll([
++                if (hasSubclass)
++                  TypeReference(
++                    (t) =>
++                        t
++                          ..symbol = 'T'
++                          ..bound = jsObjectType,
++                  ),
++              ])
++              ..modifier = !hasSubclass ? ClassModifier.final$ : null
++              ..constructors.add(_fromJsObjectConstructor(hasSubclass))
++              ..methods.addAll(methods),
++      );
++
++      if (_hackMakeSafeFromObject.contains(element.name)) {
++        final type =
++            hasSubclass ? TypeReference((t) => t..symbol = 'T') : jsObjectType;
++        final typeBound = type.rebuild((t) => t.bound = jsObjectType);
++        final nullableType = type.rebuild((t) => t.isNullable = true);
++        final call =
++            hasSubclass
++                ? '<T>(jsObject, ${element.name.toCamelCase()}FromJsObject)'
++                : '(jsObject, ${element.name}.fromJsObject)';
++
++        yield Method(
++          (m) =>
++              m
++                ..name = 'safe${element.name}FromJsObject'
++                ..returns = _jsWrapper(type)
++                ..types.addAll([if (hasSubclass) typeBound])
++                ..requiredParameters.add(
++                  Parameter(
++                    (p) =>
++                        p
++                          ..name = 'jsObject'
++                          ..type = type,
++                  ),
++                )
++                ..lambda = true
++                ..body = Code('safeJsWrapperFromObject$call'),
++        );
++
++        yield Method(
++          (m) =>
++              m
++                ..name = 'safe${element.name}FromJsObjectNullable'
++                ..returns = _jsWrapper(
++                  type,
++                ).rebuild((t) => t..isNullable = true)
++                ..types.addAll([if (hasSubclass) typeBound])
++                ..requiredParameters.add(
++                  Parameter(
++                    (p) =>
++                        p
++                          ..name = 'jsObject'
++                          ..type = nullableType,
++                  ),
++                )
++                ..lambda = true
++                ..body = Code('safeJsWrapperFromObjectNullable$call'),
++        );
++      }
++    }
++  }
++
++  Iterable<Method> _interfaceAttribute(AttributeElement element) sync* {
++    final type = types.convert(element.type);
++
++    final getter = Method(
++      (m) =>
++          m
++            ..name = element.name
++            ..type = MethodType.getter
++            ..returns = type
++            ..lambda = true
++            ..body = refer('jsObject.${element.name}').code,
++    );
++
++    yield getter;
++
++    if (element.readWrite) {
++      final setter = Method(
++        (m) =>
++            m
++              ..name = element.name
++              ..type = MethodType.setter
++              ..requiredParameters.add(
++                Parameter(
++                  (p) =>
++                      p
++                        ..name = 'value'
++                        ..type = type,
++                ),
++              )
++              ..body = Code('jsObject.${element.name} = value;'),
++      );
++
++      yield setter;
++    }
++  }
++
++  static Constructor _fromJsObjectConstructor(bool protected) => Constructor(
++    (c) =>
++        c
++          ..name = 'fromJsObject'
++          ..annotations.addAll([
++            if (protected)
++              const Reference('protected', 'package:meta/meta.dart'),
++          ])
++          ..requiredParameters.add(
++            Parameter(
++              (p) =>
++                  p
++                    ..name = 'jsObject'
++                    ..toSuper = true,
++            ),
++          )
++          ..initializers.add(const Code('super.fromJsObject()')),
++  );
++
++  static TypeReference _toJsTypeReference(TypeReference reference) =>
++      TypeReference((t) => t..symbol = 'js.${reference.symbol}');
++
++  static TypeReference _jsWrapper(TypeReference reference) => TypeReference(
++    (t) =>
++        t
++          ..symbol = 'JsWrapper'
++          ..url = 'wrapper.dart'
++          ..types.add(reference),
++  );
++
++  static TypeReference _dartJsWrapper(TypeReference reference) => TypeReference(
++    (t) =>
++        t
++          ..symbol = 'DartJsWrapper'
++          ..url = 'wrapper.dart'
++          ..types.add(reference),
++  );
++
++  static final TypeReference _genericType = TypeReference(
++    (t) => t..symbol = 'T',
++  );
++
++  static const List<String> _hackMakeSafeFromObject = <String>[
++    'EventTarget',
++    'Node',
++    'Element',
++    'HTMLElement',
++    'HTMLHeadElement',
++    'HTMLSlotElement',
++  ];
++
++  static const List<String> _hackHasSubclass = <String>[
++    'Event',
++    'EventTarget',
++    'Element',
++  ];
+ }
+ 
+ final class DartGeneratorCommand extends GeneratorCommand {
+diff --git a/packages/web_idl_generator/lib/src/generator_command.dart b/packages/web_idl_generator/lib/src/generator_command.dart
+index 4463267..e9c1a2d 100644
+--- a/packages/web_idl_generator/lib/src/generator_command.dart
++++ b/packages/web_idl_generator/lib/src/generator_command.dart
+@@ -1,16 +1,49 @@
+ import 'dart:io';
++import 'dart:convert';
+ 
++import 'package:args/args.dart';
+ import 'package:args/command_runner.dart';
+ import 'package:code_builder/code_builder.dart';
+ import 'package:dart_style/dart_style.dart';
+ import 'package:meta/meta.dart';
++import 'package:path/path.dart' as p;
+ import 'package:web_idl/web_idl.dart';
+ 
+ import 'source_generator.dart';
++import 'type_converter.dart';
++
++/// Options for the command.
++typedef _Options = ({List<String> inputs, String output, String extension});
++
++/// A [File] with its parsed [FragmentElement].
++typedef _FileFragment = ({File file, FragmentElement fragment});
++
++const _outputOption = 'output';
++const _extensionOption = 'extension';
++
++extension on ArgResults {
++  String? get output => option(_outputOption);
++  String get extension => option(_extensionOption) ?? '.dart';
++}
++
++extension on FragmentElement {
++  Iterable<Element> get allDefinitions sync* {
++    yield* dictionaries.where(_isConcrete);
++    yield* enumerations;
++    yield* interfaces.where(_isConcrete);
++    yield* typeDefinitions;
++  }
++
++  static bool _isConcrete(PartiallyDefinedElement e) => !e.isPartial;
++}
+ 
+ abstract class GeneratorCommand extends Command<void> {
+   @protected
+-  GeneratorCommand(this._generator) : super();
++  GeneratorCommand(this._generator) {
++    argParser
++      ..addOption('output', abbr: 'o')
++      ..addOption('extension', abbr: 'e');
++  }
+ 
+   final SourceGenerator _generator;
+ 
+@@ -20,18 +53,120 @@ abstract class GeneratorCommand extends Command<void> {
+ 
+   @override
+   Future<void> run() async {
+-    final contents = await File('bin/dom.idl').readAsString();
+-    final idl = parseFragment(contents);
+-    final library = _generator.library(idl);
+-
+-    // A DartEmitter can't be reused otherwise it'll import everything
+-    final emitter = DartEmitter(
+-      allocator: Allocator(),
+-      orderDirectives: true,
+-      useNullSafetySyntax: true,
+-    );
+-
+-    final source = _formatter.format(library.accept(emitter).toString());
+-    print(source);
++    final options = await _getOptions();
++    final fragments = <_FileFragment>[];
++
++    for (final path in options.inputs) {
++      /*
++      final joined = StringBuffer();
++      final fileContents = await _readFiles(path).toList();
++      for (final record in fileContents) {
++        joined.write(record.contents);
++      }
++      fragments.add((
++        file: fileContents[0].file,
++        fragment: parseFragment(joined.toString()),
++      ));
++      */
++
++      final pathFragments = await _readIdlFiles(path).toList();
++      fragments.addAll(pathFragments);
++    }
++
++    final outputToFile = options.output.isNotEmpty;
++    final fragmentMappings =
++        fragments.map((r) {
++          final path = p.setExtension(
++            p.basename(r.file.path),
++            options.extension,
++          );
++
++          return TypeMap.fromEntries(
++            r.fragment.allDefinitions.map(
++              (e) => TypeMapEntry(e.name, (e.name, path)),
++            ),
++          );
++        }).toList();
++
++    for (var i = 0; i < fragments.length; ++i) {
++      final record = fragments[i];
++      print('Generating from ${record.file.path}');
++
++      final fragmentMapping = fragmentMappings[i];
++      final mapping = TypeMap.fromEntries(
++        fragmentMappings
++            .where((e) => !identical(e, fragmentMapping))
++            .expand((e) => e.entries),
++      );
++
++      // A DartEmitter can't be reused otherwise it'll import everything
++      final emitter = DartEmitter(
++        allocator: Allocator(),
++        orderDirectives: true,
++        useNullSafetySyntax: true,
++      );
++      final library = _generator.library(record.fragment, mapping: mapping);
++      final built = library.accept(emitter).toString();
++      //print(built);
++      final source = _formatter.format(built);
++
++      if (outputToFile) {
++        await File(
++          p.join(
++            options.output,
++            p.setExtension(p.basename(record.file.path), options.extension),
++          ),
++        ).writeAsString(source);
++      } else {
++        print(source);
++      }
++    }
++  }
++
++  Future<_Options> _getOptions() async {
++    final inputs = argResults!.rest;
++    if (inputs.isEmpty) {
++      throw UsageException(
++        'no input files/directories specified',
++        'provide locations to process',
++      );
++    }
++
++    var output = argResults!.output;
++    if (output != null) {
++      final exists = await Directory(output).exists();
++      if (!exists) {
++        throw UsageException('output directory does not exist', '');
++      }
++    } else {
++      output = '';
++    }
++
++    return (inputs: inputs, output: output, extension: argResults!.extension);
++  }
++
++  static Stream<_FileFragment> _readIdlFiles(String path) => _readFiles(
++    path,
++  ).map((r) => (file: r.file, fragment: parseFragment(r.contents)));
++
++  static Stream<({File file, String contents})> _readFiles(String path) async* {
++    final type = await FileSystemEntity.type(path);
++
++    if (type == FileSystemEntityType.directory) {
++      final directory = Directory(path);
++      yield* directory
++          .list()
++          .where((e) => e is File && e.path.endsWith('.idl'))
++          .cast<File>()
++          .asyncMap(_readFile);
++    } else if (type == FileSystemEntityType.file) {
++      final record = await _readFile(File(path));
++      yield record;
++    }
++  }
++
++  static Future<({File file, String contents})> _readFile(File file) async {
++    final contents = await file.readAsString();
++    return (file: file, contents: contents);
+   }
+ }
+diff --git a/packages/web_idl_generator/lib/src/js_interop_generator.dart b/packages/web_idl_generator/lib/src/js_interop_generator.dart
+index 3e8ceb3..a981eab 100644
+--- a/packages/web_idl_generator/lib/src/js_interop_generator.dart
++++ b/packages/web_idl_generator/lib/src/js_interop_generator.dart
+@@ -26,31 +26,30 @@ extension on OperationElement {
+ }
+ 
+ final class JsInteropGenerator extends SourceGenerator {
+-  JsInteropGenerator({TypeMap? mapping})
+-      : super(TypeConverter.jsInterop(mapping: mapping));
++  @override
++  TypeConverter typeConverter(TypeMap? mapping) =>
++      TypeConverter.jsInterop(mapping);
+ 
+   @override
+   Iterable<Spec> dictionary(DictionaryElement element) sync* {
+     yield ExtensionType(
+-      (e) => e
+-        ..name = element.name
+-        ..representationDeclaration = RepresentationDeclaration(
+-          (r) => r
+-            ..name = '_'
+-            ..declaredRepresentationType = TypeConverter.jsObject,
+-        )
+-        ..implements.addAll([
+-          TypeConverter.jsObject,
+-          if (element.supertype != null)
+-            types.convertSingleType(element.supertype!)
+-        ])
+-        ..primaryConstructorName = '_'
+-        ..constructors.add(
+-          _dictionaryConstructor(element),
+-        )
+-        ..methods.addAll(
+-          element.allMembers.expand(_dictionaryField),
+-        ),
++      (e) =>
++          e
++            ..name = element.name
++            ..representationDeclaration = RepresentationDeclaration(
++              (r) =>
++                  r
++                    ..name = '_'
++                    ..declaredRepresentationType = TypeConverter.jsObject,
++            )
++            ..implements.addAll([
++              TypeConverter.jsObject,
++              if (element.supertype != null)
++                types.convertSingleType(element.supertype!),
++            ])
++            ..primaryConstructorName = '_'
++            ..constructors.add(_dictionaryConstructor(element))
++            ..methods.addAll(element.allMembers.expand(_dictionaryField)),
+     );
+   }
+ 
+@@ -58,94 +57,102 @@ final class JsInteropGenerator extends SourceGenerator {
+     final type = types.convert(element.type);
+ 
+     final getter = Method(
+-      (m) => m
+-        ..name = element.name
+-        ..external = true
+-        ..type = MethodType.getter
+-        ..returns = type,
++      (m) =>
++          m
++            ..name = element.name
++            ..external = true
++            ..type = MethodType.getter
++            ..returns = type,
+     );
+ 
+     yield getter;
+ 
+     final setter = Method(
+-      (m) => m
+-        ..name = element.name
+-        ..external = true
+-        ..type = MethodType.setter
+-        ..requiredParameters.add(
+-          Parameter(
+-            (p) => p
+-              ..name = 'value'
+-              ..type = type,
+-          ),
+-        ),
++      (m) =>
++          m
++            ..name = element.name
++            ..external = true
++            ..type = MethodType.setter
++            ..requiredParameters.add(
++              Parameter(
++                (p) =>
++                    p
++                      ..name = 'value'
++                      ..type = type,
++              ),
++            ),
+     );
+ 
+     yield setter;
+   }
+ 
+   Constructor _dictionaryConstructor(DictionaryElement element) => Constructor(
+-        (c) => c
++    (c) =>
++        c
+           ..factory = true
+           ..external = true
+           ..optionalParameters.addAll(
+             element.allInheritedMembers.map(_dictionaryConstructorParameter),
+           ),
+-      );
++  );
+ 
+   Parameter _dictionaryConstructorParameter(DictionaryMemberElement element) =>
+       Parameter(
+-        (p) => p
+-          ..name = element.name
+-          ..type = types.convert(element.type)
+-          ..named = true,
++        (p) =>
++            p
++              ..name = element.name
++              ..type = types.convert(element.type)
++              ..named = true,
+       );
+ 
+   @override
+   Iterable<Spec> enumeration(EnumElement element) sync* {
+     yield TypeDef(
+-      (t) => t
+-        ..name = element.name
+-        ..definition = refer('String'),
++      (t) =>
++          t
++            ..name = element.name
++            ..definition = refer('String'),
+     );
+   }
+ 
+   @override
+   Iterable<Spec> function(FunctionTypeAliasElement element) sync* {
+     yield TypeDef(
+-      (t) => t
+-        ..name = element.name
+-        ..definition = refer('JSFunction'),
++      (t) =>
++          t
++            ..name = element.name
++            ..definition = refer('JSFunction'),
+     );
+   }
+ 
+   @override
+   Iterable<Spec> interface(InterfaceElement element) sync* {
+     yield ExtensionType(
+-      (e) => e
+-        ..name = element.name
+-        ..representationDeclaration = RepresentationDeclaration(
+-          (r) => r
+-            ..name = '_'
+-            ..declaredRepresentationType = TypeConverter.jsObject,
+-        )
+-        ..implements.addAll([
+-          TypeConverter.jsObject,
+-          if (element.supertype != null)
+-            types.convertSingleType(element.supertype!),
+-          ...(element.enclosingElement as FragmentElement)
+-              .includes
+-              .where((e) => e.on.name == element.name)
+-              .map((e) => types.convert(e.mixin)),
+-        ])
+-        ..primaryConstructorName = '_'
+-        ..constructors.addAll(
+-          element.allConstructors.map(_interfaceConstructor),
+-        )
+-        ..methods.addAll([
+-          ...element.allAttributes.expand(_interfaceAttribute),
+-          ...element.allOperations.map(_interfaceOperation),
+-        ]),
++      (e) =>
++          e
++            ..name = element.name
++            ..representationDeclaration = RepresentationDeclaration(
++              (r) =>
++                  r
++                    ..name = '_'
++                    ..declaredRepresentationType = TypeConverter.jsObject,
++            )
++            ..implements.addAll([
++              TypeConverter.jsObject,
++              if (element.supertype != null)
++                types.convertSingleType(element.supertype!),
++              ...(element.enclosingElement as FragmentElement).includes
++                  .where((e) => e.on.name == element.name)
++                  .map((e) => types.convert(e.mixin)),
++            ])
++            ..primaryConstructorName = '_'
++            ..constructors.addAll(
++              element.allConstructors.map(_interfaceConstructor),
++            )
++            ..methods.addAll([
++              ...element.allAttributes.expand(_interfaceAttribute),
++              ...element.allOperations.map(_interfaceOperation),
++            ]),
+       //..fields.addAll(element.constants.map(_interfaceConstant))
+     );
+   }
+@@ -154,16 +161,17 @@ final class JsInteropGenerator extends SourceGenerator {
+     final name = element.name;
+ 
+     return Constructor(
+-      (c) => c
+-        ..name = name != 'constructor' ? name : null
+-        ..external = true
+-        ..factory = true
+-        ..requiredParameters.addAll(
+-          element.requiredArguments.map(_interfaceOperationArgument),
+-        )
+-        ..optionalParameters.addAll(
+-          element.optionalArguments.map(_interfaceOperationArgument),
+-        ),
++      (c) =>
++          c
++            ..name = name != 'constructor' ? name : null
++            ..external = true
++            ..factory = true
++            ..requiredParameters.addAll(
++              element.requiredArguments.map(_interfaceOperationArgument),
++            )
++            ..optionalParameters.addAll(
++              element.optionalArguments.map(_interfaceOperationArgument),
++            ),
+     );
+   }
+ 
+@@ -171,28 +179,31 @@ final class JsInteropGenerator extends SourceGenerator {
+     final type = types.convert(element.type);
+ 
+     final getter = Method(
+-      (m) => m
+-        ..name = element.name
+-        ..external = true
+-        ..type = MethodType.getter
+-        ..returns = type,
++      (m) =>
++          m
++            ..name = element.name
++            ..external = true
++            ..type = MethodType.getter
++            ..returns = type,
+     );
+ 
+     yield getter;
+ 
+     if (element.readWrite) {
+       final setter = Method(
+-        (m) => m
+-          ..name = element.name
+-          ..external = true
+-          ..type = MethodType.setter
+-          ..requiredParameters.add(
+-            Parameter(
+-              (p) => p
+-                ..name = 'value'
+-                ..type = type,
+-            ),
+-          ),
++        (m) =>
++            m
++              ..name = element.name
++              ..external = true
++              ..type = MethodType.setter
++              ..requiredParameters.add(
++                Parameter(
++                  (p) =>
++                      p
++                        ..name = 'value'
++                        ..type = type,
++                ),
++              ),
+       );
+ 
+       yield setter;
+@@ -200,14 +211,16 @@ final class JsInteropGenerator extends SourceGenerator {
+   }
+ 
+   Field _interfaceConstant(ConstantElement element) => Field(
+-        (f) => f
++    (f) =>
++        f
+           ..name = element.name
+           ..type = types.convert(element.type)
+           ..static = true,
+-      );
++  );
+ 
+   Method _interfaceOperation(OperationElement element) => Method(
+-        (m) => m
++    (m) =>
++        m
+           ..name = element.name
+           ..external = true
+           ..returns = types.convert(element.returnType)
+@@ -218,43 +231,48 @@ final class JsInteropGenerator extends SourceGenerator {
+           ..optionalParameters.addAll(
+             element.optionalArguments.map(_interfaceOperationArgument),
+           ),
+-      );
++  );
+ 
+   Parameter _interfaceOperationArgument(ArgumentElement element) => Parameter(
+-        (p) => p
++    (p) =>
++        p
+           ..name = element.name
+           ..type = types.convert(element.type),
+-      );
++  );
+ 
+   @override
+   Iterable<Spec> namespace(NamespaceElement element) sync* {
+     yield ExtensionType(
+-      (e) => e
+-        ..name = element.name
+-        ..representationDeclaration = RepresentationDeclaration(
+-          (r) => r
+-            ..name = '_'
+-            ..declaredRepresentationType = TypeConverter.jsObject,
+-        )
+-        ..implements.add(TypeConverter.jsObject)
+-        ..primaryConstructorName = '_',
++      (e) =>
++          e
++            ..name = element.name
++            ..representationDeclaration = RepresentationDeclaration(
++              (r) =>
++                  r
++                    ..name = '_'
++                    ..declaredRepresentationType = TypeConverter.jsObject,
++            )
++            ..implements.add(TypeConverter.jsObject)
++            ..primaryConstructorName = '_',
+     );
+ 
+     yield Method(
+-      (f) => f
+-        ..name = element.name
+-        ..external = true
+-        ..type = MethodType.getter
+-        ..returns = refer(element.name),
++      (f) =>
++          f
++            ..name = element.name
++            ..external = true
++            ..type = MethodType.getter
++            ..returns = refer(element.name),
+     );
+   }
+ 
+   @override
+   Iterable<Spec> typeDefinition(TypeAliasElement element) sync* {
+     yield TypeDef(
+-      (t) => t
+-        ..name = element.name
+-        ..definition = types.convert(element.type),
++      (t) =>
++          t
++            ..name = element.name
++            ..definition = types.convert(element.type),
+     );
+   }
+ }
+diff --git a/packages/web_idl_generator/lib/src/source_generator.dart b/packages/web_idl_generator/lib/src/source_generator.dart
+index 1fc261a..1f1944c 100644
+--- a/packages/web_idl_generator/lib/src/source_generator.dart
++++ b/packages/web_idl_generator/lib/src/source_generator.dart
+@@ -4,26 +4,34 @@ import 'package:web_idl/web_idl.dart';
+ 
+ import 'type_converter.dart';
+ 
+-class SourceGenerator {
+-  SourceGenerator(this.types);
+-
+-  final TypeConverter types;
++abstract class SourceGenerator {
++  @protected
++  late TypeConverter types;
+ 
+   /// Create a [Library] from a [FragmentElement].
+-  Library library(FragmentElement element) => Library(
+-        (l) => l
+-          ..generatedByComment = 'Generated by Rampage on ${DateTime.now()}'
+-          ..body.addAll(
+-            [
++  Library library(FragmentElement element, {TypeMap? mapping}) {
++    types = typeConverter(mapping);
++    return Library(
++      (l) =>
++          l
++            ..generatedByComment = 'Generated by Rampage on ${DateTime.now()}'
++            ..directives.addAll(directives())
++            ..body.addAll([
+               ...element.dictionaries.where(_isConcrete).expand(dictionary),
+               ...element.enumerations.expand(enumeration),
+               ...element.functions.expand(function),
+               ...element.interfaces.where(_isConcrete).expand(interface),
+               ...element.namespaces.where(_isConcrete).expand(namespace),
+               ...element.typeDefinitions.expand(typeDefinition),
+-            ],
+-          ),
+-      );
++            ]),
++    );
++  }
++
++  @protected
++  TypeConverter typeConverter(TypeMap? mapping);
++
++  @protected
++  Iterable<Directive> directives() => const Iterable<Directive>.empty();
+ 
+   /// Create a [Spec] from a [DictionaryElement].
+   ///
+diff --git a/packages/web_idl_generator/lib/src/type_converter.dart b/packages/web_idl_generator/lib/src/type_converter.dart
+index 630dc88..93973ba 100644
+--- a/packages/web_idl_generator/lib/src/type_converter.dart
++++ b/packages/web_idl_generator/lib/src/type_converter.dart
+@@ -1,27 +1,29 @@
+ import 'package:code_builder/code_builder.dart';
+ import 'package:web_idl/web_idl.dart';
+ 
+-typedef TypeMap = Map<String, (String, String?)>;
++typedef TypeMapKey = String;
++typedef TypeMapValue = (String, String?);
++typedef TypeMapEntry = MapEntry<TypeMapKey, TypeMapValue>;
++typedef TypeMap = Map<TypeMapKey, TypeMapValue>;
+ 
+ class TypeConverter {
+-  factory TypeConverter.jsInterop({TypeMap? mapping}) = _JSTypeConverter;
+-
+-  factory TypeConverter.dart({TypeMap? mapping}) => TypeConverter._(
+-        dartAny,
+-        <String, (String, String?)>{
+-          ..._builtinMap(
+-            any: 'Object',
+-            undefined: 'void',
+-            boolean: 'bool',
+-            integer: 'int',
+-            number: 'double',
+-            string: 'String',
+-            list: 'List',
+-            object: 'Object',
+-          ),
+-          ...?mapping,
+-        },
+-      );
++  factory TypeConverter.jsInterop([TypeMap? mapping]) = _JSTypeConverter;
++
++  factory TypeConverter.dart([TypeMap? mapping]) =>
++      TypeConverter._(dartAny, <String, (String, String?)>{
++        ..._builtinMap(
++          any: 'Object',
++          undefined: 'void',
++          boolean: 'bool',
++          integer: 'int',
++          number: 'double',
++          string: 'String',
++          list: 'List',
++          object: 'Object',
++          promise: 'Future',
++        ),
++        ...?mapping,
++      });
+ 
+   TypeConverter._(this._unionType, this._mapping);
+ 
+@@ -31,9 +33,10 @@ class TypeConverter {
+   /// Map from IDL name to Dart name
+   final TypeMap _mapping;
+ 
+-  TypeReference convert(WebIdlType idl) => idl is UnionType
+-      ? convertUnionType(idl)
+-      : convertSingleType(idl as SingleType);
++  TypeReference convert(WebIdlType idl) =>
++      idl is UnionType
++          ? convertUnionType(idl)
++          : convertSingleType(idl as SingleType);
+ 
+   TypeReference convertUnionType(UnionType idl) => _unionType;
+ 
+@@ -42,11 +45,12 @@ class TypeConverter {
+     final (symbol, url) = _mapping[idl.name] ?? (name, null);
+ 
+     return TypeReference(
+-      (t) => t
+-        ..symbol = symbol
+-        ..isNullable = idl.isNullable
+-        ..url = url
+-        ..types.addAll(idl.typeArguments.map(convert)),
++      (t) =>
++          t
++            ..symbol = symbol
++            ..isNullable = idl.isNullable
++            ..url = url
++            ..types.addAll(idl.typeArguments.map(convert)),
+     );
+   }
+ 
+@@ -68,17 +72,22 @@ class TypeConverter {
+   static TypeReference _jsInteropType(
+     String symbol, {
+     bool isNullable = false,
+-  }) =>
+-      TypeReference(
+-        (t) => t
++  }) => TypeReference(
++    (t) =>
++        t
+           ..symbol = symbol
+           ..isNullable = isNullable
+           ..url = 'dart:js_interop',
+-      );
++  );
++
++  static final dartAny = TypeReference(
++    (t) =>
++        t
++          ..symbol = 'Object'
++          ..isNullable = true,
++  );
+ 
+-  static final dartAny = TypeReference((t) => t
+-    ..symbol = 'Object'
+-    ..isNullable = true);
++  static final dartString = TypeReference((t) => t..symbol = 'String');
+ 
+   static TypeMap _builtinMap({
+     required String any,
+@@ -89,65 +98,64 @@ class TypeConverter {
+     required String string,
+     required String list,
+     required String object,
+-  }) =>
+-      <String, (String, String?)>{
+-        'any': (any, null),
+-        'undefined': (undefined, null),
+-        'boolean': (boolean, null),
+-        'byte': (integer, null),
+-        'octet': (integer, null),
+-        'short': (integer, null),
+-        'unsigned short': (integer, null),
+-        'long': (integer, null),
+-        'unsigned long': (integer, null),
+-        'long long': (integer, null),
+-        'unsigned long long': (integer, null),
+-        'float': (number, null),
+-        'unrestricted float': (number, null),
+-        'double': (number, null),
+-        'unrestricted double': (number, null),
+-        'DOMString': (string, null),
+-        'ByteString': (string, null),
+-        'USVString': (string, null),
+-        'sequence': (list, null),
+-        'object': (object, null),
+-      };
++    required String promise,
++  }) => <String, (String, String?)>{
++    'any': (any, null),
++    'undefined': (undefined, null),
++    'boolean': (boolean, null),
++    'byte': (integer, null),
++    'octet': (integer, null),
++    'short': (integer, null),
++    'unsigned short': (integer, null),
++    'long': (integer, null),
++    'unsigned long': (integer, null),
++    'long long': (integer, null),
++    'unsigned long long': (integer, null),
++    'float': (number, null),
++    'unrestricted float': (number, null),
++    'double': (number, null),
++    'unrestricted double': (number, null),
++    'DOMString': (string, null),
++    'ByteString': (string, null),
++    'USVString': (string, null),
++    'sequence': (list, null),
++    'FrozenArray': (list, null),
++    'ObservableArray': (list, null),
++    'object': (object, null),
++    'Promise': (promise, null),
++  };
+ }
+ 
+ final class _JSTypeConverter extends TypeConverter {
+-  _JSTypeConverter({TypeMap? mapping})
+-      : _inner = TypeConverter._(
+-          TypeConverter.jsAny,
+-          <String, (String, String?)>{
+-            ...TypeConverter._builtinMap(
+-              any: 'JSAny',
+-              undefined: 'void',
+-              boolean: 'JSBoolean',
+-              integer: 'JSNumber',
+-              number: 'JSNumber',
+-              string: 'JSString',
+-              list: 'JSArray',
+-              object: 'JSObject',
+-            ),
+-            ...?mapping,
+-          },
++  _JSTypeConverter([TypeMap? mapping])
++    : _inner = TypeConverter._(TypeConverter.jsAny, <String, (String, String?)>{
++        ...TypeConverter._builtinMap(
++          any: 'JSAny',
++          undefined: 'JSAny?',
++          boolean: 'JSBoolean',
++          integer: 'JSNumber',
++          number: 'JSNumber',
++          string: 'JSString',
++          list: 'JSArray',
++          object: 'JSObject',
++          promise: 'JSPromise',
++        ),
++        ...?mapping,
++      }),
++      super._(TypeConverter.jsAny, <String, (String, String?)>{
++        ...TypeConverter._builtinMap(
++          any: 'JSAny',
++          undefined: 'void',
++          boolean: 'bool',
++          integer: 'int',
++          number: 'double',
++          string: 'String',
++          list: 'List',
++          object: 'JSObject',
++          promise: 'JSPromise',
+         ),
+-        super._(
+-          TypeConverter.jsAny,
+-          <String, (String, String?)>{
+-            ...TypeConverter._builtinMap(
+-              any: 'JSAny',
+-              undefined: 'void',
+-              boolean: 'bool',
+-              integer: 'int',
+-              number: 'double',
+-              string: 'String',
+-              list: 'List',
+-              object: 'JSObject',
+-            ),
+-            ...?mapping,
+-          },
+-        );
++        ...?mapping,
++      });
+ 
+   final TypeConverter _inner;
+ 
+@@ -156,8 +164,10 @@ final class _JSTypeConverter extends TypeConverter {
+     final name = idl.name;
+ 
+     return switch (name) {
+-      'sequence' => _inner.convertSingleType(idl),
+-      _ => super.convertSingleType(idl)
++      'sequence' ||
++      'ObservableArray' ||
++      'FrozenArray' => _inner.convertSingleType(idl),
++      _ => super.convertSingleType(idl),
+     };
+   }
+ }

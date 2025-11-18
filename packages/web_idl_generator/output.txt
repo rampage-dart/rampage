@@ -1,0 +1,2 @@
+Generating from .\assets\css_view_transitions.idl
+Generating from .\assets\dom.idl

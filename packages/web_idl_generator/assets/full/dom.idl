@@ -1,22 +1,7 @@
-typedef double DOMHighResTimeStamp;
+// DOM Living Standard
+// Last Updated 20 January 2025
 
-typedef unsigned long long EpochTimeStamp;
-
-[LegacyTreatNonObjectAsNull]
-callback EventHandlerNonNull = any (Event event);
-typedef EventHandlerNonNull? EventHandler;
-
-[Exposed=(Window,Worker)]
-interface Performance : EventTarget {
-    DOMHighResTimeStamp now();
-    readonly attribute DOMHighResTimeStamp timeOrigin;
-    [Default] object toJSON();
-};
-
-partial interface mixin WindowOrWorkerGlobalScope {
-  [Replaceable] readonly attribute Performance performance;
-};
-
+//[Exposed=*]
 interface Event {
   constructor(DOMString type, optional EventInit eventInitDict = {});
 
@@ -59,7 +44,7 @@ partial interface Window {
   [Replaceable] readonly attribute (Event or undefined) event; // legacy
 };
 
-
+//[Exposed=*]
 interface CustomEvent : Event {
   constructor(DOMString type, optional CustomEventInit eventInitDict = {});
 
@@ -72,7 +57,7 @@ dictionary CustomEventInit : EventInit {
   any detail = null;
 };
 
-
+//[Exposed=*]
 interface EventTarget {
   constructor();
 
@@ -95,7 +80,7 @@ dictionary AddEventListenerOptions : EventListenerOptions {
   AbortSignal signal;
 };
 
-
+//[Exposed=*]
 interface AbortController {
   constructor();
 
@@ -104,7 +89,7 @@ interface AbortController {
   undefined abort(optional any reason);
 };
 
-
+//[Exposed=*]
 interface AbortSignal : EventTarget {
   [NewObject] static AbortSignal abort(optional any reason);
   [Exposed=(Window,Worker), NewObject] static AbortSignal timeout([EnforceRange] unsigned long long milliseconds);
@@ -171,7 +156,7 @@ Text includes Slottable;
 interface NodeList {
   getter Node? item(unsigned long index);
   readonly attribute unsigned long length;
-
+  //iterable<Node>;
 };
 
 [Exposed=Window, LegacyUnenumerableNamedProperties]
@@ -322,11 +307,9 @@ interface Document : Node {
 [Exposed=Window]
 interface XMLDocument : Document {};
 
-/*
 dictionary ElementCreationOptions {
-  DOMString is;
+  DOMString is_;
 };
-*/
 
 [Exposed=Window]
 interface DOMImplementation {
@@ -598,7 +581,7 @@ interface DOMTokenList {
   [CEReactions] boolean replace(DOMString token, DOMString newToken);
   boolean supports(DOMString token);
   [CEReactions] stringifier attribute DOMString value;
-
+  //iterable<DOMString>;
 };
 
 [Exposed=Window]

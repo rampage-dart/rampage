@@ -1,0 +1,257 @@
+
+enum DocumentReadyState { "loading", "interactive", "complete" };
+enum DocumentVisibilityState { "visible", "hidden" };
+typedef (HTMLScriptElement or SVGScriptElement) HTMLOrSVGScriptElement;
+
+[LegacyOverrideBuiltIns]
+partial interface Document {
+  // DOM tree accessors
+  //getter object (DOMString name);
+  [CEReactions] attribute DOMString title;
+  [CEReactions] attribute DOMString dir;
+  [CEReactions] attribute HTMLElement? body;
+  readonly attribute HTMLHeadElement? head;
+};
+Document includes GlobalEventHandlers;
+partial interface mixin DocumentOrShadowRoot {
+  readonly attribute Element? activeElement;
+};
+[Exposed=Window]
+interface HTMLElement : Element {
+  undefined click();
+
+  [CEReactions] attribute [LegacyNullToEmptyString] DOMString innerText;
+
+  ElementInternals attachInternals();
+};
+
+HTMLElement includes GlobalEventHandlers;
+HTMLElement includes ElementContentEditable;
+HTMLElement includes HTMLOrSVGElement;
+
+[Exposed=Window]
+interface HTMLUnknownElement : HTMLElement {
+  // Note: intentionally no [HTMLConstructor]
+};
+interface mixin HTMLOrSVGElement {
+  undefined focus(optional FocusOptions options = {});
+  undefined blur();
+};
+
+[Exposed=Window]
+interface HTMLHtmlElement : HTMLElement {
+  [HTMLConstructor] constructor();
+
+  // also has obsolete members
+};
+[Exposed=Window]
+interface HTMLHeadElement : HTMLElement {
+  [HTMLConstructor] constructor();
+};
+
+[Exposed=Window]
+interface HTMLBodyElement : HTMLElement {
+  [HTMLConstructor] constructor();
+
+  // also has obsolete members
+};
+
+HTMLBodyElement includes WindowEventHandlers;
+
+[Exposed=Window]
+interface HTMLDivElement : HTMLElement {
+  [HTMLConstructor] constructor();
+
+  // also has obsolete members
+};
+
+[Exposed=Window]
+interface HTMLPictureElement : HTMLElement {
+  [HTMLConstructor] constructor();
+};
+[Exposed=Window]
+interface HTMLSourceElement : HTMLElement {
+  [HTMLConstructor] constructor();
+
+  [CEReactions] attribute USVString src;
+  [CEReactions] attribute DOMString type;
+  [CEReactions] attribute USVString srcset;
+  [CEReactions] attribute DOMString sizes;
+  [CEReactions] attribute DOMString media;
+  [CEReactions] attribute unsigned long width;
+  [CEReactions] attribute unsigned long height;
+};
+[Exposed=Window]
+// LegacyFactoryFunction=Image(optional unsigned long width, optional unsigned long height)]
+interface HTMLImageElement : HTMLElement {
+  [HTMLConstructor] constructor();
+
+  [CEReactions] attribute DOMString alt;
+  [CEReactions] attribute USVString src;
+  [CEReactions] attribute USVString srcset;
+  [CEReactions] attribute DOMString sizes;
+  [CEReactions] attribute DOMString? crossOrigin;
+  [CEReactions] attribute DOMString useMap;
+  [CEReactions] attribute boolean isMap;
+  [CEReactions] attribute unsigned long width;
+  [CEReactions] attribute unsigned long height;
+  readonly attribute unsigned long naturalWidth;
+  readonly attribute unsigned long naturalHeight;
+  readonly attribute boolean complete;
+  readonly attribute USVString currentSrc;
+  [CEReactions] attribute DOMString referrerPolicy;
+  [CEReactions] attribute DOMString decoding;
+  [CEReactions] attribute DOMString loading;
+  [CEReactions] attribute DOMString fetchPriority;
+
+  Promise<undefined> decode();
+
+  // also has obsolete members
+};
+[Exposed=Window]
+interface HTMLIFrameElement : HTMLElement {
+  [HTMLConstructor] constructor();
+
+  [CEReactions] attribute USVString src;
+  [CEReactions] attribute (TrustedHTML or DOMString) srcdoc;
+  [CEReactions] attribute DOMString name;
+  [SameObject, PutForwards=value] readonly attribute DOMTokenList sandbox;
+  [CEReactions] attribute DOMString allow;
+  [CEReactions] attribute boolean allowFullscreen;
+  [CEReactions] attribute DOMString width;
+  [CEReactions] attribute DOMString height;
+  [CEReactions] attribute DOMString referrerPolicy;
+  [CEReactions] attribute DOMString loading;
+  readonly attribute Document? contentDocument;
+  readonly attribute WindowProxy? contentWindow;
+  Document? getSVGDocument();
+
+  // also has obsolete members
+};
+[Exposed=Window]
+interface HTMLTemplateElement : HTMLElement {
+  [HTMLConstructor] constructor();
+
+  readonly attribute DocumentFragment content;
+};
+[Exposed=Window]
+interface HTMLSlotElement : HTMLElement {
+  [HTMLConstructor] constructor();
+
+  [CEReactions] attribute DOMString name;
+  //sequence<Node> assignedNodes(optional AssignedNodesOptions options = {});
+  //sequence<Element> assignedElements(optional AssignedNodesOptions options = {});
+  //undefined assign((Element or Text)... nodes);
+};
+
+dictionary AssignedNodesOptions {
+  boolean flatten = false;
+};
+
+[LegacyTreatNonObjectAsNull]
+callback EventHandlerNonNull = any (Event event);
+typedef EventHandlerNonNull? EventHandler;
+[LegacyTreatNonObjectAsNull]
+callback OnErrorEventHandlerNonNull = any ((Event or DOMString) event, optional DOMString source, optional unsigned long lineno, optional unsigned long colno, optional any error);
+typedef OnErrorEventHandlerNonNull? OnErrorEventHandler;
+[LegacyTreatNonObjectAsNull]
+callback OnBeforeUnloadEventHandlerNonNull = DOMString? (Event event);
+typedef OnBeforeUnloadEventHandlerNonNull? OnBeforeUnloadEventHandler;
+interface mixin GlobalEventHandlers {
+  attribute EventHandler onabort;
+  attribute EventHandler onauxclick;
+  attribute EventHandler onbeforeinput;
+  attribute EventHandler onbeforematch;
+  attribute EventHandler onbeforetoggle;
+  attribute EventHandler onblur;
+  attribute EventHandler oncancel;
+  attribute EventHandler oncanplay;
+  attribute EventHandler oncanplaythrough;
+  attribute EventHandler onchange;
+  attribute EventHandler onclick;
+  attribute EventHandler onclose;
+  attribute EventHandler oncontextlost;
+  attribute EventHandler oncontextmenu;
+  attribute EventHandler oncontextrestored;
+  attribute EventHandler oncopy;
+  attribute EventHandler oncuechange;
+  attribute EventHandler oncut;
+  attribute EventHandler ondblclick;
+  attribute EventHandler ondrag;
+  attribute EventHandler ondragend;
+  attribute EventHandler ondragenter;
+  attribute EventHandler ondragleave;
+  attribute EventHandler ondragover;
+  attribute EventHandler ondragstart;
+  attribute EventHandler ondrop;
+  attribute EventHandler ondurationchange;
+  attribute EventHandler onemptied;
+  attribute EventHandler onended;
+  attribute OnErrorEventHandler onerror;
+  attribute EventHandler onfocus;
+  attribute EventHandler onformdata;
+  attribute EventHandler oninput;
+  attribute EventHandler oninvalid;
+  attribute EventHandler onkeydown;
+  attribute EventHandler onkeypress;
+  attribute EventHandler onkeyup;
+  attribute EventHandler onload;
+  attribute EventHandler onloadeddata;
+  attribute EventHandler onloadedmetadata;
+  attribute EventHandler onloadstart;
+  attribute EventHandler onmousedown;
+  [LegacyLenientThis] attribute EventHandler onmouseenter;
+  [LegacyLenientThis] attribute EventHandler onmouseleave;
+  attribute EventHandler onmousemove;
+  attribute EventHandler onmouseout;
+  attribute EventHandler onmouseover;
+  attribute EventHandler onmouseup;
+  attribute EventHandler onpaste;
+  attribute EventHandler onpause;
+  attribute EventHandler onplay;
+  attribute EventHandler onplaying;
+  attribute EventHandler onprogress;
+  attribute EventHandler onratechange;
+  attribute EventHandler onreset;
+  attribute EventHandler onresize;
+  attribute EventHandler onscroll;
+  attribute EventHandler onscrollend;
+  attribute EventHandler onsecuritypolicyviolation;
+  attribute EventHandler onseeked;
+  attribute EventHandler onseeking;
+  attribute EventHandler onselect;
+  attribute EventHandler onslotchange;
+  attribute EventHandler onstalled;
+  attribute EventHandler onsubmit;
+  attribute EventHandler onsuspend;
+  attribute EventHandler ontimeupdate;
+  attribute EventHandler ontoggle;
+  attribute EventHandler onvolumechange;
+  attribute EventHandler onwaiting;
+  attribute EventHandler onwebkitanimationend;
+  attribute EventHandler onwebkitanimationiteration;
+  attribute EventHandler onwebkitanimationstart;
+  attribute EventHandler onwebkittransitionend;
+  attribute EventHandler onwheel;
+};
+
+interface mixin WindowEventHandlers {
+  attribute EventHandler onafterprint;
+  attribute EventHandler onbeforeprint;
+  attribute OnBeforeUnloadEventHandler onbeforeunload;
+  attribute EventHandler onhashchange;
+  attribute EventHandler onlanguagechange;
+  attribute EventHandler onmessage;
+  attribute EventHandler onmessageerror;
+  attribute EventHandler onoffline;
+  attribute EventHandler ononline;
+  attribute EventHandler onpagehide;
+  attribute EventHandler onpagereveal;
+  attribute EventHandler onpageshow;
+  attribute EventHandler onpageswap;
+  attribute EventHandler onpopstate;
+  attribute EventHandler onrejectionhandled;
+  attribute EventHandler onstorage;
+  attribute EventHandler onunhandledrejection;
+  attribute EventHandler onunload;
+};

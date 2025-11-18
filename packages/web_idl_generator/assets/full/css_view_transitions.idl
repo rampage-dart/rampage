@@ -1,0 +1,13 @@
+partial interface Document {
+  ViewTransition startViewTransition(optional ViewTransitionUpdateCallback updateCallback);
+};
+
+callback ViewTransitionUpdateCallback = Promise<any> ();
+
+[Exposed=Window]
+interface ViewTransition {
+  readonly attribute Promise<undefined> updateCallbackDone;
+  readonly attribute Promise<undefined> ready;
+  readonly attribute Promise<undefined> finished;
+  undefined skipTransition();
+};
