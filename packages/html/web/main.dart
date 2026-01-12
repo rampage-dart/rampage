@@ -5,7 +5,7 @@
 
 import 'dart:async';
 
-import 'package:rampage_html/window.dart';
+import 'package:rampage_html/html.dart';
 
 class ClickCounter extends CustomElement {
   factory ClickCounter() => Element.tag('click-counter') as ClickCounter;
